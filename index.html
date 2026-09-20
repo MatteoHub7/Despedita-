@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta name="theme-color" content="#080808">
+
+    <title>Despedida</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <!-- HOME -->
+        <section id="home-screen" class="screen active">
+
+            <div class="hero">
+
+                <div class="coffin">⚰️</div>
+
+                <p class="eyebrow">
+                    THE LAST NIGHT
+                </p>
+
+                <h1>
+                    DESPEDIDA
+                </h1>
+
+                <p class="subtitle">
+                    Finché morte o Svizzera<br>
+                    non ci separi.
+                </p>
+
+            </div>
+
+            <div class="home-buttons">
+
+                <button
+                    class="main-button truth-button"
+                    onclick="startGame('truth')"
+                >
+                    <span class="button-small">
+                        DIMMI LA
+                    </span>
+
+                    VERITÀ
+                </button>
+
+
+                <div class="divider">
+                    <span></span>
+                    <p>OPPURE</p>
+                    <span></span>
+                </div>
+
+
+                <button
+                    class="main-button dare-button"
+                    onclick="startGame('dare')"
+                >
+                    <span class="button-small">
+                        ACCETTA
+                    </span>
+
+                    OBBLIGO
+                </button>
+
+            </div>
+
+
+            <div class="stats">
+
+                <div>
+                    <span id="truth-home-counter">30</span>
+                    <small>VERITÀ</small>
+                </div>
+
+                <div class="stats-divider"></div>
+
+                <div>
+                    <span id="dare-home-counter">30</span>
+                    <small>OBBLIGHI</small>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- GAME -->
+        <section id="game-screen" class="screen">
+
+            <div class="game-header">
+
+                <button
+                    class="icon-button"
+                    onclick="goHome()"
+                    aria-label="Torna alla home"
+                >
+                    ←
+                </button>
+
+                <div id="game-title">
+                    VERITÀ
+                </div>
+
+                <button
+                    class="icon-button"
+                    onclick="resetCurrentDeck()"
+                    aria-label="Reset mazzo"
+                >
+                    ↻
+                </button>
+
+            </div>
+
+
+            <div class="card-area">
+
+                <div id="card" class="card">
+
+                    <div
+                        id="card-icon"
+                        class="card-icon"
+                    >
+                        ?
+                    </div>
+
+                    <div
+                        id="card-type"
+                        class="card-type"
+                    >
+                        VERITÀ
+                    </div>
+
+                    <div
+                        id="card-text"
+                        class="card-text"
+                    >
+                        Premi il pulsante per pescare.
+                    </div>
+
+                    <div
+                        id="card-number"
+                        class="card-number"
+                    >
+                        CARTA 0 / 30
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="draw-button"
+                class="draw-button"
+                onclick="drawCard()"
+            >
+                PESCA UNA CARTA
+            </button>
+
+
+            <p class="deck-info">
+                Nessuna carta verrà ripetuta finché il mazzo non sarà terminato.
+            </p>
+
+        </section>
+
+
+        <footer>
+            <span>†</span>
+            RIP VITA ITALIANA
+            <span>†</span>
+        </footer>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
