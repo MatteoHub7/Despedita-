@@ -1,6 +1,7 @@
 /* ==================================================
    DESPEDIDA
    30 VERITÀ + 30 OBBLIGHI + 30 QUIZ
+   + SISTEMA GIOCATORI
 ================================================== */
 
 
@@ -165,7 +166,6 @@ const quizQuestions = [
             "Phoneutria. Il veleno di alcune specie può provocare priapismo."
     },
 
-
     {
         question:
             "Ne Il Signore degli Anelli, qual è il nome della spada riforgiata dai frammenti di Narsil?",
@@ -183,7 +183,6 @@ const quizQuestions = [
             "Andúril, la spada di Aragorn riforgiata dai frammenti di Narsil."
     },
 
-
     {
         question:
             "Quale elemento chimico è indicato dal simbolo W?",
@@ -198,9 +197,8 @@ const quizQuestions = [
         correct: 0,
 
         explanation:
-            "Il simbolo W deriva dal vecchio nome Wolfram. L'elemento è il tungsteno."
+            "Il simbolo W deriva dal nome Wolfram. L'elemento è il tungsteno."
     },
-
 
     {
         question:
@@ -216,9 +214,8 @@ const quizQuestions = [
         correct: 1,
 
         explanation:
-            "Teodosio I. L'editto rese il cristianesimo niceno la religione ufficialmente sostenuta dall'Impero."
+            "Teodosio I."
     },
-
 
     {
         question:
@@ -237,7 +234,6 @@ const quizQuestions = [
             "HAL significa Heuristically Programmed ALgorithmic Computer."
     },
 
-
     {
         question:
             "Quale di questi animali possiede tre canali vaginali?",
@@ -252,9 +248,8 @@ const quizQuestions = [
         correct: 0,
 
         explanation:
-            "I canguri femmina, come altri marsupiali, possiedono una particolare anatomia riproduttiva con tre canali vaginali."
+            "Il canguro, come altri marsupiali, possiede una particolare anatomia riproduttiva."
     },
-
 
     {
         question:
@@ -270,9 +265,8 @@ const quizQuestions = [
         correct: 3,
 
         explanation:
-            "Timido non è uno dei sette nani. I sette sono Dotto, Brontolo, Gongolo, Pisolo, Mammolo, Eolo e Cucciolo."
+            "Timido non è uno dei sette nani."
     },
-
 
     {
         question:
@@ -288,9 +282,8 @@ const quizQuestions = [
         correct: 2,
 
         explanation:
-            "384.400 km ÷ 10 km/h = 38.440 ore, cioè circa 4,4 anni."
+            "Circa 4,4 anni."
     },
-
 
     {
         question:
@@ -306,9 +299,8 @@ const quizQuestions = [
         correct: 2,
 
         explanation:
-            "Naypyidaw è la capitale del Myanmar. Yangon è la città più grande."
+            "Naypyidaw."
     },
-
 
     {
         question:
@@ -324,9 +316,8 @@ const quizQuestions = [
         correct: 2,
 
         explanation:
-            "La cifra comunemente riportata e attribuita alle sue dichiarazioni è circa 24 cm."
+            "La cifra comunemente riportata è circa 24 cm."
     },
-
 
     {
         question:
@@ -342,9 +333,8 @@ const quizQuestions = [
         correct: 1,
 
         explanation:
-            "Non avendo fratelli, «il figlio di mio padre» è lui stesso. Quindi l'uomo nella fotografia è suo figlio."
+            "Suo figlio."
     },
-
 
     {
         question:
@@ -360,9 +350,8 @@ const quizQuestions = [
         correct: 2,
 
         explanation:
-            "2 è l'unico numero primo divisibile per 2."
+            "2 è l'unico numero primo pari."
     },
-
 
     {
         question:
@@ -381,7 +370,6 @@ const quizQuestions = [
             "Gwyn, Lord of Cinder."
     },
 
-
     {
         question:
             "Quale pianeta del Sistema Solare ha il periodo di rotazione siderale più lungo?",
@@ -396,13 +384,12 @@ const quizQuestions = [
         correct: 1,
 
         explanation:
-            "Venere impiega circa 243 giorni terrestri a completare una rotazione rispetto alle stelle."
+            "Venere."
     },
-
 
     {
         question:
-            "Quale di queste è la parola più lunga tra quelle indicate dal Duden come lemmi particolarmente lunghi?",
+            "Quale di queste è la parola più lunga?",
 
         options: [
             "Kraftfahrzeughaftpflichtversicherung",
@@ -414,9 +401,8 @@ const quizQuestions = [
         correct: 1,
 
         explanation:
-            "Aufmerksamkeitsdefizit-Hyperaktivitätsstörung è una delle parole più lunghe registrate come lemma dal Duden."
+            "Aufmerksamkeitsdefizit-Hyperaktivitätsstörung."
     },
-
 
     {
         question:
@@ -432,9 +418,8 @@ const quizQuestions = [
         correct: 0,
 
         explanation:
-            "All'inizio di Mass Effect è la SSV Normandy SR-1."
+            "SSV Normandy SR-1."
     },
-
 
     {
         question:
@@ -450,9 +435,8 @@ const quizQuestions = [
         correct: 2,
 
         explanation:
-            "Il Sudan conserva numerose piramidi nubiane, soprattutto nell'area dell'antico regno di Kush."
+            "Il Sudan."
     },
-
 
     {
         question:
@@ -468,9 +452,8 @@ const quizQuestions = [
         correct: 2,
 
         explanation:
-            "D rappresenta 500. L vale 50, C vale 100 e M vale 1000."
+            "D rappresenta 500."
     },
-
 
     {
         question:
@@ -483,14 +466,11 @@ const quizQuestions = [
             "10⁴⁰"
         ],
 
-        correct: 30,
-
-        specialCorrectIndex: 1,
+        correct: 1,
 
         explanation:
-            "Usando dimensioni tipiche di un rotolo e il volume del Sole, l'ordine di grandezza è circa 10³⁰ rotoli."
+            "L'ordine di grandezza è circa 10³⁰ rotoli."
     },
-
 
     {
         question:
@@ -506,14 +486,13 @@ const quizQuestions = [
         correct: 1,
 
         explanation:
-            "Zelda. Per una volta il titolo del gioco dava un indizio piuttosto generoso."
+            "Zelda. Il titolo, per una volta, collaborava."
     },
 
 
-    /* ==================================================
+    /* =========================
        QUIZ DEL GRUPPO
-    ================================================== */
-
+    ========================= */
 
     {
         question:
@@ -529,9 +508,8 @@ const quizQuestions = [
         correct: null,
 
         explanation:
-            "NESSUNA DELLE PRECEDENTI. Il foglio Excel di Cri custodisce una verità più oscura."
+            "Il foglio Excel di Cri custodisce una verità più oscura."
     },
-
 
     {
         question:
@@ -547,9 +525,8 @@ const quizQuestions = [
         correct: 1,
 
         explanation:
-            "Principe di Rifredi. La nobiltà non è riconosciuta dalla Repubblica Italiana, purtroppo."
+            "Principe di Rifredi."
     },
-
 
     {
         question:
@@ -568,7 +545,6 @@ const quizQuestions = [
             "Pancarrè e Nutella."
     },
 
-
     {
         question:
             "Cosa è successo realmente al Pavo la sera in cui Cristiano si è ubriacato?",
@@ -580,7 +556,6 @@ const quizQuestions = [
         explanation:
             "La verità è ancora oggetto di indagine."
     },
-
 
     {
         question:
@@ -599,7 +574,6 @@ const quizQuestions = [
             "Old Fashioned."
     },
 
-
     {
         question:
             "Di quale locale è la barista che mi ha rubato il cuore?",
@@ -616,7 +590,6 @@ const quizQuestions = [
         explanation:
             "Post Office."
     },
-
 
     {
         question:
@@ -635,7 +608,6 @@ const quizQuestions = [
             "Eleonora."
     },
 
-
     {
         question:
             "Che lavoro faccio?",
@@ -653,7 +625,6 @@ const quizQuestions = [
             "Un cazzo. Instrumentation Engineer era soltanto la risposta professionalmente sensata."
     },
 
-
     {
         question:
             "Come si chiama il mio kebabbaro di fiducia?",
@@ -670,7 +641,6 @@ const quizQuestions = [
         explanation:
             "Mohamed."
     },
-
 
     {
         question:
@@ -693,7 +663,7 @@ const quizQuestions = [
 
 
 /* ==================================================
-   STATO
+   STATO DEL GIOCO
 ================================================== */
 
 let currentMode = null;
@@ -708,6 +678,17 @@ let quizRevealed = false;
 
 
 /* ==================================================
+   GIOCATORI
+================================================== */
+
+let players = [];
+
+let celebrantId = null;
+
+let lastSelectedPlayerId = null;
+
+
+/* ==================================================
    ELEMENTI HTML
 ================================================== */
 
@@ -719,6 +700,9 @@ const gameScreen =
 
 const quizScreen =
     document.getElementById("quiz-screen");
+
+const playersScreen =
+    document.getElementById("players-screen");
 
 const card =
     document.getElementById("card");
@@ -759,6 +743,18 @@ const quizMainButton =
 const quizCard =
     document.querySelector(".quiz-card");
 
+const playersList =
+    document.getElementById("players-list");
+
+const celebrantSelect =
+    document.getElementById("celebrant-select");
+
+const playersError =
+    document.getElementById("players-error");
+
+const playersHomeCount =
+    document.getElementById("players-home-count");
+
 
 /* ==================================================
    LOCAL STORAGE
@@ -783,15 +779,36 @@ function loadGame() {
                 localStorage.getItem("despedida_quiz")
             ) || [];
 
+        players =
+            JSON.parse(
+                localStorage.getItem("despedida_players")
+            ) || [];
+
     } catch {
 
         usedTruthCards = [];
         usedDareCards = [];
         usedQuizQuestions = [];
+        players = [];
 
     }
 
+
+    celebrantId =
+        localStorage.getItem(
+            "despedida_celebrant"
+        );
+
+
+    lastSelectedPlayerId =
+        localStorage.getItem(
+            "despedida_last_player"
+        );
+
+
     updateHomeCounters();
+
+    updatePlayersHome();
 
 }
 
@@ -813,6 +830,37 @@ function saveGame() {
         JSON.stringify(usedQuizQuestions)
     );
 
+    localStorage.setItem(
+        "despedida_players",
+        JSON.stringify(players)
+    );
+
+
+    if (celebrantId) {
+
+        localStorage.setItem(
+            "despedida_celebrant",
+            celebrantId
+        );
+
+    } else {
+
+        localStorage.removeItem(
+            "despedida_celebrant"
+        );
+
+    }
+
+
+    if (lastSelectedPlayerId) {
+
+        localStorage.setItem(
+            "despedida_last_player",
+            lastSelectedPlayerId
+        );
+
+    }
+
 }
 
 
@@ -827,6 +875,10 @@ function startGame(mode) {
     homeScreen.classList.remove("active");
     gameScreen.classList.remove("active");
     quizScreen.classList.remove("active");
+
+    if (playersScreen) {
+        playersScreen.classList.remove("active");
+    }
 
 
     if (mode === "quiz") {
@@ -845,19 +897,33 @@ function startGame(mode) {
 
     if (mode === "truth") {
 
-        gameTitle.textContent = "VERITÀ";
-        cardType.textContent = "VERITÀ";
-        cardIcon.textContent = "†";
+        gameTitle.textContent =
+            "VERITÀ";
 
-        drawButton.classList.remove("dare-mode");
+        cardType.textContent =
+            "VERITÀ";
+
+        cardIcon.textContent =
+            "†";
+
+        drawButton.classList.remove(
+            "dare-mode"
+        );
 
     } else {
 
-        gameTitle.textContent = "OBBLIGO";
-        cardType.textContent = "OBBLIGO";
-        cardIcon.textContent = "⚰";
+        gameTitle.textContent =
+            "OBBLIGO";
 
-        drawButton.classList.add("dare-mode");
+        cardType.textContent =
+            "OBBLIGO";
+
+        cardIcon.textContent =
+            "⚰";
+
+        drawButton.classList.add(
+            "dare-mode"
+        );
 
     }
 
@@ -872,14 +938,31 @@ function startGame(mode) {
 
 function goHome() {
 
-    gameScreen.classList.remove("active");
-    quizScreen.classList.remove("active");
+    gameScreen.classList.remove(
+        "active"
+    );
 
-    homeScreen.classList.add("active");
+    quizScreen.classList.remove(
+        "active"
+    );
+
+    if (playersScreen) {
+
+        playersScreen.classList.remove(
+            "active"
+        );
+
+    }
+
+    homeScreen.classList.add(
+        "active"
+    );
 
     currentMode = null;
 
     updateHomeCounters();
+
+    updatePlayersHome();
 
 }
 
@@ -915,7 +998,9 @@ function drawCard() {
             );
 
         if (reset) {
+
             resetCurrentDeck();
+
         }
 
         return;
@@ -926,7 +1011,10 @@ function drawCard() {
     const availableCards =
         deck
             .map((item, index) => index)
-            .filter(index => !used.includes(index));
+            .filter(
+                index =>
+                    !used.includes(index)
+            );
 
 
     const randomPosition =
@@ -937,21 +1025,29 @@ function drawCard() {
 
 
     const cardIndex =
-        availableCards[randomPosition];
+        availableCards[
+            randomPosition
+        ];
 
 
-    used.push(cardIndex);
+    used.push(
+        cardIndex
+    );
 
 
     cardText.textContent =
         deck[cardIndex];
 
 
-    card.classList.remove("animate");
+    card.classList.remove(
+        "animate"
+    );
 
     void card.offsetWidth;
 
-    card.classList.add("animate");
+    card.classList.add(
+        "animate"
+    );
 
 
     vibrate();
@@ -971,7 +1067,10 @@ function drawCard() {
 
 function handleQuizButton() {
 
-    if (currentQuizIndex === null || quizRevealed) {
+    if (
+        currentQuizIndex === null ||
+        quizRevealed
+    ) {
 
         drawQuizQuestion();
 
@@ -997,7 +1096,9 @@ function drawQuizQuestion() {
             );
 
         if (reset) {
+
             resetQuizDeck();
+
         }
 
         return;
@@ -1007,10 +1108,15 @@ function drawQuizQuestion() {
 
     const available =
         quizQuestions
-            .map((item, index) => index)
+            .map(
+                (item, index) =>
+                    index
+            )
             .filter(
                 index =>
-                    !usedQuizQuestions.includes(index)
+                    !usedQuizQuestions.includes(
+                        index
+                    )
             );
 
 
@@ -1022,7 +1128,9 @@ function drawQuizQuestion() {
 
 
     currentQuizIndex =
-        available[randomPosition];
+        available[
+            randomPosition
+        ];
 
 
     usedQuizQuestions.push(
@@ -1030,50 +1138,64 @@ function drawQuizQuestion() {
     );
 
 
-    selectedQuizAnswer = null;
-    quizRevealed = false;
+    selectedQuizAnswer =
+        null;
+
+    quizRevealed =
+        false;
 
 
     const quiz =
-        quizQuestions[currentQuizIndex];
+        quizQuestions[
+            currentQuizIndex
+        ];
 
 
     quizQuestion.textContent =
         quiz.question;
 
 
-    quizOptions.innerHTML = "";
+    quizOptions.innerHTML =
+        "";
 
-    quizResult.innerHTML = "";
-    quizResult.classList.remove("visible");
+    quizResult.innerHTML =
+        "";
+
+    quizResult.classList.remove(
+        "visible"
+    );
 
 
-    /* DOMANDA APERTA */
-
-    if (quiz.correct === "open") {
-
-        quizMainButton.textContent =
-            "SCOPRI LA VERITÀ";
-
-    } else {
+    if (
+        quiz.correct !== "open"
+    ) {
 
         quiz.options.forEach(
             (option, index) => {
 
                 const button =
-                    document.createElement("button");
+                    document.createElement(
+                        "button"
+                    );
+
 
                 button.className =
                     "quiz-option";
 
+
                 button.textContent =
-                    `${String.fromCharCode(65 + index)}) ${option}`;
+                    `${String.fromCharCode(
+                        65 + index
+                    )}) ${option}`;
+
 
                 button.onclick =
-                    () => selectQuizAnswer(
-                        index,
-                        button
-                    );
+                    () =>
+                        selectQuizAnswer(
+                            index,
+                            button
+                        );
+
 
                 quizOptions.appendChild(
                     button
@@ -1082,11 +1204,11 @@ function drawQuizQuestion() {
             }
         );
 
-
-        quizMainButton.textContent =
-            "SCOPRI LA VERITÀ";
-
     }
+
+
+    quizMainButton.textContent =
+        "SCOPRI LA VERITÀ";
 
 
     updateQuizCounter();
@@ -1122,11 +1244,14 @@ function selectQuizAnswer(
     }
 
 
-    selectedQuizAnswer = index;
+    selectedQuizAnswer =
+        index;
 
 
     document
-        .querySelectorAll(".quiz-option")
+        .querySelectorAll(
+            ".quiz-option"
+        )
         .forEach(option => {
 
             option.classList.remove(
@@ -1145,18 +1270,22 @@ function selectQuizAnswer(
 
 function revealQuizAnswer() {
 
-    if (currentQuizIndex === null) {
+    if (
+        currentQuizIndex === null
+    ) {
         return;
     }
 
 
     const quiz =
-        quizQuestions[currentQuizIndex];
+        quizQuestions[
+            currentQuizIndex
+        ];
 
 
-    /* DOMANDA APERTA */
-
-    if (quiz.correct === "open") {
+    if (
+        quiz.correct === "open"
+    ) {
 
         quizResult.innerHTML =
             `<strong>VERDETTO</strong><br>${quiz.explanation}`;
@@ -1165,7 +1294,8 @@ function revealQuizAnswer() {
             "visible"
         );
 
-        quizRevealed = true;
+        quizRevealed =
+            true;
 
         quizMainButton.textContent =
             "PROSSIMA DOMANDA";
@@ -1183,18 +1313,20 @@ function revealQuizAnswer() {
         );
 
 
-    /* NESSUNA RISPOSTA CORRETTA */
+    if (
+        quiz.correct === null
+    ) {
 
-    if (quiz.correct === null) {
+        buttons.forEach(
+            button => {
 
-        buttons.forEach(button => {
+                button.classList.add(
+                    "wrong",
+                    "disabled"
+                );
 
-            button.classList.add(
-                "wrong",
-                "disabled"
-            );
-
-        });
+            }
+        );
 
 
         quizResult.innerHTML =
@@ -1210,14 +1342,9 @@ function revealQuizAnswer() {
                 );
 
 
-                const correctIndex =
-                    quiz.specialCorrectIndex ??
-                    quiz.correct;
-
-
                 if (
                     index ===
-                    correctIndex
+                    quiz.correct
                 ) {
 
                     button.classList.add(
@@ -1229,8 +1356,10 @@ function revealQuizAnswer() {
 
                 if (
                     selectedQuizAnswer !== null &&
-                    index === selectedQuizAnswer &&
-                    index !== correctIndex
+                    index ===
+                    selectedQuizAnswer &&
+                    index !==
+                    quiz.correct
                 ) {
 
                     button.classList.add(
@@ -1243,20 +1372,15 @@ function revealQuizAnswer() {
         );
 
 
-        const correctIndex =
-            quiz.specialCorrectIndex ??
-            quiz.correct;
-
-
         const letter =
             String.fromCharCode(
-                65 + correctIndex
+                65 + quiz.correct
             );
 
 
         const answer =
             quiz.options[
-                correctIndex
+                quiz.correct
             ];
 
 
@@ -1271,7 +1395,8 @@ function revealQuizAnswer() {
     );
 
 
-    quizRevealed = true;
+    quizRevealed =
+        true;
 
 
     quizMainButton.textContent =
@@ -1293,7 +1418,9 @@ function updateCardCounter() {
     let total;
 
 
-    if (currentMode === "truth") {
+    if (
+        currentMode === "truth"
+    ) {
 
         used =
             usedTruthCards.length;
@@ -1316,12 +1443,16 @@ function updateCardCounter() {
         `CARTA ${used} / ${total}`;
 
 
-    if (used === total) {
+    if (
+        used === total
+    ) {
 
         drawButton.textContent =
             "MAZZO TERMINATO";
 
-    } else if (used === 0) {
+    } else if (
+        used === 0
+    ) {
 
         drawButton.textContent =
             "PESCA UNA CARTA";
@@ -1346,31 +1477,47 @@ function updateQuizCounter() {
 
 function updateHomeCounters() {
 
-    document
-        .getElementById(
+    const truthCounter =
+        document.getElementById(
             "truth-home-counter"
-        )
-        .textContent =
-        truthCards.length -
-        usedTruthCards.length;
+        );
 
-
-    document
-        .getElementById(
+    const dareCounter =
+        document.getElementById(
             "dare-home-counter"
-        )
-        .textContent =
-        dareCards.length -
-        usedDareCards.length;
+        );
 
-
-    document
-        .getElementById(
+    const quizCounter =
+        document.getElementById(
             "quiz-home-counter"
-        )
-        .textContent =
-        quizQuestions.length -
-        usedQuizQuestions.length;
+        );
+
+
+    if (truthCounter) {
+
+        truthCounter.textContent =
+            truthCards.length -
+            usedTruthCards.length;
+
+    }
+
+
+    if (dareCounter) {
+
+        dareCounter.textContent =
+            dareCards.length -
+            usedDareCards.length;
+
+    }
+
+
+    if (quizCounter) {
+
+        quizCounter.textContent =
+            quizQuestions.length -
+            usedQuizQuestions.length;
+
+    }
 
 }
 
@@ -1403,7 +1550,9 @@ function resetCurrentDeck() {
     }
 
 
-    if (currentMode === "truth") {
+    if (
+        currentMode === "truth"
+    ) {
 
         usedTruthCards = [];
 
@@ -1446,11 +1595,14 @@ function resetQuizDeck() {
 
     usedQuizQuestions = [];
 
-    currentQuizIndex = null;
+    currentQuizIndex =
+        null;
 
-    selectedQuizAnswer = null;
+    selectedQuizAnswer =
+        null;
 
-    quizRevealed = false;
+    quizRevealed =
+        false;
 
 
     resetQuizDisplay();
@@ -1468,20 +1620,25 @@ function resetQuizDeck() {
 
 function resetQuizDisplay() {
 
-    currentQuizIndex = null;
+    currentQuizIndex =
+        null;
 
-    selectedQuizAnswer = null;
+    selectedQuizAnswer =
+        null;
 
-    quizRevealed = false;
+    quizRevealed =
+        false;
 
 
     quizQuestion.textContent =
         "Premi il pulsante per iniziare.";
 
 
-    quizOptions.innerHTML = "";
+    quizOptions.innerHTML =
+        "";
 
-    quizResult.innerHTML = "";
+    quizResult.innerHTML =
+        "";
 
     quizResult.classList.remove(
         "visible"
@@ -1498,12 +1655,704 @@ function resetQuizDisplay() {
 
 
 /* ==================================================
+   APERTURA GIOCATORI
+================================================== */
+
+function openPlayersScreen() {
+
+    homeScreen.classList.remove(
+        "active"
+    );
+
+    gameScreen.classList.remove(
+        "active"
+    );
+
+    quizScreen.classList.remove(
+        "active"
+    );
+
+    playersScreen.classList.add(
+        "active"
+    );
+
+
+    renderPlayersEditor();
+
+}
+
+
+/* ==================================================
+   EDITOR GIOCATORI
+================================================== */
+
+function renderPlayersEditor() {
+
+    playersList.innerHTML =
+        "";
+
+    playersError.textContent =
+        "";
+
+
+    if (
+        players.length === 0
+    ) {
+
+        for (
+            let i = 0;
+            i < 4;
+            i++
+        ) {
+
+            createPlayerRow("");
+
+        }
+
+    } else {
+
+        players.forEach(
+            player => {
+
+                createPlayerRow(
+                    player.name,
+                    player.id
+                );
+
+            }
+        );
+
+    }
+
+
+    updateCelebrantSelect();
+
+}
+
+
+/* ==================================================
+   CREA RIGA GIOCATORE
+================================================== */
+
+function createPlayerRow(
+    name = "",
+    existingId = null
+) {
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+
+    row.className =
+        "player-row";
+
+
+    if (existingId) {
+
+        row.dataset.playerId =
+            existingId;
+
+    }
+
+
+    const input =
+        document.createElement(
+            "input"
+        );
+
+
+    input.type =
+        "text";
+
+    input.className =
+        "player-input";
+
+    input.placeholder =
+        "Nome giocatore";
+
+    input.value =
+        name;
+
+    input.maxLength =
+        20;
+
+
+    input.addEventListener(
+        "input",
+        updateCelebrantSelect
+    );
+
+
+    const removeButton =
+        document.createElement(
+            "button"
+        );
+
+
+    removeButton.className =
+        "remove-player-button";
+
+    removeButton.type =
+        "button";
+
+    removeButton.textContent =
+        "×";
+
+
+    removeButton.onclick =
+        function () {
+
+            row.remove();
+
+            updateCelebrantSelect();
+
+        };
+
+
+    row.appendChild(
+        input
+    );
+
+    row.appendChild(
+        removeButton
+    );
+
+
+    playersList.appendChild(
+        row
+    );
+
+}
+
+
+/* ==================================================
+   AGGIUNGI GIOCATORE
+================================================== */
+
+function addPlayerInput() {
+
+    createPlayerRow("");
+
+
+    const inputs =
+        playersList.querySelectorAll(
+            ".player-input"
+        );
+
+
+    const lastInput =
+        inputs[
+            inputs.length - 1
+        ];
+
+
+    if (lastInput) {
+
+        lastInput.focus();
+
+    }
+
+}
+
+
+/* ==================================================
+   SELECT FESTEGGIATO
+================================================== */
+
+function updateCelebrantSelect() {
+
+    if (!celebrantSelect) {
+        return;
+    }
+
+
+    const previousName =
+        celebrantSelect
+            .options[
+                celebrantSelect
+                    .selectedIndex
+            ]
+            ?.textContent;
+
+
+    celebrantSelect.innerHTML =
+        "";
+
+
+    const rows =
+        Array.from(
+            playersList.querySelectorAll(
+                ".player-row"
+            )
+        );
+
+
+    rows.forEach(
+        (row, index) => {
+
+            const input =
+                row.querySelector(
+                    ".player-input"
+                );
+
+
+            const name =
+                input.value.trim();
+
+
+            if (!name) {
+                return;
+            }
+
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                String(index);
+
+            option.textContent =
+                name;
+
+
+            celebrantSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    /*
+       Prima proviamo a mantenere
+       la selezione appena effettuata.
+    */
+
+    if (previousName) {
+
+        const matching =
+            Array.from(
+                celebrantSelect.options
+            )
+            .find(
+                option =>
+                    option.textContent ===
+                    previousName
+            );
+
+
+        if (matching) {
+
+            celebrantSelect.value =
+                matching.value;
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+       Altrimenti recuperiamo
+       il festeggiato salvato.
+    */
+
+    const oldCelebrant =
+        players.find(
+            player =>
+                player.id ===
+                celebrantId
+        );
+
+
+    if (oldCelebrant) {
+
+        const matching =
+            Array.from(
+                celebrantSelect.options
+            )
+            .find(
+                option =>
+                    option.textContent ===
+                    oldCelebrant.name
+            );
+
+
+        if (matching) {
+
+            celebrantSelect.value =
+                matching.value;
+
+        }
+
+    }
+
+}
+
+
+/* ==================================================
+   GENERA ID GIOCATORE
+================================================== */
+
+function generatePlayerId() {
+
+    return (
+        Date.now()
+            .toString(36) +
+        Math.random()
+            .toString(36)
+            .substring(2, 8)
+    );
+
+}
+
+
+/* ==================================================
+   SALVA GIOCATORI
+================================================== */
+
+function savePlayers() {
+
+    const rows =
+        Array.from(
+            playersList.querySelectorAll(
+                ".player-row"
+            )
+        );
+
+
+    const validRows =
+        rows.filter(
+            row => {
+
+                const input =
+                    row.querySelector(
+                        ".player-input"
+                    );
+
+
+                return (
+                    input.value
+                        .trim() !== ""
+                );
+
+            }
+        );
+
+
+    if (
+        validRows.length < 2
+    ) {
+
+        playersError.textContent =
+            "Servono almeno 2 giocatori.";
+
+        return;
+
+    }
+
+
+    const names =
+        validRows.map(
+            row =>
+                row
+                    .querySelector(
+                        ".player-input"
+                    )
+                    .value
+                    .trim()
+        );
+
+
+    const normalizedNames =
+        names.map(
+            name =>
+                name.toLowerCase()
+        );
+
+
+    if (
+        new Set(
+            normalizedNames
+        ).size !==
+        normalizedNames.length
+    ) {
+
+        playersError.textContent =
+            "Due giocatori hanno lo stesso nome.";
+
+        return;
+
+    }
+
+
+    const selectedName =
+        celebrantSelect
+            .options[
+                celebrantSelect
+                    .selectedIndex
+            ]
+            ?.textContent;
+
+
+    const oldPlayers =
+        [...players];
+
+
+    const newPlayers =
+        [];
+
+
+    validRows.forEach(
+        row => {
+
+            const name =
+                row
+                    .querySelector(
+                        ".player-input"
+                    )
+                    .value
+                    .trim();
+
+
+            const existingId =
+                row.dataset.playerId;
+
+
+            const oldPlayer =
+                oldPlayers.find(
+                    player =>
+                        player.id ===
+                        existingId
+                );
+
+
+            if (oldPlayer) {
+
+                newPlayers.push({
+
+                    ...oldPlayer,
+
+                    name: name
+
+                });
+
+            } else {
+
+                newPlayers.push({
+
+                    id:
+                        generatePlayerId(),
+
+                    name:
+                        name,
+
+                    turns:
+                        0,
+
+                    truths:
+                        0,
+
+                    dares:
+                        0,
+
+                    quizzes:
+                        0,
+
+                    quizCorrect:
+                        0
+
+                });
+
+            }
+
+        }
+    );
+
+
+    players =
+        newPlayers;
+
+
+    const selectedPlayer =
+        players.find(
+            player =>
+                player.name ===
+                selectedName
+        );
+
+
+    celebrantId =
+        selectedPlayer
+            ? selectedPlayer.id
+            : players[0].id;
+
+
+    playersError.textContent =
+        "";
+
+
+    saveGame();
+
+    updatePlayersHome();
+
+
+    playersScreen.classList.remove(
+        "active"
+    );
+
+
+    homeScreen.classList.add(
+        "active"
+    );
+
+}
+
+
+/* ==================================================
+   CONTATORE GIOCATORI HOME
+================================================== */
+
+function updatePlayersHome() {
+
+    if (!playersHomeCount) {
+        return;
+    }
+
+
+    const total =
+        players.length;
+
+
+    playersHomeCount.textContent =
+        total === 1
+            ? "1 GIOCATORE"
+            : `${total} GIOCATORI`;
+
+}
+
+
+/* ==================================================
+   FESTEGGIATO
+================================================== */
+
+function getCelebrant() {
+
+    return (
+        players.find(
+            player =>
+                player.id ===
+                celebrantId
+        ) || null
+    );
+
+}
+
+
+/* ==================================================
+   SELEZIONE RANDOM BILANCIATA
+================================================== */
+
+function selectNextPlayer() {
+
+    if (
+        players.length === 0
+    ) {
+
+        return null;
+
+    }
+
+
+    if (
+        players.length === 1
+    ) {
+
+        return players[0];
+
+    }
+
+
+    const minimumTurns =
+        Math.min(
+            ...players.map(
+                player =>
+                    player.turns || 0
+            )
+        );
+
+
+    let candidates =
+        players.filter(
+            player =>
+                (player.turns || 0) <=
+                minimumTurns + 1
+        );
+
+
+    /*
+       Evita la stessa persona
+       due volte consecutive.
+    */
+
+    const withoutPrevious =
+        candidates.filter(
+            player =>
+                player.id !==
+                lastSelectedPlayerId
+        );
+
+
+    if (
+        withoutPrevious.length > 0
+    ) {
+
+        candidates =
+            withoutPrevious;
+
+    }
+
+
+    const randomIndex =
+        Math.floor(
+            Math.random() *
+            candidates.length
+        );
+
+
+    const selected =
+        candidates[
+            randomIndex
+        ];
+
+
+    lastSelectedPlayerId =
+        selected.id;
+
+
+    saveGame();
+
+
+    return selected;
+
+}
+
+
+/* ==================================================
    VIBRAZIONE
 ================================================== */
 
 function vibrate() {
 
-    if (navigator.vibrate) {
+    if (
+        navigator.vibrate
+    ) {
 
         navigator.vibrate(40);
 
@@ -1517,3 +2366,21 @@ function vibrate() {
 ================================================== */
 
 loadGame();
+
+
+if (
+    players.length === 0 &&
+    playersScreen
+) {
+
+    homeScreen.classList.remove(
+        "active"
+    );
+
+    playersScreen.classList.add(
+        "active"
+    );
+
+    renderPlayersEditor();
+
+}
