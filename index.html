@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
 
@@ -17,179 +18,320 @@
 
 <body>
 
-    <main class="app">
+<main class="app">
 
-        <!-- HOME -->
-        <section id="home-screen" class="screen active">
+    <!-- =========================
+         HOME
+    ========================== -->
 
-            <div class="hero">
+    <section id="home-screen" class="screen active">
 
-                <div class="hero-photo">
-                    <img
-                        src="matteo-bara.PNG"
-                        alt="RIP principe di Rifredi"
-                </div>
+        <div class="hero">
 
-                <p class="eyebrow">
-                    THE LAST NIGHT
-                </p>
-
-                <h1>
-                    DESPEDIDA
-                </h1>
-
-                <p class="subtitle">
-                    Finché morte o Svizzera<br>
-                    non ci separi.
-                </p>
-
-            </div>
-
-            <div class="home-buttons">
-
-                <button
-                    class="main-button truth-button"
-                    onclick="startGame('truth')"
+            <div class="hero-photo">
+                <img
+                    src="matteo-bara.PNG"
+                    alt="RIP Principe di Rifredi"
                 >
-                    <span class="button-small">
-                        DIMMI LA
-                    </span>
-
-                    VERITÀ
-                </button>
-
-
-                <div class="divider">
-                    <span></span>
-                    <p>OPPURE</p>
-                    <span></span>
-                </div>
-
-
-                <button
-                    class="main-button dare-button"
-                    onclick="startGame('dare')"
-                >
-                    <span class="button-small">
-                        ACCETTA
-                    </span>
-
-                    OBBLIGO
-                </button>
-
             </div>
 
+            <p class="eyebrow">
+                THE LAST NIGHT
+            </p>
 
-            <div class="stats">
+            <h1>
+                DESPEDIDA
+            </h1>
 
-                <div>
-                    <span id="truth-home-counter">30</span>
-                    <small>VERITÀ</small>
-                </div>
+            <p class="subtitle">
+                Finché morte o Svizzera<br>
+                non ci separi.
+            </p>
 
-                <div class="stats-divider"></div>
-
-                <div>
-                    <span id="dare-home-counter">30</span>
-                    <small>OBBLIGHI</small>
-                </div>
-
-            </div>
-
-        </section>
+        </div>
 
 
-        <!-- GAME -->
-        <section id="game-screen" class="screen">
+        <div class="home-buttons">
 
-            <div class="game-header">
-
-                <button
-                    class="icon-button"
-                    onclick="goHome()"
-                    aria-label="Torna alla home"
-                >
-                    ←
-                </button>
-
-                <div id="game-title">
-                    VERITÀ
-                </div>
-
-                <button
-                    class="icon-button"
-                    onclick="resetCurrentDeck()"
-                    aria-label="Reset mazzo"
-                >
-                    ↻
-                </button>
-
-            </div>
-
-
-            <div class="card-area">
-
-                <div id="card" class="card">
-
-                    <div
-                        id="card-icon"
-                        class="card-icon"
-                    >
-                        ?
-                    </div>
-
-                    <div
-                        id="card-type"
-                        class="card-type"
-                    >
-                        VERITÀ
-                    </div>
-
-                    <div
-                        id="card-text"
-                        class="card-text"
-                    >
-                        Premi il pulsante per pescare.
-                    </div>
-
-                    <div
-                        id="card-number"
-                        class="card-number"
-                    >
-                        CARTA 0 / 30
-                    </div>
-
-                </div>
-
-            </div>
-
+            <!-- VERITÀ -->
 
             <button
-                id="draw-button"
-                class="draw-button"
-                onclick="drawCard()"
+                class="main-button truth-button"
+                onclick="startGame('truth')"
             >
-                PESCA UNA CARTA
+                <span class="button-small">
+                    DIMMI LA
+                </span>
+
+                VERITÀ
             </button>
 
 
-            <p class="deck-info">
-                Nessuna carta verrà ripetuta finché il mazzo non sarà terminato.
-            </p>
-
-        </section>
-
-
-        <footer>
-            <span>†</span>
-            RIP VITA ITALIANA
-            <span>†</span>
-        </footer>
-
-    </main>
+            <div class="divider">
+                <span></span>
+                <p>OPPURE</p>
+                <span></span>
+            </div>
 
 
-    <script src="script.js"></script>
+            <!-- OBBLIGO -->
+
+            <button
+                class="main-button dare-button"
+                onclick="startGame('dare')"
+            >
+                <span class="button-small">
+                    ACCETTA
+                </span>
+
+                OBBLIGO
+            </button>
+
+
+            <div class="divider">
+                <span></span>
+                <p>OPPURE DIMOSTRA DI AVERE UN CERVELLO</p>
+                <span></span>
+            </div>
+
+
+            <!-- QUIZ -->
+
+            <button
+                class="main-button quiz-button"
+                onclick="startGame('quiz')"
+            >
+                <span class="button-small">
+                    METTI ALLA PROVA
+                </span>
+
+                QUIZ
+            </button>
+
+        </div>
+
+
+        <!-- CONTATORI -->
+
+        <div class="stats">
+
+            <div>
+                <span id="truth-home-counter">30</span>
+                <small>VERITÀ</small>
+            </div>
+
+            <div class="stats-divider"></div>
+
+            <div>
+                <span id="dare-home-counter">30</span>
+                <small>OBBLIGHI</small>
+            </div>
+
+            <div class="stats-divider"></div>
+
+            <div>
+                <span id="quiz-home-counter">30</span>
+                <small>QUIZ</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         GAME VERITÀ / OBBLIGO
+    ========================== -->
+
+    <section id="game-screen" class="screen">
+
+        <div class="game-header">
+
+            <button
+                class="icon-button"
+                onclick="goHome()"
+                aria-label="Torna alla home"
+            >
+                ←
+            </button>
+
+            <div id="game-title">
+                VERITÀ
+            </div>
+
+            <button
+                class="icon-button"
+                onclick="resetCurrentDeck()"
+                aria-label="Reset mazzo"
+            >
+                ↻
+            </button>
+
+        </div>
+
+
+        <div class="card-area">
+
+            <div id="card" class="card">
+
+                <div
+                    id="card-icon"
+                    class="card-icon"
+                >
+                    ?
+                </div>
+
+                <div
+                    id="card-type"
+                    class="card-type"
+                >
+                    VERITÀ
+                </div>
+
+                <div
+                    id="card-text"
+                    class="card-text"
+                >
+                    Premi il pulsante per pescare.
+                </div>
+
+                <div
+                    id="card-number"
+                    class="card-number"
+                >
+                    CARTA 0 / 30
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="draw-button"
+            class="draw-button"
+            onclick="drawCard()"
+        >
+            PESCA UNA CARTA
+        </button>
+
+
+        <p class="deck-info">
+            Nessuna carta verrà ripetuta finché il mazzo non sarà terminato.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         QUIZ
+    ========================== -->
+
+    <section id="quiz-screen" class="screen">
+
+        <div class="game-header">
+
+            <button
+                class="icon-button"
+                onclick="goHome()"
+                aria-label="Torna alla home"
+            >
+                ←
+            </button>
+
+            <div>
+                QUIZ
+            </div>
+
+            <button
+                class="icon-button"
+                onclick="resetQuizDeck()"
+                aria-label="Reset quiz"
+            >
+                ↻
+            </button>
+
+        </div>
+
+
+        <div class="quiz-card">
+
+            <div class="quiz-icon">
+                🧠
+            </div>
+
+            <div
+                id="quiz-label"
+                class="card-type"
+            >
+                QUIZ
+            </div>
+
+            <div
+                id="quiz-question"
+                class="quiz-question"
+            >
+                Premi il pulsante per iniziare.
+            </div>
+
+
+            <div
+                id="quiz-options"
+                class="quiz-options"
+            >
+            </div>
+
+
+            <div
+                id="quiz-result"
+                class="quiz-result"
+            >
+            </div>
+
+
+            <div
+                id="quiz-number"
+                class="quiz-number"
+            >
+                QUIZ 0 / 30
+            </div>
+
+        </div>
+
+
+        <button
+            id="quiz-main-button"
+            class="draw-button quiz-draw-button"
+            onclick="handleQuizButton()"
+        >
+            PESCA UNA DOMANDA
+        </button>
+
+
+        <p class="deck-info">
+            Scegliete una risposta. Poi scoprite quanto siete ignoranti.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+        <span>†</span>
+        RIP VITA ITALIANA
+        <span>†</span>
+    </footer>
+
+</main>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
