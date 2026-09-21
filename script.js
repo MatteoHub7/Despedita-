@@ -1,13 +1,12 @@
-/* ==================================================
+/* =========================================================
    DESPEDIDA
-   30 VERITÀ + 30 OBBLIGHI + 30 QUIZ
-   + SISTEMA GIOCATORI
-================================================== */
+   SCRIPT.JS
+========================================================= */
 
 
-/* ==================================================
+/* =========================================================
    VERITÀ
-================================================== */
+========================================================= */
 
 const truthCards = [
 
@@ -74,9 +73,9 @@ const truthCards = [
 ];
 
 
-/* ==================================================
+/* =========================================================
    OBBLIGHI
-================================================== */
+========================================================= */
 
 const dareCards = [
 
@@ -143,9 +142,9 @@ const dareCards = [
 ];
 
 
-/* ==================================================
+/* =========================================================
    QUIZ
-================================================== */
+========================================================= */
 
 const quizQuestions = [
 
@@ -486,13 +485,8 @@ const quizQuestions = [
         correct: 1,
 
         explanation:
-            "Zelda. Il titolo, per una volta, collaborava."
+            "Zelda."
     },
-
-
-    /* =========================
-       QUIZ DEL GRUPPO
-    ========================= */
 
     {
         question:
@@ -662,9 +656,9 @@ const quizQuestions = [
 ];
 
 
-/* ==================================================
-   STATO DEL GIOCO
-================================================== */
+/* =========================================================
+   STATO GENERALE
+========================================================= */
 
 let currentMode = null;
 
@@ -677,9 +671,9 @@ let selectedQuizAnswer = null;
 let quizRevealed = false;
 
 
-/* ==================================================
+/* =========================
    GIOCATORI
-================================================== */
+========================= */
 
 let players = [];
 
@@ -688,107 +682,270 @@ let celebrantId = null;
 let lastSelectedPlayerId = null;
 
 
-/* ==================================================
-   ELEMENTI HTML
-================================================== */
+/* =========================
+   EVENTO ATTIVO
+========================= */
+
+let activeEventPlayerId = null;
+
+let eventAwaitingCompletion = false;
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+/*
+    TEQUILA:
+    ogni 30 minuti
+*/
+
+const TEQUILA_INTERVAL =
+    30 * 60 * 1000;
+
+
+/*
+    EVENTO:
+    casuale tra 8 e 18 minuti
+*/
+
+const EVENT_MIN =
+    8 * 60 * 1000;
+
+const EVENT_MAX =
+    18 * 60 * 1000;
+
+
+let nightRunning = false;
+
+let tequilaTarget = null;
+
+let eventTarget = null;
+
+let tequilaAlertOpen = false;
+
+let eventAlertOpen = false;
+
+
+/* =========================================================
+   DOM
+========================================================= */
 
 const homeScreen =
-    document.getElementById("home-screen");
+    document.getElementById(
+        "home-screen"
+    );
 
 const gameScreen =
-    document.getElementById("game-screen");
+    document.getElementById(
+        "game-screen"
+    );
 
 const quizScreen =
-    document.getElementById("quiz-screen");
+    document.getElementById(
+        "quiz-screen"
+    );
 
 const playersScreen =
-    document.getElementById("players-screen");
+    document.getElementById(
+        "players-screen"
+    );
+
+
+/* GAME */
 
 const card =
-    document.getElementById("card");
+    document.getElementById(
+        "card"
+    );
 
 const cardType =
-    document.getElementById("card-type");
+    document.getElementById(
+        "card-type"
+    );
 
 const cardText =
-    document.getElementById("card-text");
+    document.getElementById(
+        "card-text"
+    );
 
 const cardNumber =
-    document.getElementById("card-number");
+    document.getElementById(
+        "card-number"
+    );
 
 const cardIcon =
-    document.getElementById("card-icon");
+    document.getElementById(
+        "card-icon"
+    );
 
 const gameTitle =
-    document.getElementById("game-title");
+    document.getElementById(
+        "game-title"
+    );
 
 const drawButton =
-    document.getElementById("draw-button");
+    document.getElementById(
+        "draw-button"
+    );
+
+
+/* QUIZ */
 
 const quizQuestion =
-    document.getElementById("quiz-question");
+    document.getElementById(
+        "quiz-question"
+    );
 
 const quizOptions =
-    document.getElementById("quiz-options");
+    document.getElementById(
+        "quiz-options"
+    );
 
 const quizResult =
-    document.getElementById("quiz-result");
+    document.getElementById(
+        "quiz-result"
+    );
 
 const quizNumber =
-    document.getElementById("quiz-number");
+    document.getElementById(
+        "quiz-number"
+    );
 
 const quizMainButton =
-    document.getElementById("quiz-main-button");
+    document.getElementById(
+        "quiz-main-button"
+    );
 
 const quizCard =
-    document.querySelector(".quiz-card");
+    document.querySelector(
+        ".quiz-card"
+    );
+
+
+/* PLAYERS */
 
 const playersList =
-    document.getElementById("players-list");
+    document.getElementById(
+        "players-list"
+    );
 
 const celebrantSelect =
-    document.getElementById("celebrant-select");
+    document.getElementById(
+        "celebrant-select"
+    );
 
 const playersError =
-    document.getElementById("players-error");
+    document.getElementById(
+        "players-error"
+    );
 
 const playersHomeCount =
-    document.getElementById("players-home-count");
+    document.getElementById(
+        "players-home-count"
+    );
 
 
-/* ==================================================
-   LOCAL STORAGE
-================================================== */
+/* TIMER */
 
-function loadGame() {
+const tequilaTimer =
+    document.getElementById(
+        "tequila-timer"
+    );
 
-    try {
+const eventTimer =
+    document.getElementById(
+        "event-timer"
+    );
+
+const nightButton =
+    document.getElementById(
+        "night-button"
+    );
+
+
+/* OVERLAY */
+
+const eventOverlay =
+    document.getElementById(
+        "event-overlay"
+    );
+
+const tequilaOverlay =
+    document.getElementById(
+        "tequila-overlay"
+    );
+
+const eventPlayerName =
+    document.getElementById(
+        "event-player-name"
+    );
+
+
+/* PLAYER BANNERS */
+
+const activePlayerBanner =
+    document.getElementById(
+        "active-player-banner"
+    );
+
+const quizPlayerBanner =
+    document.getElementById(
+        "quiz-player-banner"
+    );
+
+
+/* =========================================================
+   CARICAMENTO
+========================================================= */
+
+function loadGame()
+{
+
+    try
+    {
 
         usedTruthCards =
             JSON.parse(
-                localStorage.getItem("despedida_truth")
+                localStorage.getItem(
+                    "despedida_truth"
+                )
             ) || [];
+
 
         usedDareCards =
             JSON.parse(
-                localStorage.getItem("despedida_dare")
+                localStorage.getItem(
+                    "despedida_dare"
+                )
             ) || [];
+
 
         usedQuizQuestions =
             JSON.parse(
-                localStorage.getItem("despedida_quiz")
+                localStorage.getItem(
+                    "despedida_quiz"
+                )
             ) || [];
+
 
         players =
             JSON.parse(
-                localStorage.getItem("despedida_players")
+                localStorage.getItem(
+                    "despedida_players"
+                )
             ) || [];
 
-    } catch {
+    }
+    catch (error)
+    {
 
         usedTruthCards = [];
+
         usedDareCards = [];
+
         usedQuizQuestions = [];
+
         players = [];
 
     }
@@ -806,44 +963,123 @@ function loadGame() {
         );
 
 
+    nightRunning =
+        localStorage.getItem(
+            "despedida_night_running"
+        ) === "true";
+
+
+    tequilaTarget =
+        Number(
+            localStorage.getItem(
+                "despedida_tequila_target"
+            )
+        ) || null;
+
+
+    eventTarget =
+        Number(
+            localStorage.getItem(
+                "despedida_event_target"
+            )
+        ) || null;
+
+
+    /*
+        Se la pagina viene aggiornata
+        mentre la serata è attiva
+        ma manca uno dei timestamp,
+        lo ricreiamo.
+    */
+
+    if (nightRunning)
+    {
+
+        const now =
+            Date.now();
+
+
+        if (!tequilaTarget)
+        {
+
+            tequilaTarget =
+                now +
+                TEQUILA_INTERVAL;
+
+        }
+
+
+        if (!eventTarget)
+        {
+
+            eventTarget =
+                now +
+                randomEventDelay();
+
+        }
+
+    }
+
+
     updateHomeCounters();
 
     updatePlayersHome();
 
+    updateNightUI();
+
 }
 
 
-function saveGame() {
+/* =========================================================
+   SALVATAGGIO
+========================================================= */
+
+function saveGame()
+{
 
     localStorage.setItem(
         "despedida_truth",
-        JSON.stringify(usedTruthCards)
+        JSON.stringify(
+            usedTruthCards
+        )
     );
+
 
     localStorage.setItem(
         "despedida_dare",
-        JSON.stringify(usedDareCards)
+        JSON.stringify(
+            usedDareCards
+        )
     );
+
 
     localStorage.setItem(
         "despedida_quiz",
-        JSON.stringify(usedQuizQuestions)
+        JSON.stringify(
+            usedQuizQuestions
+        )
     );
+
 
     localStorage.setItem(
         "despedida_players",
-        JSON.stringify(players)
+        JSON.stringify(
+            players
+        )
     );
 
 
-    if (celebrantId) {
+    if (celebrantId)
+    {
 
         localStorage.setItem(
             "despedida_celebrant",
             celebrantId
         );
 
-    } else {
+    }
+    else
+    {
 
         localStorage.removeItem(
             "despedida_celebrant"
@@ -852,7 +1088,8 @@ function saveGame() {
     }
 
 
-    if (lastSelectedPlayerId) {
+    if (lastSelectedPlayerId)
+    {
 
         localStorage.setItem(
             "despedida_last_player",
@@ -860,66 +1097,201 @@ function saveGame() {
         );
 
     }
+    else
+    {
+
+        localStorage.removeItem(
+            "despedida_last_player"
+        );
+
+    }
+
+
+    localStorage.setItem(
+        "despedida_night_running",
+        String(
+            nightRunning
+        )
+    );
+
+
+    if (tequilaTarget)
+    {
+
+        localStorage.setItem(
+            "despedida_tequila_target",
+            String(
+                tequilaTarget
+            )
+        );
+
+    }
+    else
+    {
+
+        localStorage.removeItem(
+            "despedida_tequila_target"
+        );
+
+    }
+
+
+    if (eventTarget)
+    {
+
+        localStorage.setItem(
+            "despedida_event_target",
+            String(
+                eventTarget
+            )
+        );
+
+    }
+    else
+    {
+
+        localStorage.removeItem(
+            "despedida_event_target"
+        );
+
+    }
 
 }
 
 
-/* ==================================================
-   HOME / MODALITÀ
-================================================== */
+/* =========================================================
+   SCREEN MANAGEMENT
+========================================================= */
 
-function startGame(mode) {
+function hideScreens()
+{
+
+    homeScreen.classList.remove(
+        "active"
+    );
+
+    gameScreen.classList.remove(
+        "active"
+    );
+
+    quizScreen.classList.remove(
+        "active"
+    );
+
+    playersScreen.classList.remove(
+        "active"
+    );
+
+}
+
+
+function goHome()
+{
+
+    hideScreens();
+
+
+    homeScreen.classList.add(
+        "active"
+    );
+
+
+    currentMode = null;
+
+
+    updateHomeCounters();
+
+    updatePlayersHome();
+
+}
+
+
+/* =========================================================
+   AVVIO VERITÀ / OBBLIGO / QUIZ
+========================================================= */
+
+function startGame(mode)
+{
 
     currentMode = mode;
 
-    homeScreen.classList.remove("active");
-    gameScreen.classList.remove("active");
-    quizScreen.classList.remove("active");
 
-    if (playersScreen) {
-        playersScreen.classList.remove("active");
-    }
+    hideScreens();
 
 
-    if (mode === "quiz") {
+    /*
+        QUIZ
+    */
 
-        quizScreen.classList.add("active");
+    if (mode === "quiz")
+    {
+
+        quizScreen.classList.add(
+            "active"
+        );
+
 
         resetQuizDisplay();
+
+
+        showActivePlayer(
+            quizPlayerBanner
+        );
+
 
         return;
 
     }
 
 
-    gameScreen.classList.add("active");
+    /*
+        VERITÀ / OBBLIGO
+    */
+
+    gameScreen.classList.add(
+        "active"
+    );
 
 
-    if (mode === "truth") {
+    showActivePlayer(
+        activePlayerBanner
+    );
+
+
+    if (mode === "truth")
+    {
 
         gameTitle.textContent =
             "VERITÀ";
 
+
         cardType.textContent =
             "VERITÀ";
 
+
         cardIcon.textContent =
             "†";
+
 
         drawButton.classList.remove(
             "dare-mode"
         );
 
-    } else {
+    }
+    else
+    {
 
         gameTitle.textContent =
             "OBBLIGO";
 
+
         cardType.textContent =
             "OBBLIGO";
 
+
         cardIcon.textContent =
             "⚰";
+
 
         drawButton.classList.add(
             "dare-mode"
@@ -931,101 +1303,114 @@ function startGame(mode) {
     cardText.textContent =
         "Premi il pulsante per pescare.";
 
+
     updateCardCounter();
 
 }
 
 
-function goHome() {
+/* =========================================================
+   PESCA CARTA
+========================================================= */
 
-    gameScreen.classList.remove(
-        "active"
-    );
-
-    quizScreen.classList.remove(
-        "active"
-    );
-
-    if (playersScreen) {
-
-        playersScreen.classList.remove(
-            "active"
-        );
-
-    }
-
-    homeScreen.classList.add(
-        "active"
-    );
-
-    currentMode = null;
-
-    updateHomeCounters();
-
-    updatePlayersHome();
-
-}
-
-
-/* ==================================================
-   VERITÀ / OBBLIGO
-================================================== */
-
-function drawCard() {
+function drawCard()
+{
 
     let deck;
+
     let used;
 
 
-    if (currentMode === "truth") {
+    if (currentMode === "truth")
+    {
 
-        deck = truthCards;
-        used = usedTruthCards;
+        deck =
+            truthCards;
 
-    } else {
+        used =
+            usedTruthCards;
 
-        deck = dareCards;
-        used = usedDareCards;
+    }
+    else
+    {
+
+        deck =
+            dareCards;
+
+        used =
+            usedDareCards;
 
     }
 
 
-    if (used.length >= deck.length) {
+    /*
+        MAZZO FINITO
+    */
 
-        const reset =
+    if (
+        used.length >=
+        deck.length
+    )
+    {
+
+        const restart =
             confirm(
                 "Il mazzo è terminato. Vuoi ricominciarlo?"
             );
 
-        if (reset) {
+
+        if (restart)
+        {
 
             resetCurrentDeck();
 
         }
+
 
         return;
 
     }
 
 
-    const availableCards =
-        deck
-            .map((item, index) => index)
-            .filter(
-                index =>
-                    !used.includes(index)
-            );
+    /*
+        CARTE DISPONIBILI
+    */
 
+    const available = [];
+
+
+    for (
+        let i = 0;
+        i < deck.length;
+        i++
+    )
+    {
+
+        if (
+            !used.includes(i)
+        )
+        {
+
+            available.push(i);
+
+        }
+
+    }
+
+
+    /*
+        PESCA RANDOM
+    */
 
     const randomPosition =
         Math.floor(
             Math.random() *
-            availableCards.length
+            available.length
         );
 
 
     const cardIndex =
-        availableCards[
+        available[
             randomPosition
         ];
 
@@ -1035,15 +1420,23 @@ function drawCard() {
     );
 
 
+    /*
+        MOSTRA CARTA
+    */
+
     cardText.textContent =
-        deck[cardIndex];
+        deck[
+            cardIndex
+        ];
 
 
     card.classList.remove(
         "animate"
     );
 
+
     void card.offsetWidth;
+
 
     card.classList.add(
         "animate"
@@ -1051,6 +1444,18 @@ function drawCard() {
 
 
     vibrate();
+
+
+    /*
+        Se questa carta deriva
+        da un evento automatico,
+        il turno è concluso.
+    */
+
+    completeEventTurn(
+        currentMode
+    );
+
 
     saveGame();
 
@@ -1061,20 +1466,180 @@ function drawCard() {
 }
 
 
-/* ==================================================
-   QUIZ
-================================================== */
+/* =========================================================
+   CONTATORE CARTE
+========================================================= */
 
-function handleQuizButton() {
+function updateCardCounter()
+{
+
+    let used;
+
+    let total;
+
+
+    if (
+        currentMode ===
+        "truth"
+    )
+    {
+
+        used =
+            usedTruthCards.length;
+
+        total =
+            truthCards.length;
+
+    }
+    else
+    {
+
+        used =
+            usedDareCards.length;
+
+        total =
+            dareCards.length;
+
+    }
+
+
+    cardNumber.textContent =
+        "CARTA " +
+        used +
+        " / " +
+        total;
+
+
+    if (
+        used === total
+    )
+    {
+
+        drawButton.textContent =
+            "MAZZO TERMINATO";
+
+    }
+    else if (
+        used === 0
+    )
+    {
+
+        drawButton.textContent =
+            "PESCA UNA CARTA";
+
+    }
+    else
+    {
+
+        drawButton.textContent =
+            "PESCA ANCORA";
+
+    }
+
+}
+
+
+/* =========================================================
+   RESET VERITÀ / OBBLIGO
+========================================================= */
+
+function resetCurrentDeck()
+{
+
+    if (!currentMode)
+    {
+
+        return;
+
+    }
+
+
+    let name;
+
+
+    if (
+        currentMode ===
+        "truth"
+    )
+    {
+
+        name =
+            "delle Verità";
+
+    }
+    else
+    {
+
+        name =
+            "degli Obblighi";
+
+    }
+
+
+    const reset =
+        confirm(
+            "Vuoi davvero resettare il mazzo " +
+            name +
+            "?"
+        );
+
+
+    if (!reset)
+    {
+
+        return;
+
+    }
+
+
+    if (
+        currentMode ===
+        "truth"
+    )
+    {
+
+        usedTruthCards = [];
+
+    }
+    else
+    {
+
+        usedDareCards = [];
+
+    }
+
+
+    cardText.textContent =
+        "Mazzo resettato. Il disastro può ricominciare.";
+
+
+    saveGame();
+
+    updateCardCounter();
+
+    updateHomeCounters();
+
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+function handleQuizButton()
+{
 
     if (
         currentQuizIndex === null ||
         quizRevealed
-    ) {
+    )
+    {
 
         drawQuizQuestion();
 
-    } else {
+    }
+    else
+    {
 
         revealQuizAnswer();
 
@@ -1083,42 +1648,75 @@ function handleQuizButton() {
 }
 
 
-function drawQuizQuestion() {
+/* =========================================================
+   PESCA QUIZ
+========================================================= */
+
+function drawQuizQuestion()
+{
+
+    /*
+        QUIZ TERMINATI
+    */
 
     if (
         usedQuizQuestions.length >=
         quizQuestions.length
-    ) {
+    )
+    {
 
-        const reset =
+        const restart =
             confirm(
                 "Hai terminato tutte le domande. Vuoi ricominciare?"
             );
 
-        if (reset) {
+
+        if (restart)
+        {
 
             resetQuizDeck();
 
         }
+
 
         return;
 
     }
 
 
-    const available =
-        quizQuestions
-            .map(
-                (item, index) =>
-                    index
+    /*
+        DOMANDE DISPONIBILI
+    */
+
+    const available = [];
+
+
+    for (
+        let i = 0;
+        i < quizQuestions.length;
+        i++
+    )
+    {
+
+        if (
+            !usedQuizQuestions.includes(
+                i
             )
-            .filter(
-                index =>
-                    !usedQuizQuestions.includes(
-                        index
-                    )
+        )
+        {
+
+            available.push(
+                i
             );
 
+        }
+
+    }
+
+
+    /*
+        RANDOM
+    */
 
     const randomPosition =
         Math.floor(
@@ -1141,6 +1739,7 @@ function drawQuizQuestion() {
     selectedQuizAnswer =
         null;
 
+
     quizRevealed =
         false;
 
@@ -1158,20 +1757,32 @@ function drawQuizQuestion() {
     quizOptions.innerHTML =
         "";
 
+
     quizResult.innerHTML =
         "";
+
 
     quizResult.classList.remove(
         "visible"
     );
 
 
+    /*
+        DOMANDA CON RISPOSTE
+    */
+
     if (
-        quiz.correct !== "open"
-    ) {
+        quiz.correct !==
+        "open"
+    )
+    {
 
         quiz.options.forEach(
-            (option, index) => {
+            function (
+                option,
+                index
+            )
+            {
 
                 const button =
                     document.createElement(
@@ -1179,22 +1790,38 @@ function drawQuizQuestion() {
                     );
 
 
+                button.type =
+                    "button";
+
+
                 button.className =
                     "quiz-option";
 
 
-                button.textContent =
-                    `${String.fromCharCode(
+                const letter =
+                    String.fromCharCode(
                         65 + index
-                    )}) ${option}`;
+                    );
 
 
-                button.onclick =
-                    () =>
+                button.textContent =
+                    letter +
+                    ") " +
+                    option;
+
+
+                button.addEventListener(
+                    "click",
+                    function ()
+                    {
+
                         selectQuizAnswer(
                             index,
                             button
                         );
+
+                    }
+                );
 
 
                 quizOptions.appendChild(
@@ -1218,7 +1845,9 @@ function drawQuizQuestion() {
         "animate"
     );
 
+
     void quizCard.offsetWidth;
+
 
     quizCard.classList.add(
         "animate"
@@ -1227,6 +1856,7 @@ function drawQuizQuestion() {
 
     vibrate();
 
+
     saveGame();
 
     updateHomeCounters();
@@ -1234,13 +1864,21 @@ function drawQuizQuestion() {
 }
 
 
+/* =========================================================
+   SELEZIONE RISPOSTA
+========================================================= */
+
 function selectQuizAnswer(
     index,
     button
-) {
+)
+{
 
-    if (quizRevealed) {
+    if (quizRevealed)
+    {
+
         return;
+
     }
 
 
@@ -1248,17 +1886,22 @@ function selectQuizAnswer(
         index;
 
 
-    document
-        .querySelectorAll(
+    const buttons =
+        document.querySelectorAll(
             ".quiz-option"
-        )
-        .forEach(option => {
+        );
+
+
+    buttons.forEach(
+        function (option)
+        {
 
             option.classList.remove(
                 "selected"
             );
 
-        });
+        }
+    );
 
 
     button.classList.add(
@@ -1268,12 +1911,21 @@ function selectQuizAnswer(
 }
 
 
-function revealQuizAnswer() {
+/* =========================================================
+   MOSTRA RISPOSTA QUIZ
+========================================================= */
+
+function revealQuizAnswer()
+{
 
     if (
-        currentQuizIndex === null
-    ) {
+        currentQuizIndex ===
+        null
+    )
+    {
+
         return;
+
     }
 
 
@@ -1283,24 +1935,43 @@ function revealQuizAnswer() {
         ];
 
 
+    /*
+        DOMANDA APERTA
+    */
+
     if (
-        quiz.correct === "open"
-    ) {
+        quiz.correct ===
+        "open"
+    )
+    {
 
         quizResult.innerHTML =
-            `<strong>VERDETTO</strong><br>${quiz.explanation}`;
+            "<strong>VERDETTO</strong><br>" +
+            quiz.explanation;
+
 
         quizResult.classList.add(
             "visible"
         );
 
+
         quizRevealed =
             true;
+
 
         quizMainButton.textContent =
             "PROSSIMA DOMANDA";
 
+
+        completeEventTurn(
+            "quiz"
+        );
+
+
+        saveGame();
+
         vibrate();
+
 
         return;
 
@@ -1313,15 +1984,22 @@ function revealQuizAnswer() {
         );
 
 
+    /*
+        DOMANDA SENZA RISPOSTA
+        CORRETTA DEFINITA
+    */
+
     if (
-        quiz.correct === null
-    ) {
+        quiz.correct ===
+        null
+    )
+    {
 
         buttons.forEach(
-            button => {
+            function (button)
+            {
 
                 button.classList.add(
-                    "wrong",
                     "disabled"
                 );
 
@@ -1330,12 +2008,19 @@ function revealQuizAnswer() {
 
 
         quizResult.innerHTML =
-            `<strong>NESSUNA DELLE PRECEDENTI</strong><br>${quiz.explanation}`;
+            "<strong>VERDETTO</strong><br>" +
+            quiz.explanation;
 
-    } else {
+    }
+    else
+    {
 
         buttons.forEach(
-            (button, index) => {
+            function (
+                button,
+                index
+            )
+            {
 
                 button.classList.add(
                     "disabled"
@@ -1345,7 +2030,8 @@ function revealQuizAnswer() {
                 if (
                     index ===
                     quiz.correct
-                ) {
+                )
+                {
 
                     button.classList.add(
                         "correct"
@@ -1360,7 +2046,8 @@ function revealQuizAnswer() {
                     selectedQuizAnswer &&
                     index !==
                     quiz.correct
-                ) {
+                )
+                {
 
                     button.classList.add(
                         "wrong"
@@ -1372,9 +2059,49 @@ function revealQuizAnswer() {
         );
 
 
+        /*
+            RISPOSTA CORRETTA
+        */
+
+        if (
+            selectedQuizAnswer ===
+            quiz.correct &&
+            activeEventPlayerId
+        )
+        {
+
+            const player =
+                players.find(
+                    function (item)
+                    {
+
+                        return (
+                            item.id ===
+                            activeEventPlayerId
+                        );
+
+                    }
+                );
+
+
+            if (player)
+            {
+
+                player.quizCorrect =
+                    (
+                        player.quizCorrect ||
+                        0
+                    ) + 1;
+
+            }
+
+        }
+
+
         const letter =
             String.fromCharCode(
-                65 + quiz.correct
+                65 +
+                quiz.correct
             );
 
 
@@ -1385,7 +2112,12 @@ function revealQuizAnswer() {
 
 
         quizResult.innerHTML =
-            `<strong>${letter}) ${answer}</strong><br>${quiz.explanation}`;
+            "<strong>" +
+            letter +
+            ") " +
+            answer +
+            "</strong><br>" +
+            quiz.explanation;
 
     }
 
@@ -1403,203 +2135,71 @@ function revealQuizAnswer() {
         "PROSSIMA DOMANDA";
 
 
+    /*
+        Ora il turno evento
+        può essere considerato
+        completato.
+    */
+
+    completeEventTurn(
+        "quiz"
+    );
+
+
+    saveGame();
+
     vibrate();
 
 }
 
 
-/* ==================================================
-   CONTATORI
-================================================== */
+/* =========================================================
+   QUIZ COUNTER
+========================================================= */
 
-function updateCardCounter() {
-
-    let used;
-    let total;
-
-
-    if (
-        currentMode === "truth"
-    ) {
-
-        used =
-            usedTruthCards.length;
-
-        total =
-            truthCards.length;
-
-    } else {
-
-        used =
-            usedDareCards.length;
-
-        total =
-            dareCards.length;
-
-    }
-
-
-    cardNumber.textContent =
-        `CARTA ${used} / ${total}`;
-
-
-    if (
-        used === total
-    ) {
-
-        drawButton.textContent =
-            "MAZZO TERMINATO";
-
-    } else if (
-        used === 0
-    ) {
-
-        drawButton.textContent =
-            "PESCA UNA CARTA";
-
-    } else {
-
-        drawButton.textContent =
-            "PESCA ANCORA";
-
-    }
-
-}
-
-
-function updateQuizCounter() {
+function updateQuizCounter()
+{
 
     quizNumber.textContent =
-        `QUIZ ${usedQuizQuestions.length} / ${quizQuestions.length}`;
+        "QUIZ " +
+        usedQuizQuestions.length +
+        " / " +
+        quizQuestions.length;
 
 }
 
 
-function updateHomeCounters() {
-
-    const truthCounter =
-        document.getElementById(
-            "truth-home-counter"
-        );
-
-    const dareCounter =
-        document.getElementById(
-            "dare-home-counter"
-        );
-
-    const quizCounter =
-        document.getElementById(
-            "quiz-home-counter"
-        );
-
-
-    if (truthCounter) {
-
-        truthCounter.textContent =
-            truthCards.length -
-            usedTruthCards.length;
-
-    }
-
-
-    if (dareCounter) {
-
-        dareCounter.textContent =
-            dareCards.length -
-            usedDareCards.length;
-
-    }
-
-
-    if (quizCounter) {
-
-        quizCounter.textContent =
-            quizQuestions.length -
-            usedQuizQuestions.length;
-
-    }
-
-}
-
-
-/* ==================================================
-   RESET VERITÀ / OBBLIGO
-================================================== */
-
-function resetCurrentDeck() {
-
-    if (!currentMode) {
-        return;
-    }
-
-
-    const deckName =
-        currentMode === "truth"
-            ? "delle Verità"
-            : "degli Obblighi";
-
-
-    const confirmation =
-        confirm(
-            `Vuoi davvero resettare il mazzo ${deckName}?`
-        );
-
-
-    if (!confirmation) {
-        return;
-    }
-
-
-    if (
-        currentMode === "truth"
-    ) {
-
-        usedTruthCards = [];
-
-    } else {
-
-        usedDareCards = [];
-
-    }
-
-
-    cardText.textContent =
-        "Mazzo resettato. Il disastro può ricominciare.";
-
-
-    saveGame();
-
-    updateCardCounter();
-
-    updateHomeCounters();
-
-}
-
-
-/* ==================================================
+/* =========================================================
    RESET QUIZ
-================================================== */
+========================================================= */
 
-function resetQuizDeck() {
+function resetQuizDeck()
+{
 
-    const confirmation =
+    const reset =
         confirm(
             "Vuoi davvero resettare tutte le domande del Quiz?"
         );
 
 
-    if (!confirmation) {
+    if (!reset)
+    {
+
         return;
+
     }
 
 
     usedQuizQuestions = [];
 
+
     currentQuizIndex =
         null;
 
+
     selectedQuizAnswer =
         null;
+
 
     quizRevealed =
         false;
@@ -1607,6 +2207,7 @@ function resetQuizDeck() {
 
     resetQuizDisplay();
 
+
     saveGame();
 
     updateHomeCounters();
@@ -1614,17 +2215,20 @@ function resetQuizDeck() {
 }
 
 
-/* ==================================================
+/* =========================================================
    RESET DISPLAY QUIZ
-================================================== */
+========================================================= */
 
-function resetQuizDisplay() {
+function resetQuizDisplay()
+{
 
     currentQuizIndex =
         null;
 
+
     selectedQuizAnswer =
         null;
+
 
     quizRevealed =
         false;
@@ -1637,8 +2241,10 @@ function resetQuizDisplay() {
     quizOptions.innerHTML =
         "";
 
+
     quizResult.innerHTML =
         "";
+
 
     quizResult.classList.remove(
         "visible"
@@ -1654,23 +2260,45 @@ function resetQuizDisplay() {
 }
 
 
-/* ==================================================
-   APERTURA GIOCATORI
-================================================== */
+/* =========================================================
+   HOME COUNTERS
+========================================================= */
 
-function openPlayersScreen() {
+function updateHomeCounters()
+{
 
-    homeScreen.classList.remove(
-        "active"
-    );
+    document.getElementById(
+        "truth-home-counter"
+    ).textContent =
+        truthCards.length -
+        usedTruthCards.length;
 
-    gameScreen.classList.remove(
-        "active"
-    );
 
-    quizScreen.classList.remove(
-        "active"
-    );
+    document.getElementById(
+        "dare-home-counter"
+    ).textContent =
+        dareCards.length -
+        usedDareCards.length;
+
+
+    document.getElementById(
+        "quiz-home-counter"
+    ).textContent =
+        quizQuestions.length -
+        usedQuizQuestions.length;
+
+}
+
+
+/* =========================================================
+   GIOCATORI
+========================================================= */
+
+function openPlayersScreen()
+{
+
+    hideScreens();
+
 
     playersScreen.classList.add(
         "active"
@@ -1682,37 +2310,48 @@ function openPlayersScreen() {
 }
 
 
-/* ==================================================
-   EDITOR GIOCATORI
-================================================== */
+/* =========================================================
+   RENDER GIOCATORI
+========================================================= */
 
-function renderPlayersEditor() {
+function renderPlayersEditor()
+{
 
     playersList.innerHTML =
         "";
+
 
     playersError.textContent =
         "";
 
 
+    /*
+        PRIMO AVVIO:
+        due campi.
+    */
+
     if (
-        players.length === 0
-    ) {
+        players.length ===
+        0
+    )
+    {
 
-        for (
-            let i = 0;
-            i < 4;
-            i++
-        ) {
+        createPlayerRow(
+            ""
+        );
 
-            createPlayerRow("");
 
-        }
+        createPlayerRow(
+            ""
+        );
 
-    } else {
+    }
+    else
+    {
 
         players.forEach(
-            player => {
+            function (player)
+            {
 
                 createPlayerRow(
                     player.name,
@@ -1730,14 +2369,15 @@ function renderPlayersEditor() {
 }
 
 
-/* ==================================================
+/* =========================================================
    CREA RIGA GIOCATORE
-================================================== */
+========================================================= */
 
 function createPlayerRow(
     name = "",
     existingId = null
-) {
+)
+{
 
     const row =
         document.createElement(
@@ -1749,13 +2389,18 @@ function createPlayerRow(
         "player-row";
 
 
-    if (existingId) {
+    if (existingId)
+    {
 
         row.dataset.playerId =
             existingId;
 
     }
 
+
+    /*
+        INPUT
+    */
 
     const input =
         document.createElement(
@@ -1766,17 +2411,25 @@ function createPlayerRow(
     input.type =
         "text";
 
+
     input.className =
         "player-input";
+
 
     input.placeholder =
         "Nome giocatore";
 
+
     input.value =
         name;
 
+
     input.maxLength =
         20;
+
+
+    input.autocomplete =
+        "off";
 
 
     input.addEventListener(
@@ -1785,35 +2438,45 @@ function createPlayerRow(
     );
 
 
+    /*
+        REMOVE
+    */
+
     const removeButton =
         document.createElement(
             "button"
         );
 
 
+    removeButton.type =
+        "button";
+
+
     removeButton.className =
         "remove-player-button";
 
-    removeButton.type =
-        "button";
 
     removeButton.textContent =
         "×";
 
 
-    removeButton.onclick =
-        function () {
+    removeButton.addEventListener(
+        "click",
+        function ()
+        {
 
             row.remove();
 
             updateCelebrantSelect();
 
-        };
+        }
+    );
 
 
     row.appendChild(
         input
     );
+
 
     row.appendChild(
         removeButton
@@ -1824,57 +2487,105 @@ function createPlayerRow(
         row
     );
 
+
+    return row;
+
 }
 
 
-/* ==================================================
+/* =========================================================
    AGGIUNGI GIOCATORE
-================================================== */
+========================================================= */
 
-function addPlayerInput() {
+function addPlayerInput()
+{
 
-    createPlayerRow("");
+    const row =
+        createPlayerRow(
+            ""
+        );
 
 
-    const inputs =
-        playersList.querySelectorAll(
+    const input =
+        row.querySelector(
             ".player-input"
         );
 
 
-    const lastInput =
-        inputs[
-            inputs.length - 1
-        ];
+    if (input)
+    {
+
+        input.focus();
 
 
-    if (lastInput) {
+        setTimeout(
+            function ()
+            {
 
-        lastInput.focus();
+                input.scrollIntoView(
+                    {
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "center"
+                    }
+                );
+
+            },
+            100
+        );
 
     }
 
 }
 
 
-/* ==================================================
-   SELECT FESTEGGIATO
-================================================== */
+/* =========================================================
+   FESTEGGIATO
+========================================================= */
 
-function updateCelebrantSelect() {
+function updateCelebrantSelect()
+{
 
-    if (!celebrantSelect) {
+    if (!celebrantSelect)
+    {
+
         return;
+
     }
 
 
-    const previousName =
-        celebrantSelect
-            .options[
-                celebrantSelect
-                    .selectedIndex
-            ]
-            ?.textContent;
+    /*
+        Ricorda il nome
+        attualmente selezionato.
+    */
+
+    let previousName =
+        null;
+
+
+    if (
+        celebrantSelect.selectedIndex >=
+        0
+    )
+    {
+
+        const option =
+            celebrantSelect.options[
+                celebrantSelect.selectedIndex
+            ];
+
+
+        if (option)
+        {
+
+            previousName =
+                option.textContent;
+
+        }
+
+    }
 
 
     celebrantSelect.innerHTML =
@@ -1890,7 +2601,11 @@ function updateCelebrantSelect() {
 
 
     rows.forEach(
-        (row, index) => {
+        function (
+            row,
+            index
+        )
+        {
 
             const input =
                 row.querySelector(
@@ -1902,8 +2617,11 @@ function updateCelebrantSelect() {
                 input.value.trim();
 
 
-            if (!name) {
+            if (!name)
+            {
+
                 return;
+
             }
 
 
@@ -1914,7 +2632,10 @@ function updateCelebrantSelect() {
 
 
             option.value =
-                String(index);
+                String(
+                    index
+                );
+
 
             option.textContent =
                 name;
@@ -1929,27 +2650,39 @@ function updateCelebrantSelect() {
 
 
     /*
-       Prima proviamo a mantenere
-       la selezione appena effettuata.
+        Ripristina selezione
+        corrente.
     */
 
-    if (previousName) {
+    if (previousName)
+    {
 
-        const matching =
+        const options =
             Array.from(
                 celebrantSelect.options
-            )
-            .find(
-                option =>
-                    option.textContent ===
-                    previousName
             );
 
 
-        if (matching) {
+        const match =
+            options.find(
+                function (option)
+                {
+
+                    return (
+                        option.textContent ===
+                        previousName
+                    );
+
+                }
+            );
+
+
+        if (match)
+        {
 
             celebrantSelect.value =
-                matching.value;
+                match.value;
+
 
             return;
 
@@ -1959,35 +2692,52 @@ function updateCelebrantSelect() {
 
 
     /*
-       Altrimenti recuperiamo
-       il festeggiato salvato.
+        Oppure recupera
+        il festeggiato salvato.
     */
 
     const oldCelebrant =
         players.find(
-            player =>
-                player.id ===
-                celebrantId
+            function (player)
+            {
+
+                return (
+                    player.id ===
+                    celebrantId
+                );
+
+            }
         );
 
 
-    if (oldCelebrant) {
+    if (oldCelebrant)
+    {
 
-        const matching =
+        const options =
             Array.from(
                 celebrantSelect.options
-            )
-            .find(
-                option =>
-                    option.textContent ===
-                    oldCelebrant.name
             );
 
 
-        if (matching) {
+        const match =
+            options.find(
+                function (option)
+                {
+
+                    return (
+                        option.textContent ===
+                        oldCelebrant.name
+                    );
+
+                }
+            );
+
+
+        if (match)
+        {
 
             celebrantSelect.value =
-                matching.value;
+                match.value;
 
         }
 
@@ -1996,28 +2746,32 @@ function updateCelebrantSelect() {
 }
 
 
-/* ==================================================
-   GENERA ID GIOCATORE
-================================================== */
+/* =========================================================
+   ID GIOCATORE
+========================================================= */
 
-function generatePlayerId() {
+function generatePlayerId()
+{
 
     return (
-        Date.now()
-            .toString(36) +
+        Date.now().toString(36) +
         Math.random()
             .toString(36)
-            .substring(2, 8)
+            .substring(
+                2,
+                8
+            )
     );
 
 }
 
 
-/* ==================================================
+/* =========================================================
    SALVA GIOCATORI
-================================================== */
+========================================================= */
 
-function savePlayers() {
+function savePlayers()
+{
 
     const rows =
         Array.from(
@@ -2029,7 +2783,8 @@ function savePlayers() {
 
     const validRows =
         rows.filter(
-            row => {
+            function (row)
+            {
 
                 const input =
                     row.querySelector(
@@ -2038,79 +2793,135 @@ function savePlayers() {
 
 
                 return (
-                    input.value
-                        .trim() !== ""
+                    input.value.trim() !==
+                    ""
                 );
 
             }
         );
 
 
+    /*
+        ALMENO DUE
+    */
+
     if (
-        validRows.length < 2
-    ) {
+        validRows.length <
+        2
+    )
+    {
 
         playersError.textContent =
             "Servono almeno 2 giocatori.";
+
 
         return;
 
     }
 
 
+    /*
+        NOMI
+    */
+
     const names =
         validRows.map(
-            row =>
-                row
-                    .querySelector(
-                        ".player-input"
-                    )
-                    .value
-                    .trim()
+            function (row)
+            {
+
+                return (
+                    row
+                        .querySelector(
+                            ".player-input"
+                        )
+                        .value
+                        .trim()
+                );
+
+            }
         );
 
 
     const normalizedNames =
         names.map(
-            name =>
-                name.toLowerCase()
+            function (name)
+            {
+
+                return (
+                    name.toLowerCase()
+                );
+
+            }
         );
 
+
+    /*
+        NO DUPLICATI
+    */
 
     if (
         new Set(
             normalizedNames
         ).size !==
         normalizedNames.length
-    ) {
+    )
+    {
 
         playersError.textContent =
             "Due giocatori hanno lo stesso nome.";
+
 
         return;
 
     }
 
 
-    const selectedName =
-        celebrantSelect
-            .options[
-                celebrantSelect
-                    .selectedIndex
-            ]
-            ?.textContent;
+    /*
+        NOME FESTEGGIATO
+    */
 
+    let selectedName =
+        null;
+
+
+    if (
+        celebrantSelect.selectedIndex >=
+        0
+    )
+    {
+
+        const selectedOption =
+            celebrantSelect.options[
+                celebrantSelect.selectedIndex
+            ];
+
+
+        if (selectedOption)
+        {
+
+            selectedName =
+                selectedOption.textContent;
+
+        }
+
+    }
+
+
+    /*
+        PRESERVA STATISTICHE
+    */
 
     const oldPlayers =
         [...players];
 
 
-    const newPlayers =
+    const freshPlayers =
         [];
 
 
     validRows.forEach(
-        row => {
+        function (row)
+        {
 
             const name =
                 row
@@ -2127,48 +2938,59 @@ function savePlayers() {
 
             const oldPlayer =
                 oldPlayers.find(
-                    player =>
-                        player.id ===
-                        existingId
+                    function (player)
+                    {
+
+                        return (
+                            player.id ===
+                            existingId
+                        );
+
+                    }
                 );
 
 
-            if (oldPlayer) {
+            if (oldPlayer)
+            {
 
-                newPlayers.push({
+                freshPlayers.push(
+                    {
+                        ...oldPlayer,
+                        name:
+                            name
+                    }
+                );
 
-                    ...oldPlayer,
+            }
+            else
+            {
 
-                    name: name
+                freshPlayers.push(
+                    {
 
-                });
+                        id:
+                            generatePlayerId(),
 
-            } else {
+                        name:
+                            name,
 
-                newPlayers.push({
+                        turns:
+                            0,
 
-                    id:
-                        generatePlayerId(),
+                        truths:
+                            0,
 
-                    name:
-                        name,
+                        dares:
+                            0,
 
-                    turns:
-                        0,
+                        quizzes:
+                            0,
 
-                    truths:
-                        0,
+                        quizCorrect:
+                            0
 
-                    dares:
-                        0,
-
-                    quizzes:
-                        0,
-
-                    quizCorrect:
-                        0
-
-                });
+                    }
+                );
 
             }
 
@@ -2177,21 +2999,41 @@ function savePlayers() {
 
 
     players =
-        newPlayers;
+        freshPlayers;
 
 
-    const selectedPlayer =
+    /*
+        FESTEGGIATO
+    */
+
+    const selectedCelebrant =
         players.find(
-            player =>
-                player.name ===
-                selectedName
+            function (player)
+            {
+
+                return (
+                    player.name ===
+                    selectedName
+                );
+
+            }
         );
 
 
-    celebrantId =
-        selectedPlayer
-            ? selectedPlayer.id
-            : players[0].id;
+    if (selectedCelebrant)
+    {
+
+        celebrantId =
+            selectedCelebrant.id;
+
+    }
+    else
+    {
+
+        celebrantId =
+            players[0].id;
+
+    }
 
 
     playersError.textContent =
@@ -2202,6 +3044,10 @@ function savePlayers() {
 
     updatePlayersHome();
 
+
+    /*
+        TORNA HOME
+    */
 
     playersScreen.classList.remove(
         "active"
@@ -2215,55 +3061,55 @@ function savePlayers() {
 }
 
 
-/* ==================================================
-   CONTATORE GIOCATORI HOME
-================================================== */
+/* =========================================================
+   PLAYER HOME COUNT
+========================================================= */
 
-function updatePlayersHome() {
+function updatePlayersHome()
+{
 
-    if (!playersHomeCount) {
+    if (!playersHomeCount)
+    {
+
         return;
+
     }
 
 
-    const total =
-        players.length;
+    if (
+        players.length ===
+        1
+    )
+    {
 
+        playersHomeCount.textContent =
+            "1 GIOCATORE";
 
-    playersHomeCount.textContent =
-        total === 1
-            ? "1 GIOCATORE"
-            : `${total} GIOCATORI`;
+    }
+    else
+    {
 
-}
+        playersHomeCount.textContent =
+            players.length +
+            " GIOCATORI";
 
-
-/* ==================================================
-   FESTEGGIATO
-================================================== */
-
-function getCelebrant() {
-
-    return (
-        players.find(
-            player =>
-                player.id ===
-                celebrantId
-        ) || null
-    );
+    }
 
 }
 
 
-/* ==================================================
-   SELEZIONE RANDOM BILANCIATA
-================================================== */
+/* =========================================================
+   SELEZIONE VITTIMA
+========================================================= */
 
-function selectNextPlayer() {
+function selectNextPlayer()
+{
 
     if (
-        players.length === 0
-    ) {
+        players.length ===
+        0
+    )
+    {
 
         return null;
 
@@ -2271,47 +3117,83 @@ function selectNextPlayer() {
 
 
     if (
-        players.length === 1
-    ) {
+        players.length ===
+        1
+    )
+    {
 
         return players[0];
 
     }
 
 
+    /*
+        Trova il numero minimo
+        di turni giocati.
+    */
+
     const minimumTurns =
         Math.min(
             ...players.map(
-                player =>
-                    player.turns || 0
+                function (player)
+                {
+
+                    return (
+                        player.turns ||
+                        0
+                    );
+
+                }
             )
         );
 
 
+    /*
+        Diamo priorità a chi
+        ha giocato meno.
+    */
+
     let candidates =
         players.filter(
-            player =>
-                (player.turns || 0) <=
-                minimumTurns + 1
+            function (player)
+            {
+
+                return (
+                    (
+                        player.turns ||
+                        0
+                    ) <=
+                    minimumTurns + 1
+                );
+
+            }
         );
 
 
     /*
-       Evita la stessa persona
-       due volte consecutive.
+        Evita la stessa persona
+        due volte di seguito.
     */
 
     const withoutPrevious =
         candidates.filter(
-            player =>
-                player.id !==
-                lastSelectedPlayerId
+            function (player)
+            {
+
+                return (
+                    player.id !==
+                    lastSelectedPlayerId
+                );
+
+            }
         );
 
 
     if (
-        withoutPrevious.length > 0
-    ) {
+        withoutPrevious.length >
+        0
+    )
+    {
 
         candidates =
             withoutPrevious;
@@ -2319,16 +3201,16 @@ function selectNextPlayer() {
     }
 
 
-    const randomIndex =
-        Math.floor(
-            Math.random() *
-            candidates.length
-        );
-
+    /*
+        RANDOM
+    */
 
     const selected =
         candidates[
-            randomIndex
+            Math.floor(
+                Math.random() *
+                candidates.length
+            )
         ];
 
 
@@ -2344,42 +3226,893 @@ function selectNextPlayer() {
 }
 
 
-/* ==================================================
-   VIBRAZIONE
-================================================== */
+/* =========================================================
+   TIMER
+========================================================= */
 
-function vibrate() {
 
-    if (
-        navigator.vibrate
-    ) {
+/* =========================
+   RANDOM 8-18 MIN
+========================= */
 
-        navigator.vibrate(40);
+function randomEventDelay()
+{
+
+    return Math.floor(
+
+        EVENT_MIN +
+
+        Math.random() *
+        (
+            EVENT_MAX -
+            EVENT_MIN +
+            1
+        )
+
+    );
+
+}
+
+
+/* =========================================================
+   INIZIA / RESETTA SERATA
+========================================================= */
+
+function toggleNight()
+{
+
+    /*
+        AVVIO
+    */
+
+    if (!nightRunning)
+    {
+
+        if (
+            players.length <
+            2
+        )
+        {
+
+            openPlayersScreen();
+
+
+            playersError.textContent =
+                "Prima salva almeno 2 giocatori.";
+
+
+            return;
+
+        }
+
+
+        nightRunning =
+            true;
+
+
+        const now =
+            Date.now();
+
+
+        /*
+            Primo Tequila Time:
+            30 minuti.
+        */
+
+        tequilaTarget =
+            now +
+            TEQUILA_INTERVAL;
+
+
+        /*
+            Primo evento:
+            casuale 8-18 minuti.
+        */
+
+        eventTarget =
+            now +
+            randomEventDelay();
+
+
+        saveGame();
+
+        updateNightUI();
+
+        updateTimers();
+
+        vibrate();
+
+
+        return;
+
+    }
+
+
+    /*
+        STOP / RESET
+    */
+
+    const stop =
+        confirm(
+            "Vuoi fermare la serata e azzerare i timer?"
+        );
+
+
+    if (!stop)
+    {
+
+        return;
+
+    }
+
+
+    nightRunning =
+        false;
+
+
+    tequilaTarget =
+        null;
+
+
+    eventTarget =
+        null;
+
+
+    tequilaAlertOpen =
+        false;
+
+
+    eventAlertOpen =
+        false;
+
+
+    activeEventPlayerId =
+        null;
+
+
+    eventAwaitingCompletion =
+        false;
+
+
+    eventOverlay.classList.remove(
+        "active"
+    );
+
+
+    tequilaOverlay.classList.remove(
+        "active"
+    );
+
+
+    hidePlayerBanners();
+
+
+    saveGame();
+
+    updateNightUI();
+
+    updateTimers();
+
+}
+
+
+/* =========================================================
+   UI SERATA
+========================================================= */
+
+function updateNightUI()
+{
+
+    const timerPanel =
+        document.querySelector(
+            ".timer-panel"
+        );
+
+
+    if (nightRunning)
+    {
+
+        nightButton.textContent =
+            "■ FERMA / RESETTA SERATA";
+
+
+        nightButton.classList.add(
+            "running"
+        );
+
+
+        timerPanel.classList.add(
+            "running"
+        );
+
+    }
+    else
+    {
+
+        nightButton.textContent =
+            "☠ INIZIA LA SERATA";
+
+
+        nightButton.classList.remove(
+            "running"
+        );
+
+
+        timerPanel.classList.remove(
+            "running"
+        );
 
     }
 
 }
 
 
-/* ==================================================
-   AVVIO
-================================================== */
+/* =========================================================
+   FORMATTA TEMPO
+========================================================= */
+
+function formatRemaining(
+    milliseconds
+)
+{
+
+    const totalSeconds =
+        Math.max(
+            0,
+            Math.ceil(
+                milliseconds /
+                1000
+            )
+        );
+
+
+    const minutes =
+        Math.floor(
+            totalSeconds /
+            60
+        );
+
+
+    const seconds =
+        totalSeconds %
+        60;
+
+
+    return (
+        String(
+            minutes
+        ).padStart(
+            2,
+            "0"
+        )
+        +
+        ":"
+        +
+        String(
+            seconds
+        ).padStart(
+            2,
+            "0"
+        )
+    );
+
+}
+
+
+/* =========================================================
+   AGGIORNA TIMER
+========================================================= */
+
+function updateTimers()
+{
+
+    /*
+        SERATA NON AVVIATA
+    */
+
+    if (!nightRunning)
+    {
+
+        tequilaTimer.textContent =
+            "30:00";
+
+
+        eventTimer.textContent =
+            "???";
+
+
+        return;
+
+    }
+
+
+    const now =
+        Date.now();
+
+
+    /*
+        TEQUILA
+    */
+
+    if (tequilaTarget)
+    {
+
+        tequilaTimer.textContent =
+            formatRemaining(
+                tequilaTarget -
+                now
+            );
+
+    }
+    else
+    {
+
+        tequilaTimer.textContent =
+            "30:00";
+
+    }
+
+
+    /*
+        Il timer evento
+        rimane volontariamente
+        nascosto.
+    */
+
+    eventTimer.textContent =
+        "???";
+
+
+    /*
+        TEQUILA SCADUTO
+    */
+
+    if (
+        tequilaTarget &&
+        now >= tequilaTarget &&
+        !tequilaAlertOpen
+    )
+    {
+
+        tequilaAlertOpen =
+            true;
+
+
+        showTequilaAlert();
+
+    }
+
+
+    /*
+        EVENTO SCADUTO
+    */
+
+    if (
+        eventTarget &&
+        now >= eventTarget &&
+        !eventAlertOpen &&
+        !eventAwaitingCompletion
+    )
+    {
+
+        eventAlertOpen =
+            true;
+
+
+        showRandomEvent();
+
+    }
+
+}
+
+
+/* =========================================================
+   TEQUILA TIME
+========================================================= */
+
+function showTequilaAlert()
+{
+
+    tequilaOverlay.classList.add(
+        "active"
+    );
+
+
+    vibratePattern();
+
+}
+
+
+/* =========================================================
+   TEQUILA FATTO
+========================================================= */
+
+function acknowledgeTequila()
+{
+
+    tequilaOverlay.classList.remove(
+        "active"
+    );
+
+
+    tequilaAlertOpen =
+        false;
+
+
+    /*
+        Riparte da 30 minuti
+        dal momento della conferma.
+    */
+
+    tequilaTarget =
+        Date.now() +
+        TEQUILA_INTERVAL;
+
+
+    saveGame();
+
+    updateTimers();
+
+}
+
+
+/* =========================================================
+   EVENTO RANDOM
+========================================================= */
+
+function showRandomEvent()
+{
+
+    const player =
+        selectNextPlayer();
+
+
+    /*
+        Nessun giocatore.
+    */
+
+    if (!player)
+    {
+
+        eventAlertOpen =
+            false;
+
+
+        eventTarget =
+            Date.now() +
+            randomEventDelay();
+
+
+        saveGame();
+
+
+        return;
+
+    }
+
+
+    /*
+        Memorizza la vittima.
+    */
+
+    activeEventPlayerId =
+        player.id;
+
+
+    eventAwaitingCompletion =
+        true;
+
+
+    /*
+        Finché il turno
+        non viene completato,
+        nessun altro evento
+        viene programmato.
+    */
+
+    eventTarget =
+        null;
+
+
+    eventPlayerName.textContent =
+        player.name.toUpperCase();
+
+
+    eventOverlay.classList.add(
+        "active"
+    );
+
+
+    saveGame();
+
+    vibratePattern();
+
+}
+
+
+/* =========================================================
+   SCELTA EVENTO
+========================================================= */
+
+function chooseEventMode(
+    mode
+)
+{
+
+    eventOverlay.classList.remove(
+        "active"
+    );
+
+
+    eventAlertOpen =
+        false;
+
+
+    /*
+        Apri la modalità scelta.
+    */
+
+    startGame(
+        mode
+    );
+
+}
+
+
+/* =========================================================
+   COMPLETA TURNO EVENTO
+========================================================= */
+
+function completeEventTurn(
+    mode
+)
+{
+
+    /*
+        Se il giocatore sta usando
+        manualmente Verità/Obbligo/Quiz,
+        non dobbiamo modificare
+        le statistiche evento.
+    */
+
+    if (
+        !activeEventPlayerId ||
+        !eventAwaitingCompletion
+    )
+    {
+
+        return;
+
+    }
+
+
+    const player =
+        players.find(
+            function (item)
+            {
+
+                return (
+                    item.id ===
+                    activeEventPlayerId
+                );
+
+            }
+        );
+
+
+    if (player)
+    {
+
+        player.turns =
+            (
+                player.turns ||
+                0
+            ) + 1;
+
+
+        if (
+            mode ===
+            "truth"
+        )
+        {
+
+            player.truths =
+                (
+                    player.truths ||
+                    0
+                ) + 1;
+
+        }
+
+
+        if (
+            mode ===
+            "dare"
+        )
+        {
+
+            player.dares =
+                (
+                    player.dares ||
+                    0
+                ) + 1;
+
+        }
+
+
+        if (
+            mode ===
+            "quiz"
+        )
+        {
+
+            player.quizzes =
+                (
+                    player.quizzes ||
+                    0
+                ) + 1;
+
+        }
+
+    }
+
+
+    /*
+        Turno terminato.
+    */
+
+    eventAwaitingCompletion =
+        false;
+
+
+    activeEventPlayerId =
+        null;
+
+
+    /*
+        Programma il prossimo
+        evento 8-18 minuti
+        da ADESSO.
+    */
+
+    if (nightRunning)
+    {
+
+        eventTarget =
+            Date.now() +
+            randomEventDelay();
+
+    }
+
+
+    hidePlayerBanners();
+
+
+    saveGame();
+
+}
+
+
+/* =========================================================
+   PLAYER BANNER
+========================================================= */
+
+function showActivePlayer(
+    element
+)
+{
+
+    if (!element)
+    {
+
+        return;
+
+    }
+
+
+    const player =
+        players.find(
+            function (item)
+            {
+
+                return (
+                    item.id ===
+                    activeEventPlayerId
+                );
+
+            }
+        );
+
+
+    if (player)
+    {
+
+        element.textContent =
+            "☠ TOCCA A " +
+            player.name.toUpperCase();
+
+
+        element.classList.remove(
+            "hidden"
+        );
+
+    }
+    else
+    {
+
+        element.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   NASCONDI PLAYER BANNERS
+========================================================= */
+
+function hidePlayerBanners()
+{
+
+    if (activePlayerBanner)
+    {
+
+        activePlayerBanner.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    if (quizPlayerBanner)
+    {
+
+        quizPlayerBanner.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   VIBRAZIONE
+========================================================= */
+
+function vibrate()
+{
+
+    if (
+        navigator.vibrate
+    )
+    {
+
+        navigator.vibrate(
+            40
+        );
+
+    }
+
+}
+
+
+function vibratePattern()
+{
+
+    if (
+        navigator.vibrate
+    )
+    {
+
+        navigator.vibrate(
+            [
+                120,
+                80,
+                120,
+                80,
+                220
+            ]
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   RIPRESA APP
+========================================================= */
+
+/*
+    Non ci affidiamo a setInterval
+    per sapere quanto tempo è passato.
+
+    Il timer usa sempre Date.now()
+    confrontato con i timestamp salvati.
+
+    Quindi:
+    - schermo bloccato
+    - Safari sospeso
+    - cambio app
+    - refresh pagina
+
+    non fanno "fermare" il tempo.
+*/
+
+
+document.addEventListener(
+    "visibilitychange",
+    function ()
+    {
+
+        if (
+            !document.hidden
+        )
+        {
+
+            updateTimers();
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "focus",
+    function ()
+    {
+
+        updateTimers();
+
+    }
+);
+
+
+/* =========================================================
+   AVVIO APP
+========================================================= */
 
 loadGame();
 
 
+updateTimers();
+
+
+/*
+    Aggiornamento grafico
+    ogni secondo.
+*/
+
+setInterval(
+    updateTimers,
+    1000
+);
+
+
+/*
+    Se non ci sono ancora
+    giocatori, apri direttamente
+    la configurazione.
+*/
+
 if (
-    players.length === 0 &&
-    playersScreen
-) {
+    players.length === 0
+)
+{
 
     homeScreen.classList.remove(
         "active"
     );
 
+
     playersScreen.classList.add(
         "active"
     );
+
 
     renderPlayersEditor();
 
