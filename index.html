@@ -27,7 +27,73 @@
 <body>
 
 <main class="app">
+     <!-- =========================
+     GIOCATORI
+========================== -->
 
+<section id="players-screen" class="screen">
+
+    <div class="players-header">
+
+        <p class="eyebrow">
+            † DESPEDIDA †
+        </p>
+
+        <h2>
+            CHI SOPRAVVIVERÀ<br>
+            ALLA SERATA?
+        </h2>
+
+        <p class="players-subtitle">
+            Inserisci i partecipanti.<br>
+            L'app deciderà chi soffrirà.
+        </p>
+
+    </div>
+
+
+    <div
+        id="players-list"
+        class="players-list"
+    >
+    </div>
+
+
+    <button
+        class="add-player-button"
+        onclick="addPlayerInput()"
+    >
+        + AGGIUNGI GIOCATORE
+    </button>
+
+
+    <div class="celebrant-box">
+
+        <label for="celebrant-select">
+            👑 FESTEGGIATO
+        </label>
+
+        <select id="celebrant-select">
+        </select>
+
+    </div>
+
+
+    <p
+        id="players-error"
+        class="players-error"
+    >
+    </p>
+
+
+    <button
+        class="save-players-button"
+        onclick="savePlayers()"
+    >
+        SALVA GIOCATORI
+    </button>
+
+</section>
     <!-- =========================
          HOME
     ========================== -->
@@ -55,6 +121,26 @@
                 Finché morte o Svizzera<br>
                 non ci separi.
             </p>
+            <button
+                class="players-home-button"
+                onclick="openPlayersScreen()"
+            >
+                <span>👥</span>
+
+                <div>
+                    <strong id="players-home-count">
+                        0 GIOCATORI
+                    </strong>
+
+                    <small>
+                       MODIFICA PARTECIPANTI
+                    </small>
+               </div>
+
+              <span class="players-arrow">
+                  ›
+              </span>
+            </button>
 
         </div>
 
