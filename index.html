@@ -2,14 +2,6 @@
 <html lang="it">
 
 <head>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <meta
-    name="apple-mobile-web-app-status-bar-style"
-    content="black-translucent"
-    >
-
-    <meta name="apple-mobile-web-app-title" content="Despedida">
     <meta charset="UTF-8">
 
     <meta
@@ -19,95 +11,137 @@
 
     <meta name="theme-color" content="#080808">
 
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="Despedida"
+    >
+
     <title>Despedida</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css?v=2"
+    >
 </head>
+
 
 <body>
 
 <main class="app">
-     <!-- =========================
-     GIOCATORI
-========================== -->
-
-<section id="players-screen" class="screen">
-
-    <div class="players-header">
-
-        <p class="eyebrow">
-            † DESPEDIDA †
-        </p>
-
-        <h2>
-            CHI SOPRAVVIVERÀ<br>
-            ALLA SERATA?
-        </h2>
-
-        <p class="players-subtitle">
-            Inserisci i partecipanti.<br>
-            L'app deciderà chi soffrirà.
-        </p>
-
-    </div>
 
 
-    <div
-        id="players-list"
-        class="players-list"
+    <!-- ========================================
+         GIOCATORI
+    ========================================= -->
+
+    <section
+        id="players-screen"
+        class="screen"
     >
-    </div>
+
+        <div class="players-header">
+
+            <p class="eyebrow">
+                † DESPEDIDA †
+            </p>
+
+            <h2>
+                CHI SOPRAVVIVERÀ
+                <br>
+                ALLA SERATA?
+            </h2>
+
+            <p class="players-subtitle">
+                Inserisci i partecipanti.
+                <br>
+                L'app deciderà chi soffrirà.
+            </p>
+
+        </div>
 
 
-    <button
-        class="add-player-button"
-        onclick="addPlayerInput()"
-    >
-        + AGGIUNGI GIOCATORE
-    </button>
+        <div
+            id="players-list"
+            class="players-list"
+        ></div>
 
 
-    <div class="celebrant-box">
-
-        <label for="celebrant-select">
-            👑 FESTEGGIATO
-        </label>
-
-        <select id="celebrant-select">
-        </select>
-
-    </div>
+        <button
+            type="button"
+            class="add-player-button"
+            onclick="addPlayerInput()"
+        >
+            + AGGIUNGI GIOCATORE
+        </button>
 
 
-    <p
-        id="players-error"
-        class="players-error"
-    >
-    </p>
+        <div class="celebrant-box">
+
+            <label for="celebrant-select">
+                👑 FESTEGGIATO
+            </label>
+
+            <select
+                id="celebrant-select"
+            ></select>
+
+        </div>
 
 
-    <button
-        class="save-players-button"
-        onclick="savePlayers()"
-    >
-        SALVA GIOCATORI
-    </button>
+        <p
+            id="players-error"
+            class="players-error"
+        ></p>
 
-</section>
-    <!-- =========================
+
+        <button
+            type="button"
+            class="save-players-button"
+            onclick="savePlayers()"
+        >
+            SALVA GIOCATORI
+        </button>
+
+    </section>
+
+
+
+    <!-- ========================================
          HOME
-    ========================== -->
+    ========================================= -->
 
-    <section id="home-screen" class="screen active">
+    <section
+        id="home-screen"
+        class="screen active"
+    >
 
         <div class="hero">
 
+
+            <!-- FOTO -->
+
             <div class="hero-photo">
+
                 <img
                     src="matteo-bara.PNG"
                     alt="RIP Principe di Rifredi"
                 >
+
             </div>
+
+
+
+            <!-- TITOLO -->
 
             <p class="eyebrow">
                 THE LAST NIGHT
@@ -118,114 +152,245 @@
             </h1>
 
             <p class="subtitle">
-                Finché morte o Svizzera<br>
+                Finché morte o Svizzera
+                <br>
                 non ci separi.
             </p>
+
+
+
+            <!-- ========================================
+                 TIMER
+            ========================================= -->
+
+            <div class="timer-panel">
+
+
+                <!-- TEQUILA -->
+
+                <div class="timer-item">
+
+                    <span class="timer-label">
+                        🥃 TEQUILA TIME
+                    </span>
+
+                    <strong id="tequila-timer">
+                        30:00
+                    </strong>
+
+                </div>
+
+
+                <div class="timer-separator"></div>
+
+
+                <!-- EVENTO -->
+
+                <div class="timer-item">
+
+                    <span class="timer-label">
+                        ☠ PROSSIMO EVENTO
+                    </span>
+
+                    <strong id="event-timer">
+                        ???
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- AVVIO SERATA -->
+
             <button
+                id="night-button"
+                type="button"
+                class="night-button"
+                onclick="toggleNight()"
+            >
+                ☠ INIZIA LA SERATA
+            </button>
+
+
+
+            <!-- GIOCATORI -->
+
+            <button
+                type="button"
                 class="players-home-button"
                 onclick="openPlayersScreen()"
             >
-                <span>👥</span>
+
+                <span>
+                    👥
+                </span>
+
 
                 <div>
+
                     <strong id="players-home-count">
                         0 GIOCATORI
                     </strong>
 
                     <small>
-                       MODIFICA PARTECIPANTI
+                        MODIFICA PARTECIPANTI
                     </small>
-               </div>
 
-              <span class="players-arrow">
-                  ›
-              </span>
+                </div>
+
+
+                <span class="players-arrow">
+                    ›
+                </span>
+
             </button>
 
         </div>
 
 
+
+        <!-- ========================================
+             MODALITÀ
+        ========================================= -->
+
         <div class="home-buttons">
+
 
             <!-- VERITÀ -->
 
             <button
+                type="button"
                 class="main-button truth-button"
                 onclick="startGame('truth')"
             >
+
                 <span class="button-small">
                     DIMMI LA
                 </span>
 
                 VERITÀ
+
             </button>
 
 
+
             <div class="divider">
+
                 <span></span>
-                <p>OPPURE</p>
+
+                <p>
+                    OPPURE
+                </p>
+
                 <span></span>
+
             </div>
+
 
 
             <!-- OBBLIGO -->
 
             <button
+                type="button"
                 class="main-button dare-button"
                 onclick="startGame('dare')"
             >
+
                 <span class="button-small">
                     ACCETTA
                 </span>
 
                 OBBLIGO
+
             </button>
 
 
+
             <div class="divider">
+
                 <span></span>
-                <p>OPPURE DIMOSTRA DI AVERE UN CERVELLO</p>
+
+                <p>
+                    OPPURE DIMOSTRA DI AVERE UN CERVELLO
+                </p>
+
                 <span></span>
+
             </div>
+
 
 
             <!-- QUIZ -->
 
             <button
+                type="button"
                 class="main-button quiz-button"
                 onclick="startGame('quiz')"
             >
+
                 <span class="button-small">
                     METTI ALLA PROVA
                 </span>
 
                 QUIZ
+
             </button>
 
         </div>
 
 
-        <!-- CONTATORI -->
+
+        <!-- ========================================
+             CONTATORI MAZZI
+        ========================================= -->
 
         <div class="stats">
 
+
             <div>
-                <span id="truth-home-counter">30</span>
-                <small>VERITÀ</small>
+
+                <span id="truth-home-counter">
+                    30
+                </span>
+
+                <small>
+                    VERITÀ
+                </small>
+
             </div>
+
 
             <div class="stats-divider"></div>
 
+
             <div>
-                <span id="dare-home-counter">30</span>
-                <small>OBBLIGHI</small>
+
+                <span id="dare-home-counter">
+                    30
+                </span>
+
+                <small>
+                    OBBLIGHI
+                </small>
+
             </div>
+
 
             <div class="stats-divider"></div>
 
+
             <div>
-                <span id="quiz-home-counter">30</span>
-                <small>QUIZ</small>
+
+                <span id="quiz-home-counter">
+                    30
+                </span>
+
+                <small>
+                    QUIZ
+                </small>
+
             </div>
 
         </div>
@@ -234,15 +399,21 @@
 
 
 
-    <!-- =========================
-         GAME VERITÀ / OBBLIGO
-    ========================== -->
+    <!-- ========================================
+         VERITÀ / OBBLIGO
+    ========================================= -->
 
-    <section id="game-screen" class="screen">
+    <section
+        id="game-screen"
+        class="screen"
+    >
+
 
         <div class="game-header">
 
+
             <button
+                type="button"
                 class="icon-button"
                 onclick="goHome()"
                 aria-label="Torna alla home"
@@ -250,11 +421,14 @@
                 ←
             </button>
 
+
             <div id="game-title">
                 VERITÀ
             </div>
 
+
             <button
+                type="button"
                 class="icon-button"
                 onclick="resetCurrentDeck()"
                 aria-label="Reset mazzo"
@@ -262,12 +436,29 @@
                 ↻
             </button>
 
+
         </div>
 
 
+
+        <!-- GIOCATORE SELEZIONATO -->
+
+        <div
+            id="active-player-banner"
+            class="active-player-banner hidden"
+        ></div>
+
+
+
+        <!-- CARTA -->
+
         <div class="card-area">
 
-            <div id="card" class="card">
+            <div
+                id="card"
+                class="card"
+            >
+
 
                 <div
                     id="card-icon"
@@ -276,12 +467,14 @@
                     ?
                 </div>
 
+
                 <div
                     id="card-type"
                     class="card-type"
                 >
                     VERITÀ
                 </div>
+
 
                 <div
                     id="card-text"
@@ -290,6 +483,7 @@
                     Premi il pulsante per pescare.
                 </div>
 
+
                 <div
                     id="card-number"
                     class="card-number"
@@ -297,13 +491,16 @@
                     CARTA 0 / 30
                 </div>
 
+
             </div>
 
         </div>
 
 
+
         <button
             id="draw-button"
+            type="button"
             class="draw-button"
             onclick="drawCard()"
         >
@@ -312,22 +509,30 @@
 
 
         <p class="deck-info">
-            Nessuna carta verrà ripetuta finché il mazzo non sarà terminato.
+            Nessuna carta verrà ripetuta finché
+            il mazzo non sarà terminato.
         </p>
+
 
     </section>
 
 
 
-    <!-- =========================
+    <!-- ========================================
          QUIZ
-    ========================== -->
+    ========================================= -->
 
-    <section id="quiz-screen" class="screen">
+    <section
+        id="quiz-screen"
+        class="screen"
+    >
+
 
         <div class="game-header">
 
+
             <button
+                type="button"
                 class="icon-button"
                 onclick="goHome()"
                 aria-label="Torna alla home"
@@ -335,11 +540,14 @@
                 ←
             </button>
 
+
             <div>
                 QUIZ
             </div>
 
+
             <button
+                type="button"
                 class="icon-button"
                 onclick="resetQuizDeck()"
                 aria-label="Reset quiz"
@@ -347,21 +555,34 @@
                 ↻
             </button>
 
+
         </div>
 
 
+
+        <!-- GIOCATORE SELEZIONATO -->
+
+        <div
+            id="quiz-player-banner"
+            class="active-player-banner hidden"
+        ></div>
+
+
+
+        <!-- QUIZ CARD -->
+
         <div class="quiz-card">
+
 
             <div class="quiz-icon">
                 🧠
             </div>
 
-            <div
-                id="quiz-label"
-                class="card-type"
-            >
+
+            <div class="card-type">
                 QUIZ
             </div>
+
 
             <div
                 id="quiz-question"
@@ -374,15 +595,13 @@
             <div
                 id="quiz-options"
                 class="quiz-options"
-            >
-            </div>
+            ></div>
 
 
             <div
                 id="quiz-result"
                 class="quiz-result"
-            >
-            </div>
+            ></div>
 
 
             <div
@@ -392,11 +611,14 @@
                 QUIZ 0 / 30
             </div>
 
+
         </div>
+
 
 
         <button
             id="quiz-main-button"
+            type="button"
             class="draw-button quiz-draw-button"
             onclick="handleQuizButton()"
         >
@@ -405,27 +627,155 @@
 
 
         <p class="deck-info">
-            Scegliete una risposta. Poi scoprite quanto siete ignoranti.
+            Scegliete una risposta.
+            Poi scoprite quanto siete ignoranti.
         </p>
+
 
     </section>
 
 
 
-    <!-- =========================
+    <!-- ========================================
          FOOTER
-    ========================== -->
+    ========================================= -->
 
     <footer>
+
         <span>†</span>
+
         RIP VITA ITALIANA
+
         <span>†</span>
+
     </footer>
+
 
 </main>
 
 
-<script src="script.js"></script>
+
+<!-- ============================================
+     OVERLAY EVENTO CASUALE
+============================================= -->
+
+<div
+    id="event-overlay"
+    class="event-overlay"
+>
+
+    <div class="event-modal">
+
+
+        <div class="event-skull">
+            ☠
+        </div>
+
+
+        <p class="event-kicker">
+            PROSSIMA VITTIMA
+        </p>
+
+
+        <h2 id="event-player-name">
+            ...
+        </h2>
+
+
+        <p class="event-message">
+            È IL TUO MOMENTO.
+        </p>
+
+
+
+        <div class="event-mode-buttons">
+
+
+            <button
+                type="button"
+                class="event-truth"
+                onclick="chooseEventMode('truth')"
+            >
+                VERITÀ
+            </button>
+
+
+            <button
+                type="button"
+                class="event-dare"
+                onclick="chooseEventMode('dare')"
+            >
+                OBBLIGO
+            </button>
+
+
+            <button
+                type="button"
+                class="event-quiz"
+                onclick="chooseEventMode('quiz')"
+            >
+                QUIZ
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================
+     OVERLAY TEQUILA
+============================================= -->
+
+<div
+    id="tequila-overlay"
+    class="event-overlay"
+>
+
+    <div class="event-modal tequila-modal">
+
+
+        <div class="event-skull">
+            🥃
+        </div>
+
+
+        <p class="event-kicker">
+            TEQUILA TIME
+        </p>
+
+
+        <h2>
+            È L'ORA.
+        </h2>
+
+
+        <p class="event-message">
+            Il conto alla rovescia
+            ha emesso la sua sentenza.
+        </p>
+
+
+        <button
+            type="button"
+            class="tequila-done-button"
+            onclick="acknowledgeTequila()"
+        >
+            FATTO 🥃
+        </button>
+
+
+    </div>
+
+</div>
+
+
+
+<script src="script.js?v=2"></script>
 
 </body>
 </html>
