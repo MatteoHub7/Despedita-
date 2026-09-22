@@ -19,134 +19,138 @@ const EVENT_MAX_INTERVAL = 18 * 60 * 1000;
 ========================================= */
 
 const DEFAULT_TRUTHS = [
-    "Qual è la cosa più imbarazzante che hai fatto da ubriaco?",
-    "Chi di questa stanza conosci meno di quanto vorresti ammettere?",
-    "Qual è stata la tua peggior figura di merda?",
-    "Hai mai mentito a qualcuno presente qui?",
-    "Qual è il tuo peggior difetto in una relazione?",
-    "Chi chiameresti per primo se finissi nei guai stanotte?",
-    "Qual è una cosa che non hai mai confessato ai tuoi amici?",
-    "Qual è stata la tua peggior decisione sentimentale?",
-    "Con chi dei presenti andresti più volentieri in viaggio?",
-    "Qual è la bugia più assurda che hai raccontato?"
+    "Qual è stata la tua peggiore figura di merda da ubriaco?",
+    "Qual è la persona a cui non dovresti scrivere ma a cui scriveresti dopo altri due drink?",
+    "Qual è stata la trombata peggiore della tua vita?",
+    "Qual è la bugia più grossa che hai raccontato per rimorchiare?",
+    "Chi del gruppo presenteresti meno volentieri ai tuoi genitori?",
+    "Qual è la cosa più imbarazzante che hai fatto per qualcuno che ti piaceva?",
+    "Mostra l'ultima persona che hai cercato su Instagram.",
+    "Qual è una cosa che non hai mai confessato a questo gruppo?",
+    "Qual è il messaggio che più ti penti di aver mandato?",
+    "Qual è la cosa più strana che hai chiesto a letto?",
+    "A chi del gruppo affideresti meno volentieri 1.000 euro?",
+    "C'è qualcuno con cui ti penti di essere andato/a?",
+    "Hai mai avuto una cotta per qualcuno che uno dei presenti conosce?",
+    "Qual è il posto più assurdo in cui hai baciato qualcuno?",
+    "Qual è la scusa peggiore che hai usato per evitare un appuntamento?",
+    "A che età hai perso la verginità?",
+    "Qual è la cosa più infantile che fai ancora?",
+    "Hai mai usato sex toys?",
+    "Qual è la cosa più assurda che hai fatto per gelosia?",
+    "Quale ex o vecchia fiamma non vorresti assolutamente incontrare stasera?",
+    "Qual è il tuo body count?",
+    "Chi del gruppo sarebbe il peggior coinquilino?",
+    "Qual è stata la tua sbronza più memorabile?",
+    "Qual è una cosa che hai finto di capire per non fare brutta figura?",
+    "Ti sei mai cagato addosso?",
+    "Qual è la tua red flag più evidente?",
+    "Qual è la cosa più imbarazzante presente nella tua cronologia recente?",
+    "Chi del gruppo chiameresti per tirarti fuori da un guaio alle 4 del mattino?",
+    "Qual è la cosa più strana che ti hanno chiesto a letto?",
+    "Se dovessi scambiare la tua vita con quella di una persona del gruppo per un mese, chi sceglieresti?",
+
+    "Chi tra i presenti pensavi ti sarebbe stato antipatico quando l'hai conosciuto?",
+    "Qual è il messaggio che speri che nessuno qui possa mai leggere?",
+    "Se dovessi baciare una persona presente nella stanza, chi sceglieresti?",
+    "Qual è la cosa più assurda che hai fatto per fare colpo su qualcuno?",
+    "Con chi tra i presenti pensi che riusciresti a convivere meno di una settimana?"
 ];
 
 const DEFAULT_DARES = [
-    "Fai un brindisi drammatico alla partenza di Matteo.",
-    "Imita una persona presente finché qualcuno indovina.",
-    "Lascia che il gruppo scelga una foto dalla tua galleria da mostrare.",
-    "Parla con un accento assurdo fino al prossimo turno.",
-    "Fai 15 squat mentre reciti un discorso motivazionale.",
-    "Manda un vocale di 10 secondi scelto dal gruppo.",
-    "Fai una dichiarazione d'amore a un oggetto nella stanza.",
-    "Lascia che qualcuno ti faccia una domanda a cui devi rispondere sinceramente.",
-    "Racconta una storia imbarazzante come se fosse un'impresa eroica.",
-    "Fai una passerella drammatica davanti a tutti."
+    "Convinci uno sconosciuto che il festeggiato è una celebrità italiana.",
+    "Ottieni una dedica scritta da uno sconosciuto per la nuova vita in Svizzera.",
+    "Fatti una foto con uno sconosciuto entro 5 minuti.",
+    "Prova a vendere un oggetto scelto dal gruppo a uno sconosciuto. Sono accettati anche uno shot o un drink come pagamento.",
+    "Canta una serenata a uno sconosciuto o una sconosciuta.",
+    "Fino alla prossima carta, ogni volta che finisci una frase devi fare il verso di Michael Jackson. Se te ne dimentichi, penitenza.",
+    "Intervista seriamente uno sconosciuto. Durante l'intervista, a un certo punto chiedigli di che colore ha le mutande.",
+    "Manda a un contatto scelto dal gruppo un vocale innocuo ma completamente senza contesto.",
+    "Fatti scrivere addosso il numero di telefono di uno sconosciuto. Se ci riesci, ti risparmi il prossimo shot.",
+    "Canta una canzone a tua scelta dal punto più alto che riesci a trovare.",
+    "Chiedi a uno sconosciuto qual è il suo body count.",
+    "Ottieni un complimento da qualcuno che non conosci.",
+    "Chiedi a uno sconosciuto di sposarti.",
+    "Trova un gruppo di sconosciuti e convincili a giocare a Bomba o Passi con voi.",
+    "Dai il tuo numero di telefono a uno sconosciuto accompagnandolo con una dedica.",
+    "Il gruppo sceglie la tua foto profilo. Devi tenerla per 24 ore.",
+    "Trova qualcuno con un cane. Chiedi «Posso accarezzarlo?» e, se il padrone sta al gioco e acconsente, accarezza scherzosamente il padrone invece del cane.",
+    "Trova qualcuno che registri un video rivolto a Matteo dicendo con estrema serietà: «Spero che la prostata guarisca presto, Matteo.»",
+    "Non puoi parlare fino al prossimo Tequila Time. Se parli, scatta la penitenza.",
+    "Indossa gli occhiali scuri e usa il bastone preparato per la serata fino alla prossima carta, facendoti guidare dagli altri.",
+    "Vai da uno sconosciuto scelto dal gruppo e sussurragli all'orecchio: «Ho tre capezzoli.» Poi vattene senza dare spiegazioni.",
+    "Fai un brindisi solenne alla sorella del Cini. Il Cini dovrà registrarlo e mandarglielo.",
+    "Convinci uno sconosciuto a cantare una canzone con te. Hai due tentativi, altrimenti penitenza.",
+    "Vai da uno sconosciuto e chiedigli di fare una foto insieme. Subito prima della foto digli con assoluta serietà: «Questa è la mia ultima foto da uomo/donna.» Non dare ulteriori spiegazioni.",
+    "Vai da uno sconosciuto e digli qualcosa di volutamente poco chiaro. Quando risponde «Ah?», rispondi semplicemente: «Suca.» Poi vattene.",
+    "Il gruppo sceglie uno sconosciuto. Avvicinati e chiedigli molto seriamente: «Scusa, secondo te noi due abbiamo già litigato in passato?»",
+    "Vai da uno sconosciuto chiamandolo con il primo nome che ti viene in mente e fai finta di conoscerlo. Porta avanti la conversazione per almeno un minuto.",
+    "Chiedi a uno sconosciuto di registrare un video di 10 secondi in cui racconta come vi siete conosciuti, lasciando che inventi completamente la storia.",
+    "Vai da uno sconosciuto e chiedigli quale membro del gruppo sembra più probabilmente ricercato dalla polizia. Deve anche spiegare il motivo.",
+    "Trova uno sconosciuto disposto a celebrare il funerale ufficiale della vita italiana di Matteo. Deve improvvisare un elogio funebre di almeno 20 secondi.",
+
+    "Scegli una persona del gruppo e improvvisa una proposta di matrimonio seria e appassionata davanti a tutti.",
+    "Fatti fare una foto da uno sconosciuto assumendo tutti insieme la posa più assurda possibile.",
+    "Vai da uno sconosciuto e chiedigli una foto dei piedi.",
+    "Il gruppo sceglie una persona nei tuoi contatti. Mandale soltanto: «Alla fine avevi ragione.» Non aggiungere altro per almeno 10 minuti.",
+    "Trova uno sconosciuto, e fagli dare un voto a delle foto dei piedi a tua scelta (almeno 5)."
 ];
 
-const DEFAULT_QUIZZES = [
-    {
-        question: "Qual è la capitale dell'Australia?",
-        options: [
-            "Sydney",
-            "Melbourne",
-            "Canberra",
-            "Perth"
-        ],
-        correct: 2
-    },
-    {
-        question: "Quanti cuori ha un polpo?",
-        options: [
-            "1",
-            "2",
-            "3",
-            "4"
-        ],
-        correct: 2
-    },
-    {
-        question: "Quale pianeta è il più grande del Sistema Solare?",
-        options: [
-            "Saturno",
-            "Giove",
-            "Nettuno",
-            "Terra"
-        ],
-        correct: 1
-    },
-    {
-        question: "In che anno cadde il Muro di Berlino?",
-        options: [
-            "1987",
-            "1988",
-            "1989",
-            "1991"
-        ],
-        correct: 2
-    },
-    {
-        question: "Quale animale ha le impronte digitali molto simili a quelle umane?",
-        options: [
-            "Koala",
-            "Gorilla",
-            "Panda",
-            "Bradipo"
-        ],
-        correct: 0
-    },
-    {
-        question: "Qual è l'elemento chimico con simbolo Au?",
-        options: [
-            "Argento",
-            "Oro",
-            "Alluminio",
-            "Rame"
-        ],
-        correct: 1
-    },
-    {
-        question: "Quale oceano è il più grande?",
-        options: [
-            "Atlantico",
-            "Indiano",
-            "Pacifico",
-            "Artico"
-        ],
-        correct: 2
-    },
-    {
-        question: "Quante ossa ha normalmente un adulto?",
-        options: [
-            "186",
-            "196",
-            "206",
-            "216"
-        ],
-        correct: 2
-    },
-    {
-        question: "Quale di questi NON è uno dei sette nani Disney in italiano?",
-        options: [
-            "Gongolo",
-            "Mammolo",
-            "Pisolo",
-            "Timido"
-        ],
-        correct: 3
-    },
-    {
-        question: "Qual è il mammifero più grande del mondo?",
-        options: [
-            "Elefante africano",
-            "Balenottera azzurra",
-            "Orca",
-            "Capodoglio"
-        ],
-        correct: 1
-    }
-];
-
+{
+    question: "Quale di queste è stata per anni una delle categorie più cercate su Pornhub a livello globale?",
+    options: [
+        "Mature",
+        "Japanese",
+        "Lesbian",
+        "Cosplay"
+    ],
+    correct: 2,
+    explanation: "Lesbian è comparsa ripetutamente ai vertici delle classifiche globali di ricerca e categorie di Pornhub."
+},
+{
+    question: "Per Matteo, i piedi stanno a una donna come X sta a una macchina. Cos'è X?",
+    options: [
+        "I cerchi",
+        "Gli specchietti",
+        "I fari",
+        "Il posteriore"
+    ],
+    correct: 1,
+    explanation: "Gli specchietti. Non cercate una logica universale: è Matteo."
+},
+{
+    question: "Quale di queste parti del corpo umano può aumentare maggiormente di dimensioni rispetto alla sua condizione normale?",
+    options: [
+        "Pupilla",
+        "Pene",
+        "Stomaco",
+        "Vescica"
+    ],
+    correct: 2,
+    explanation: "Lo stomaco può aumentare enormemente il proprio volume rispetto alla condizione di riposo."
+},
+{
+    question: "Quale di questi animali può respirare in parte attraverso il sedere?",
+    options: [
+        "Tartaruga",
+        "Pinguino",
+        "Polpo",
+        "Castoro"
+    ],
+    correct: 0,
+    explanation: "Alcune tartarughe possono effettuare respirazione cloacale, assorbendo ossigeno attraverso tessuti della cloaca."
+},
+{
+    question: "Quale di questi oggetti è stato realmente portato sulla Luna dagli astronauti dell'Apollo 14?",
+    options: [
+        "Una mazza da golf",
+        "Una bottiglia di whisky",
+        "Una pizza",
+        "Un giradischi"
+    ],
+    correct: 0,
+    explanation: "Alan Shepard portò una testa di mazza da golf e colpì due palline sulla Luna."
+}
 
 /* =========================================
    POTERI
