@@ -2172,25 +2172,27 @@ function chooseEventMode(mode)
             activeEventPlayerId
         );
 
-
     eventOverlay.classList.remove(
         "active"
     );
-
 
     if (player)
     {
         player.turns += 1;
     }
 
+    /*
+       Il Random Event è concluso.
+       Programmiamo ORA il prossimo,
+       una sola volta.
+    */
 
     scheduleNextRandomEvent();
 
-    saveGame();
-
-
     currentAutomaticEvent = null;
+    activeEventPlayerId = null;
 
+    saveGame();
 
     startGame(
         mode,
@@ -2294,14 +2296,12 @@ function completeSpecialEvent()
 function giveSaveShot(player)
 {
     /*
-       Max 1 per giocatore.
-       Se lo possiede già, non accumula.
+       Max 1 Salva-Shot per giocatore.
+       Il Random successivo NON viene
+       programmato qui.
     */
 
     player.saveShot = 1;
-
-    player.turns += 1;
-
 
     eventOverlayIcon.textContent =
         "🛡️";
@@ -2322,9 +2322,6 @@ function giveSaveShot(player)
         "hidden"
     );
 
-
-    scheduleNextRandomEvent();
-
     saveGame();
 }
 
@@ -2343,19 +2340,15 @@ function giveSpecialPower(player)
             )
         ];
 
-
     player.powers.push(
         power.id
     );
 
-
     player.turns += 1;
-
 
     eventOverlay.classList.remove(
         "active"
     );
-
 
     powerPlayerName.textContent =
         player.name.toUpperCase();
@@ -2366,10 +2359,12 @@ function giveSpecialPower(player)
     powerDescription.textContent =
         power.description;
 
-
     powerOverlay.classList.add(
         "active"
     );
+
+    saveGame();
+}
 
 
     scheduleNextRandomEvent();
