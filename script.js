@@ -1,954 +1,701 @@
-alert("SCRIPT CARICATO");
-/* =========================================================
-   DESPEDIDA
-   SCRIPT.JS
-========================================================= */
+/* =========================================
+   DESPEDIDA - PARTY EVENTS V2
+========================================= */
 
 
-/* =========================================================
-   VERITÀ
-========================================================= */
+/* =========================================
+   CONFIGURAZIONE
+========================================= */
 
-const truthCards = [
+const TEQUILA_INTERVAL = 30 * 60 * 1000;
+const QUIZ_INTERVAL = 10 * 60 * 1000;
 
-    "Qual è stata la tua peggiore figura di merda da ubriaco?",
+const EVENT_MIN_INTERVAL = 8 * 60 * 1000;
+const EVENT_MAX_INTERVAL = 18 * 60 * 1000;
 
-    "Qual è la persona a cui non dovresti scrivere ma a cui scriveresti dopo altri due drink?",
 
-    "Qual è stata la trombata peggiore della tua vita?",
+/* =========================================
+   MAZZI
+========================================= */
 
-    "Qual è la bugia più grossa che hai raccontato per rimorchiare?",
-
-    "Chi del gruppo presenteresti meno volentieri ai tuoi genitori?",
-
-    "Qual è la cosa più imbarazzante che hai fatto per qualcuno che ti piaceva?",
-
-    "Mostra l'ultima persona che hai cercato su Instagram.",
-
-    "Qual è una cosa che non hai mai confessato a questo gruppo?",
-
-    "Qual è il messaggio che più ti penti di aver mandato?",
-
-    "Qual è la cosa più strana che hai chiesto a letto?",
-
-    "A chi del gruppo affideresti meno volentieri 1.000 euro?",
-
-    "C'è qualcuno con cui ti penti di essere andato/a?",
-
-    "Hai mai avuto una cotta per qualcuno che uno dei presenti conosce?",
-
-    "Qual è il posto più assurdo in cui hai baciato qualcuno?",
-
-    "Qual è la scusa peggiore che hai usato per evitare un appuntamento?",
-
-    "A che età hai perso la verginità?",
-
-    "Qual è la cosa più infantile che fai ancora?",
-
-    "Hai mai usato sex toys?",
-
-    "Qual è la cosa più assurda che hai fatto per gelosia?",
-
-    "Quale ex o vecchia fiamma non vorresti assolutamente incontrare stasera?",
-
-    "Qual è il tuo body count?",
-
-    "Chi del gruppo sarebbe il peggior coinquilino?",
-
-    "Qual è stata la tua sbronza più memorabile?",
-
-    "Qual è una cosa che hai finto di capire per non fare brutta figura?",
-
-    "Ti sei mai cagato addosso?",
-
-    "Qual è la tua red flag più evidente?",
-
-    "Qual è la cosa più imbarazzante presente nella tua cronologia recente?",
-
-    "Chi del gruppo chiameresti per tirarti fuori da un guaio alle 4 del mattino?",
-
-    "Qual è la cosa più strana che ti hanno chiesto a letto?",
-
-    "Se dovessi scambiare la tua vita con quella di una persona del gruppo per un mese, chi sceglieresti?"
-
+const DEFAULT_TRUTHS = [
+    "Qual è la cosa più imbarazzante che hai fatto da ubriaco?",
+    "Chi di questa stanza conosci meno di quanto vorresti ammettere?",
+    "Qual è stata la tua peggior figura di merda?",
+    "Hai mai mentito a qualcuno presente qui?",
+    "Qual è il tuo peggior difetto in una relazione?",
+    "Chi chiameresti per primo se finissi nei guai stanotte?",
+    "Qual è una cosa che non hai mai confessato ai tuoi amici?",
+    "Qual è stata la tua peggior decisione sentimentale?",
+    "Con chi dei presenti andresti più volentieri in viaggio?",
+    "Qual è la bugia più assurda che hai raccontato?"
 ];
 
-
-/* =========================================================
-   OBBLIGHI
-========================================================= */
-
-const dareCards = [
-
-    "Convinci uno sconosciuto che il festeggiato è una celebrità italiana.",
-
-    "Ottieni una dedica scritta da uno sconosciuto per la nuova vita in Svizzera.",
-
-    "Fatti una foto con uno sconosciuto entro 5 minuti.",
-
-    "Prova a vendere un oggetto scelto dal gruppo a uno sconosciuto. Sono accettati anche uno shot o un drink come pagamento.",
-
-    "Canta una serenata a uno sconosciuto o una sconosciuta.",
-
-    "Fino alla prossima carta, ogni volta che finisci una frase devi fare il verso di Michael Jackson. Se te ne dimentichi, penitenza.",
-
-    "Intervista seriamente uno sconosciuto. Durante l'intervista, a un certo punto chiedigli di che colore ha le mutande.",
-
-    "Manda a un contatto scelto dal gruppo un vocale innocuo ma completamente senza contesto.",
-
-    "Fatti scrivere addosso il numero di telefono di uno sconosciuto. Se ci riesci, ti risparmi il prossimo shot.",
-
-    "Canta una canzone a tua scelta dal punto più alto che riesci a trovare.",
-
-    "Chiedi a uno sconosciuto qual è il suo body count.",
-
-    "Ottieni un complimento da qualcuno che non conosci.",
-
-    "Chiedi a uno sconosciuto di sposarti.",
-
-    "Trova un gruppo di sconosciuti e convincili a giocare a Bomba o Passi con voi.",
-
-    "Dai il tuo numero di telefono a uno sconosciuto accompagnandolo con una dedica.",
-
-    "Il gruppo sceglie la tua foto profilo. Devi tenerla per 24 ore.",
-
-    "Trova qualcuno con un cane. Chiedi «Posso accarezzarlo?» e, se il padrone sta al gioco e acconsente, accarezza scherzosamente il padrone invece del cane.",
-
-    "Trova qualcuno che registri un video rivolto a Matteo dicendo con estrema serietà: «Spero che la prostata guarisca presto, Matteo.»",
-
-    "Non puoi parlare fino al prossimo Tequila Time. Se parli, scatta la penitenza.",
-
-    "Indossa gli occhiali scuri e usa il bastone preparato per la serata fino alla prossima carta, facendoti guidare dagli altri.",
-
-    "Vai da uno sconosciuto scelto dal gruppo e sussurragli all'orecchio: «Ho tre capezzoli.» Poi vattene senza dare spiegazioni.",
-
-    "Fai un brindisi solenne alla sorella del Cini. Il Cini dovrà registrarlo e mandarglielo.",
-
-    "Convinci uno sconosciuto a cantare una canzone con te. Hai due tentativi, altrimenti penitenza.",
-
-    "Vai da uno sconosciuto e chiedigli di fare una foto insieme. Subito prima della foto digli con assoluta serietà: «Questa è la mia ultima foto da uomo/donna.» Non dare ulteriori spiegazioni.",
-
-    "Vai da uno sconosciuto e digli qualcosa di volutamente poco chiaro. Quando risponde «Ah?», rispondi semplicemente: «Suca.» Poi vattene.",
-
-    "Fino al prossimo tequila time dovrai parlare come francesca imbruttita",
-
-    "Vai da uno sconosciuto chiamandolo con il primo nome che ti viene in mente e fai finta di conoscerlo. Porta avanti la conversazione per almeno un minuto.",
-
-    "Chiedi a uno sconosciuto di registrare un video di 10 secondi in cui racconta come vi siete conosciuti, lasciando che inventi completamente la storia.",
-
-    "Vai da uno sconosciuto e chiedigli quale membro del gruppo sembra più probabilmente ricercato dalla polizia. Deve anche spiegare il motivo.",
-
-    "Trova uno sconosciuto disposto a celebrare il funerale ufficiale della vita italiana di Matteo. Deve improvvisare un elogio funebre di almeno 20 secondi."
-
+const DEFAULT_DARES = [
+    "Fai un brindisi drammatico alla partenza di Matteo.",
+    "Imita una persona presente finché qualcuno indovina.",
+    "Lascia che il gruppo scelga una foto dalla tua galleria da mostrare.",
+    "Parla con un accento assurdo fino al prossimo turno.",
+    "Fai 15 squat mentre reciti un discorso motivazionale.",
+    "Manda un vocale di 10 secondi scelto dal gruppo.",
+    "Fai una dichiarazione d'amore a un oggetto nella stanza.",
+    "Lascia che qualcuno ti faccia una domanda a cui devi rispondere sinceramente.",
+    "Racconta una storia imbarazzante come se fosse un'impresa eroica.",
+    "Fai una passerella drammatica davanti a tutti."
 ];
 
-/* =========================================================
-   QUIZ
-========================================================= */
-
-const quizQuestions = [
-
+const DEFAULT_QUIZZES = [
     {
-        question:
-            "Qual è il nome scientifico del genere di ragni sudamericani il cui veleno può provocare priapismo?",
-
+        question: "Qual è la capitale dell'Australia?",
         options: [
-            "Latrodectus",
-            "Phoneutria",
-            "Loxosceles",
-            "Atrax"
+            "Sydney",
+            "Melbourne",
+            "Canberra",
+            "Perth"
         ],
-
-        correct: 1,
-
-        explanation:
-            "Phoneutria. Il veleno di alcune specie può provocare priapismo."
+        correct: 2
     },
-
     {
-        question:
-            "Ne Il Signore degli Anelli, qual è il nome della spada riforgiata dai frammenti di Narsil?",
-
+        question: "Quanti cuori ha un polpo?",
         options: [
-            "Glamdring",
-            "Orcrist",
-            "Andúril",
-            "Anglachel"
+            "1",
+            "2",
+            "3",
+            "4"
         ],
-
-        correct: 2,
-
-        explanation:
-            "Andúril, la spada di Aragorn riforgiata dai frammenti di Narsil."
+        correct: 2
     },
-
     {
-        question:
-            "Quale elemento chimico è indicato dal simbolo W?",
-
+        question: "Quale pianeta è il più grande del Sistema Solare?",
         options: [
-            "Tungsteno",
-            "Titanio",
-            "Tantalio",
-            "Vanadio"
+            "Saturno",
+            "Giove",
+            "Nettuno",
+            "Terra"
         ],
-
-        correct: 0,
-
-        explanation:
-            "Il simbolo W deriva dal nome Wolfram. L'elemento è il tungsteno."
+        correct: 1
     },
-
     {
-        question:
-            "Quale imperatore promulgò con Graziano e Valentiniano II l'Editto di Tessalonica del 380?",
-
+        question: "In che anno cadde il Muro di Berlino?",
         options: [
-            "Costantino I",
-            "Teodosio I",
-            "Giustiniano I",
-            "Diocleziano"
+            "1987",
+            "1988",
+            "1989",
+            "1991"
         ],
-
-        correct: 1,
-
-        explanation:
-            "Teodosio I."
+        correct: 2
     },
-
     {
-        question:
-            "In 2001: Odissea nello spazio, cosa significa HAL?",
-
+        question: "Quale animale ha le impronte digitali molto simili a quelle umane?",
         options: [
-            "Human Algorithmic Logic",
-            "Heuristic Artificial Language",
-            "Heuristically Programmed ALgorithmic Computer",
-            "High-level Artificial Logic"
+            "Koala",
+            "Gorilla",
+            "Panda",
+            "Bradipo"
         ],
-
-        correct: 2,
-
-        explanation:
-            "HAL significa Heuristically Programmed ALgorithmic Computer."
+        correct: 0
     },
-
     {
-        question:
-            "Quale di questi animali possiede tre canali vaginali?",
-
+        question: "Qual è l'elemento chimico con simbolo Au?",
         options: [
-            "Canguro",
-            "Delfino",
-            "Iena",
-            "Ornitorinco"
+            "Argento",
+            "Oro",
+            "Alluminio",
+            "Rame"
         ],
-
-        correct: 0,
-
-        explanation:
-            "Il canguro, come altri marsupiali, possiede una particolare anatomia riproduttiva."
+        correct: 1
     },
-
     {
-        question:
-            "Quale di questi NON è uno dei sette nani Disney?",
-
+        question: "Quale oceano è il più grande?",
+        options: [
+            "Atlantico",
+            "Indiano",
+            "Pacifico",
+            "Artico"
+        ],
+        correct: 2
+    },
+    {
+        question: "Quante ossa ha normalmente un adulto?",
+        options: [
+            "186",
+            "196",
+            "206",
+            "216"
+        ],
+        correct: 2
+    },
+    {
+        question: "Quale di questi NON è uno dei sette nani Disney in italiano?",
         options: [
             "Gongolo",
             "Mammolo",
             "Pisolo",
             "Timido"
         ],
-
-        correct: 3,
-
-        explanation:
-            "Timido non è uno dei sette nani."
+        correct: 3
     },
-
     {
-        question:
-            "Quanto tempo servirebbe per percorrere la distanza media Terra-Luna viaggiando continuamente a 10 km/h?",
-
+        question: "Qual è il mammifero più grande del mondo?",
         options: [
-            "Circa 44 giorni",
-            "Circa 160 giorni",
-            "Circa 4,4 anni",
-            "Circa 44 anni"
+            "Elefante africano",
+            "Balenottera azzurra",
+            "Orca",
+            "Capodoglio"
         ],
-
-        correct: 2,
-
-        explanation:
-            "Circa 4,4 anni."
-    },
-
-    {
-        question:
-            "Qual è la capitale della Birmania, oggi Myanmar?",
-
-        options: [
-            "Yangon",
-            "Mandalay",
-            "Naypyidaw",
-            "Bago"
-        ],
-
-        correct: 2,
-
-        explanation:
-            "Naypyidaw."
-    },
-
-    {
-        question:
-            "Secondo la misura pubblicamente attribuita a Rocco Siffredi, quanto sarebbe lungo il suo pene in erezione?",
-
-        options: [
-            "19 cm",
-            "21 cm",
-            "24 cm",
-            "28 cm"
-        ],
-
-        correct: 2,
-
-        explanation:
-            "La cifra comunemente riportata è circa 24 cm."
-    },
-
-    {
-        question:
-            "Un uomo guarda una fotografia e dice: «Non ho fratelli né sorelle, ma il padre di quest'uomo è figlio di mio padre». Chi c'è nella fotografia?",
-
-        options: [
-            "Suo padre",
-            "Suo figlio",
-            "Lui stesso",
-            "Suo cugino"
-        ],
-
-        correct: 1,
-
-        explanation:
-            "Suo figlio."
-    },
-
-    {
-        question:
-            "Quale di questi è l'unico numero primo pari?",
-
-        options: [
-            "0",
-            "1",
-            "2",
-            "4"
-        ],
-
-        correct: 2,
-
-        explanation:
-            "2 è l'unico numero primo pari."
-    },
-
-    {
-        question:
-            "In Dark Souls, chi è il boss finale della storia principale?",
-
-        options: [
-            "Artorias",
-            "Gwyn",
-            "Ornstein",
-            "Manus"
-        ],
-
-        correct: 1,
-
-        explanation:
-            "Gwyn, Lord of Cinder."
-    },
-
-    {
-        question:
-            "Quale pianeta del Sistema Solare ha il periodo di rotazione siderale più lungo?",
-
-        options: [
-            "Mercurio",
-            "Venere",
-            "Marte",
-            "Nettuno"
-        ],
-
-        correct: 1,
-
-        explanation:
-            "Venere."
-    },
-
-    {
-        question:
-            "Quale di queste è la parola più lunga?",
-
-        options: [
-            "Kraftfahrzeughaftpflichtversicherung",
-            "Aufmerksamkeitsdefizit-Hyperaktivitätsstörung",
-            "Donaudampfschifffahrtsgesellschaft",
-            "Finanzdienstleistungsunternehmen"
-        ],
-
-        correct: 1,
-
-        explanation:
-            "Aufmerksamkeitsdefizit-Hyperaktivitätsstörung."
-    },
-
-    {
-        question:
-            "Come si chiama la nave comandata da Shepard all'inizio del primo Mass Effect?",
-
-        options: [
-            "Normandy SR-1",
-            "Normandy SR-2",
-            "Tempest",
-            "Destiny Ascension"
-        ],
-
-        correct: 0,
-
-        explanation:
-            "SSV Normandy SR-1."
-    },
-
-    {
-        question:
-            "Quale paese possiede più piramidi antiche conosciute?",
-
-        options: [
-            "Egitto",
-            "Messico",
-            "Sudan",
-            "Perù"
-        ],
-
-        correct: 2,
-
-        explanation:
-            "Il Sudan."
-    },
-
-    {
-        question:
-            "Quale numero romano rappresenta 500?",
-
-        options: [
-            "L",
-            "C",
-            "D",
-            "M"
-        ],
-
-        correct: 2,
-
-        explanation:
-            "D rappresenta 500."
-    },
-
-    {
-        question:
-            "In ordine di grandezza, quanti normali rotoli di carta igienica servirebbero per occupare il volume del Sole?",
-
-        options: [
-            "10²⁵",
-            "10³⁰",
-            "10³⁵",
-            "10⁴⁰"
-        ],
-
-        correct: 1,
-
-        explanation:
-            "L'ordine di grandezza è circa 10³⁰ rotoli."
-    },
-
-    {
-        question:
-            "Nel primo The Legend of Zelda, come si chiama la principessa che Link deve salvare?",
-
-        options: [
-            "Hylia",
-            "Zelda",
-            "Midna",
-            "Ruto"
-        ],
-
-        correct: 1,
-
-        explanation:
-            "Zelda."
-    },
-
-    {
-        question:
-            "Sul foglio Excel di Cri, a quanto ammonta il mio ritardo?",
-
-        options: [
-            "17 minuti",
-            "43 minuti",
-            "1 ora e 12 minuti",
-            "2 ore e 6 minuti"
-        ],
-
-        correct: null,
-
-        explanation:
-            "Il foglio Excel di Cri custodisce una verità più oscura."
-    },
-
-    {
-        question:
-            "Qual è il mio soprannome?",
-
-        options: [
-            "Duca di Rifredi",
-            "Principe di Rifredi",
-            "Conte di Rifredi",
-            "Marchese di Rifredi"
-        ],
-
-        correct: 1,
-
-        explanation:
-            "Principe di Rifredi."
-    },
-
-    {
-        question:
-            "Qual è la mia colazione preferita?",
-
-        options: [
-            "Cornetto e cappuccino",
-            "Uova e bacon",
-            "Pancarrè e Nutella",
-            "Caffè e sigaretta"
-        ],
-
-        correct: 2,
-
-        explanation:
-            "Pancarrè e Nutella."
-    },
-
-    {
-        question:
-            "Cosa è successo realmente al Pavo la sera in cui Cristiano si è ubriacato?",
-
-        options: [],
-
-        correct: "open",
-
-        explanation:
-            "La verità è ancora oggetto di indagine."
-    },
-
-    {
-        question:
-            "Qual è il mio drink preferito?",
-
-        options: [
-            "Negroni",
-            "Moscow Mule",
-            "Old Fashioned",
-            "Gin Tonic"
-        ],
-
-        correct: 2,
-
-        explanation:
-            "Old Fashioned."
-    },
-
-    {
-        question:
-            "Di quale locale è la barista che mi ha rubato il cuore?",
-
-        options: [
-            "Red Garter",
-            "Post Office",
-            "YAB",
-            "Space"
-        ],
-
-        correct: 1,
-
-        explanation:
-            "Post Office."
-    },
-
-    {
-        question:
-            "Come si chiama la futura signora Furnari?",
-
-        options: [
-            "Beatrice",
-            "Giulia",
-            "Eleonora",
-            "Federica"
-        ],
-
-        correct: 2,
-
-        explanation:
-            "Eleonora."
-    },
-
-    {
-        question:
-            "Che lavoro faccio?",
-
-        options: [
-            "Instrumentation Engineer",
-            "Automation Engineer",
-            "Lead Engineer",
-            "Un cazzo"
-        ],
-
-        correct: 3,
-
-        explanation:
-            "Un cazzo. Instrumentation Engineer era soltanto la risposta professionalmente sensata."
-    },
-
-    {
-        question:
-            "Come si chiama il mio kebabbaro di fiducia?",
-
-        options: [
-            "Ahmed",
-            "Karim",
-            "Mohamed",
-            "Mustafa"
-        ],
-
-        correct: 2,
-
-        explanation:
-            "Mohamed."
-    },
-
-    {
-        question:
-            "Qual è la prima cosa che guardo in una ragazza?",
-
-        options: [
-            "Gli occhi",
-            "Il sorriso",
-            "Il carattere",
-            "Dipende se è di spalle"
-        ],
-
-        correct: 3,
-
-        explanation:
-            "Dipende se è di spalle."
+        correct: 1
     }
-
 ];
 
 
-/* =========================================================
-   STATO GENERALE
-========================================================= */
+/* =========================================
+   POTERI
+========================================= */
 
-let currentMode = null;
+const SPECIAL_POWERS = [
+    {
+        id: "bounce",
+        name: "🔄 RIMBALZO",
+        description:
+            "Puoi passare una futura Verità o un futuro Obbligo a un altro giocatore."
+    },
+    {
+        id: "revenge",
+        name: "😈 VENDETTA",
+        description:
+            "Puoi scegliere la vittima di un futuro evento."
+    },
+    {
+        id: "immunity",
+        name: "🛡 IMMUNITÀ",
+        description:
+            "Puoi rifiutare un futuro Obbligo."
+    },
+    {
+        id: "double",
+        name: "💀 DOPPIO GUAIO",
+        description:
+            "Puoi scegliere una persona che affronti con te un futuro evento."
+    }
+];
 
-let usedTruthCards = [];
-let usedDareCards = [];
-let usedQuizQuestions = [];
 
-let currentQuizIndex = null;
-let selectedQuizAnswer = null;
-let quizRevealed = false;
+/* =========================================
+   STATO
+========================================= */
 
+let truths = [];
+let dares = [];
+let quizzes = [];
 
-/* =========================
-   GIOCATORI
-========================= */
+let truthIndex = 0;
+let dareIndex = 0;
+let quizIndex = 0;
 
 let players = [];
-
 let celebrantId = null;
 
-let lastSelectedPlayerId = null;
-
-
-/* =========================
-   EVENTO ATTIVO
-========================= */
-
-let activeEventPlayerId = null;
-
-let eventAwaitingCompletion = false;
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-/*
-    TEQUILA:
-    ogni 30 minuti
-*/
-
-const TEQUILA_INTERVAL =
-    30 * 60 * 1000;
-
-
-/*
-    EVENTO:
-    casuale tra 8 e 18 minuti
-*/
-
-const EVENT_MIN =
-    8 * 60 * 1000;
-
-const EVENT_MAX =
-    18 * 60 * 1000;
-
+let currentMode = null;
+let currentQuiz = null;
+let currentQuizRevealed = false;
 
 let nightRunning = false;
 
 let tequilaTarget = null;
-
+let quizTarget = null;
 let eventTarget = null;
 
-let tequilaAlertOpen = false;
-
-let eventAlertOpen = false;
+let lastSelectedPlayerId = null;
 
 
-/* =========================================================
-   DOM
-========================================================= */
+/* =========================================
+   EVENTI AUTOMATICI
+========================================= */
 
-const homeScreen =
-    document.getElementById(
-        "home-screen"
-    );
+let eventQueue = [];
 
-const gameScreen =
-    document.getElementById(
-        "game-screen"
-    );
+let currentAutomaticEvent = null;
 
-const quizScreen =
-    document.getElementById(
-        "quiz-screen"
-    );
+let activeEventPlayerId = null;
+
+let quizTimeQuestion = null;
+let quizTimeRevealed = false;
+
+
+/* =========================================
+   ELEMENTI DOM
+========================================= */
 
 const playersScreen =
-    document.getElementById(
-        "players-screen"
-    );
+    document.getElementById("players-screen");
 
+const homeScreen =
+    document.getElementById("home-screen");
 
-/* GAME */
+const gameScreen =
+    document.getElementById("game-screen");
 
-const card =
-    document.getElementById(
-        "card"
-    );
+const quizScreen =
+    document.getElementById("quiz-screen");
 
-const cardType =
-    document.getElementById(
-        "card-type"
-    );
-
-const cardText =
-    document.getElementById(
-        "card-text"
-    );
-
-const cardNumber =
-    document.getElementById(
-        "card-number"
-    );
-
-const cardIcon =
-    document.getElementById(
-        "card-icon"
-    );
-
-const gameTitle =
-    document.getElementById(
-        "game-title"
-    );
-
-const drawButton =
-    document.getElementById(
-        "draw-button"
-    );
-
-
-/* QUIZ */
-
-const quizQuestion =
-    document.getElementById(
-        "quiz-question"
-    );
-
-const quizOptions =
-    document.getElementById(
-        "quiz-options"
-    );
-
-const quizResult =
-    document.getElementById(
-        "quiz-result"
-    );
-
-const quizNumber =
-    document.getElementById(
-        "quiz-number"
-    );
-
-const quizMainButton =
-    document.getElementById(
-        "quiz-main-button"
-    );
-
-const quizCard =
-    document.querySelector(
-        ".quiz-card"
-    );
-
-
-/* PLAYERS */
 
 const playersList =
-    document.getElementById(
-        "players-list"
-    );
+    document.getElementById("players-list");
 
 const celebrantSelect =
-    document.getElementById(
-        "celebrant-select"
-    );
+    document.getElementById("celebrant-select");
 
 const playersError =
-    document.getElementById(
-        "players-error"
-    );
+    document.getElementById("players-error");
 
-const playersHomeCount =
-    document.getElementById(
-        "players-home-count"
-    );
-
-
-/* TIMER */
 
 const tequilaTimer =
-    document.getElementById(
-        "tequila-timer"
-    );
+    document.getElementById("tequila-timer");
+
+const quizTimer =
+    document.getElementById("quiz-timer");
 
 const eventTimer =
-    document.getElementById(
-        "event-timer"
-    );
+    document.getElementById("event-timer");
 
 const nightButton =
-    document.getElementById(
-        "night-button"
-    );
+    document.getElementById("night-button");
 
 
-/* OVERLAY */
+const playersHomeCount =
+    document.getElementById("players-home-count");
 
-const eventOverlay =
-    document.getElementById(
-        "event-overlay"
-    );
+const truthHomeCounter =
+    document.getElementById("truth-home-counter");
 
-const tequilaOverlay =
-    document.getElementById(
-        "tequila-overlay"
-    );
+const dareHomeCounter =
+    document.getElementById("dare-home-counter");
 
-const eventPlayerName =
-    document.getElementById(
-        "event-player-name"
-    );
+const quizHomeCounter =
+    document.getElementById("quiz-home-counter");
 
 
-/* PLAYER BANNERS */
+const gameTitle =
+    document.getElementById("game-title");
 
 const activePlayerBanner =
-    document.getElementById(
-        "active-player-banner"
-    );
+    document.getElementById("active-player-banner");
+
+const cardIcon =
+    document.getElementById("card-icon");
+
+const cardType =
+    document.getElementById("card-type");
+
+const cardText =
+    document.getElementById("card-text");
+
+const cardNumber =
+    document.getElementById("card-number");
+
+const drawButton =
+    document.getElementById("draw-button");
+
 
 const quizPlayerBanner =
-    document.getElementById(
-        "quiz-player-banner"
+    document.getElementById("quiz-player-banner");
+
+const quizQuestion =
+    document.getElementById("quiz-question");
+
+const quizOptions =
+    document.getElementById("quiz-options");
+
+const quizResult =
+    document.getElementById("quiz-result");
+
+const quizNumber =
+    document.getElementById("quiz-number");
+
+const quizMainButton =
+    document.getElementById("quiz-main-button");
+
+
+const eventOverlay =
+    document.getElementById("event-overlay");
+
+const eventOverlayIcon =
+    document.getElementById("event-overlay-icon");
+
+const eventOverlayLabel =
+    document.getElementById("event-overlay-label");
+
+const eventPlayerName =
+    document.getElementById("event-player-name");
+
+const eventDescription =
+    document.getElementById("event-description");
+
+const eventStandardActions =
+    document.getElementById("event-standard-actions");
+
+const eventSpecialActions =
+    document.getElementById("event-special-actions");
+
+const eventSpecialButton =
+    document.getElementById("event-special-button");
+
+
+const tequilaOverlay =
+    document.getElementById("tequila-overlay");
+
+const shotSaversContainer =
+    document.getElementById("shot-savers-container");
+
+
+const quizTimeOverlay =
+    document.getElementById("quiz-time-overlay");
+
+const quizTimeQuestionElement =
+    document.getElementById("quiz-time-question");
+
+const quizTimeOptions =
+    document.getElementById("quiz-time-options");
+
+const quizTimeResult =
+    document.getElementById("quiz-time-result");
+
+const quizTimeButton =
+    document.getElementById("quiz-time-button");
+
+
+const powerOverlay =
+    document.getElementById("power-overlay");
+
+const powerPlayerName =
+    document.getElementById("power-player-name");
+
+const powerName =
+    document.getElementById("power-name");
+
+const powerDescription =
+    document.getElementById("power-description");
+
+
+/* =========================================
+   UTILITY
+========================================= */
+
+function generateId()
+{
+    return (
+        Date.now().toString(36) +
+        Math.random().toString(36).slice(2)
+    );
+}
+
+
+function shuffle(array)
+{
+    const copy = [...array];
+
+    for (
+        let i = copy.length - 1;
+        i > 0;
+        i--
+    )
+    {
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            copy[i],
+            copy[j]
+        ] = [
+            copy[j],
+            copy[i]
+        ];
+    }
+
+    return copy;
+}
+
+
+function randomEventDelay()
+{
+    return (
+        EVENT_MIN_INTERVAL +
+        Math.floor(
+            Math.random() *
+            (
+                EVENT_MAX_INTERVAL -
+                EVENT_MIN_INTERVAL +
+                1
+            )
+        )
+    );
+}
+
+
+function formatTime(milliseconds)
+{
+    const totalSeconds =
+        Math.max(
+            0,
+            Math.ceil(milliseconds / 1000)
+        );
+
+    const minutes =
+        Math.floor(totalSeconds / 60);
+
+    const seconds =
+        totalSeconds % 60;
+
+    return (
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0")
+    );
+}
+
+
+function vibrate()
+{
+    if (navigator.vibrate)
+    {
+        navigator.vibrate(150);
+    }
+}
+
+
+function vibratePattern()
+{
+    if (navigator.vibrate)
+    {
+        navigator.vibrate([
+            150,
+            100,
+            150,
+            100,
+            300
+        ]);
+    }
+}
+
+
+function hideAllScreens()
+{
+    playersScreen.classList.remove("active");
+    homeScreen.classList.remove("active");
+    gameScreen.classList.remove("active");
+    quizScreen.classList.remove("active");
+}
+
+
+function hidePlayerBanners()
+{
+    activePlayerBanner.classList.remove("active");
+    quizPlayerBanner.classList.remove("active");
+
+    activePlayerBanner.textContent = "";
+    quizPlayerBanner.textContent = "";
+}
+
+
+function getPlayerById(id)
+{
+    return players.find(
+        player => player.id === id
+    );
+}
+
+
+/* =========================================
+   LOCAL STORAGE
+========================================= */
+
+function saveGame()
+{
+    localStorage.setItem(
+        "despedida_truth",
+        JSON.stringify(truths)
+    );
+
+    localStorage.setItem(
+        "despedida_dare",
+        JSON.stringify(dares)
+    );
+
+    localStorage.setItem(
+        "despedida_quiz",
+        JSON.stringify(quizzes)
+    );
+
+    localStorage.setItem(
+        "despedida_players",
+        JSON.stringify(players)
+    );
+
+    if (celebrantId)
+    {
+        localStorage.setItem(
+            "despedida_celebrant",
+            celebrantId
+        );
+    }
+    else
+    {
+        localStorage.removeItem(
+            "despedida_celebrant"
+        );
+    }
+
+    if (lastSelectedPlayerId)
+    {
+        localStorage.setItem(
+            "despedida_last_player",
+            lastSelectedPlayerId
+        );
+    }
+    else
+    {
+        localStorage.removeItem(
+            "despedida_last_player"
+        );
+    }
+
+    localStorage.setItem(
+        "despedida_night_running",
+        String(nightRunning)
     );
 
 
-/* =========================================================
-   CARICAMENTO
-========================================================= */
+    saveTarget(
+        "despedida_tequila_target",
+        tequilaTarget
+    );
+
+    saveTarget(
+        "despedida_quiz_target",
+        quizTarget
+    );
+
+    saveTarget(
+        "despedida_event_target",
+        eventTarget
+    );
+
+
+    localStorage.setItem(
+        "despedida_event_queue",
+        JSON.stringify(eventQueue)
+    );
+
+    if (currentAutomaticEvent)
+    {
+        localStorage.setItem(
+            "despedida_current_event",
+            JSON.stringify(
+                currentAutomaticEvent
+            )
+        );
+    }
+    else
+    {
+        localStorage.removeItem(
+            "despedida_current_event"
+        );
+    }
+}
+
+
+function saveTarget(key, value)
+{
+    if (value)
+    {
+        localStorage.setItem(
+            key,
+            String(value)
+        );
+    }
+    else
+    {
+        localStorage.removeItem(key);
+    }
+}
+
 
 function loadGame()
 {
+    truths =
+        loadArray(
+            "despedida_truth",
+            DEFAULT_TRUTHS
+        );
 
-    try
+    dares =
+        loadArray(
+            "despedida_dare",
+            DEFAULT_DARES
+        );
+
+    quizzes =
+        loadArray(
+            "despedida_quiz",
+            DEFAULT_QUIZZES
+        );
+
+
+    const storedPlayers =
+        localStorage.getItem(
+            "despedida_players"
+        );
+
+    if (storedPlayers)
     {
-
-        usedTruthCards =
-            JSON.parse(
-                localStorage.getItem(
-                    "despedida_truth"
-                )
-            ) || [];
-
-
-        usedDareCards =
-            JSON.parse(
-                localStorage.getItem(
-                    "despedida_dare"
-                )
-            ) || [];
-
-
-        usedQuizQuestions =
-            JSON.parse(
-                localStorage.getItem(
-                    "despedida_quiz"
-                )
-            ) || [];
-
-
-        players =
-            JSON.parse(
-                localStorage.getItem(
-                    "despedida_players"
-                )
-            ) || [];
-
+        try
+        {
+            players =
+                JSON.parse(storedPlayers);
+        }
+        catch
+        {
+            players = [];
+        }
     }
-    catch (error)
-    {
 
-        usedTruthCards = [];
 
-        usedDareCards = [];
+    players =
+        players.map(
+            player => ({
+                id:
+                    player.id ||
+                    generateId(),
 
-        usedQuizQuestions = [];
+                name:
+                    player.name ||
+                    "Giocatore",
 
-        players = [];
+                turns:
+                    Number(
+                        player.turns
+                    ) || 0,
 
-    }
+                quizCorrect:
+                    Number(
+                        player.quizCorrect
+                    ) || 0,
+
+                saveShot:
+                    Number(
+                        player.saveShot
+                    ) || 0,
+
+                powers:
+                    Array.isArray(
+                        player.powers
+                    )
+                        ? player.powers
+                        : []
+            })
+        );
 
 
     celebrantId =
@@ -970,1467 +717,212 @@ function loadGame()
 
 
     tequilaTarget =
-        Number(
-            localStorage.getItem(
-                "despedida_tequila_target"
-            )
-        ) || null;
-
-
-    eventTarget =
-        Number(
-            localStorage.getItem(
-                "despedida_event_target"
-            )
-        ) || null;
-
-
-    /*
-        Se la pagina viene aggiornata
-        mentre la serata è attiva
-        ma manca uno dei timestamp,
-        lo ricreiamo.
-    */
-
-    if (nightRunning)
-    {
-
-        const now =
-            Date.now();
-
-
-        if (!tequilaTarget)
-        {
-
-            tequilaTarget =
-                now +
-                TEQUILA_INTERVAL;
-
-        }
-
-
-        if (!eventTarget)
-        {
-
-            eventTarget =
-                now +
-                randomEventDelay();
-
-        }
-
-    }
-
-
-    updateHomeCounters();
-
-    updatePlayersHome();
-
-    updateNightUI();
-
-}
-
-
-/* =========================================================
-   SALVATAGGIO
-========================================================= */
-
-function saveGame()
-{
-
-    localStorage.setItem(
-        "despedida_truth",
-        JSON.stringify(
-            usedTruthCards
-        )
-    );
-
-
-    localStorage.setItem(
-        "despedida_dare",
-        JSON.stringify(
-            usedDareCards
-        )
-    );
-
-
-    localStorage.setItem(
-        "despedida_quiz",
-        JSON.stringify(
-            usedQuizQuestions
-        )
-    );
-
-
-    localStorage.setItem(
-        "despedida_players",
-        JSON.stringify(
-            players
-        )
-    );
-
-
-    if (celebrantId)
-    {
-
-        localStorage.setItem(
-            "despedida_celebrant",
-            celebrantId
-        );
-
-    }
-    else
-    {
-
-        localStorage.removeItem(
-            "despedida_celebrant"
-        );
-
-    }
-
-
-    if (lastSelectedPlayerId)
-    {
-
-        localStorage.setItem(
-            "despedida_last_player",
-            lastSelectedPlayerId
-        );
-
-    }
-    else
-    {
-
-        localStorage.removeItem(
-            "despedida_last_player"
-        );
-
-    }
-
-
-    localStorage.setItem(
-        "despedida_night_running",
-        String(
-            nightRunning
-        )
-    );
-
-
-    if (tequilaTarget)
-    {
-
-        localStorage.setItem(
-            "despedida_tequila_target",
-            String(
-                tequilaTarget
-            )
-        );
-
-    }
-    else
-    {
-
-        localStorage.removeItem(
+        loadTarget(
             "despedida_tequila_target"
         );
 
-    }
-
-
-    if (eventTarget)
-    {
-
-        localStorage.setItem(
-            "despedida_event_target",
-            String(
-                eventTarget
-            )
+    quizTarget =
+        loadTarget(
+            "despedida_quiz_target"
         );
 
-    }
-    else
-    {
-
-        localStorage.removeItem(
+    eventTarget =
+        loadTarget(
             "despedida_event_target"
         );
 
+
+    const storedQueue =
+        localStorage.getItem(
+            "despedida_event_queue"
+        );
+
+    if (storedQueue)
+    {
+        try
+        {
+            eventQueue =
+                JSON.parse(storedQueue);
+
+            if (!Array.isArray(eventQueue))
+            {
+                eventQueue = [];
+            }
+        }
+        catch
+        {
+            eventQueue = [];
+        }
     }
 
-}
+
+    const storedCurrent =
+        localStorage.getItem(
+            "despedida_current_event"
+        );
+
+    if (storedCurrent)
+    {
+        try
+        {
+            currentAutomaticEvent =
+                JSON.parse(storedCurrent);
+        }
+        catch
+        {
+            currentAutomaticEvent = null;
+        }
+    }
 
 
-/* =========================================================
-   SCREEN MANAGEMENT
-========================================================= */
+    if (nightRunning)
+    {
+        const now = Date.now();
 
-function hideScreens()
-{
+        if (!tequilaTarget)
+        {
+            tequilaTarget =
+                now + TEQUILA_INTERVAL;
+        }
 
-    homeScreen.classList.remove(
-        "active"
-    );
+        if (!quizTarget)
+        {
+            quizTarget =
+                now + QUIZ_INTERVAL;
+        }
 
-    gameScreen.classList.remove(
-        "active"
-    );
-
-    quizScreen.classList.remove(
-        "active"
-    );
-
-    playersScreen.classList.remove(
-        "active"
-    );
-
-}
-
-
-function goHome()
-{
-
-    hideScreens();
-
-
-    homeScreen.classList.add(
-        "active"
-    );
-
-
-    currentMode = null;
+        if (
+            !eventTarget &&
+            !currentAutomaticEvent
+        )
+        {
+            eventTarget =
+                now + randomEventDelay();
+        }
+    }
 
 
     updateHomeCounters();
-
     updatePlayersHome();
-
+    updateNightUI();
 }
 
 
-/* =========================================================
-   AVVIO VERITÀ / OBBLIGO / QUIZ
-========================================================= */
-
-function startGame(mode)
+function loadArray(key, fallback)
 {
+    const stored =
+        localStorage.getItem(key);
 
-    currentMode = mode;
-
-
-    hideScreens();
-
-
-    /*
-        QUIZ
-    */
-
-    if (mode === "quiz")
+    if (!stored)
     {
-
-        quizScreen.classList.add(
-            "active"
-        );
-
-
-        resetQuizDisplay();
-
-
-        showActivePlayer(
-            quizPlayerBanner
-        );
-
-
-        return;
-
+        return shuffle(fallback);
     }
 
-
-    /*
-        VERITÀ / OBBLIGO
-    */
-
-    gameScreen.classList.add(
-        "active"
-    );
-
-
-    showActivePlayer(
-        activePlayerBanner
-    );
-
-
-    if (mode === "truth")
+    try
     {
-
-        gameTitle.textContent =
-            "VERITÀ";
-
-
-        cardType.textContent =
-            "VERITÀ";
-
-
-        cardIcon.textContent =
-            "†";
-
-
-        drawButton.classList.remove(
-            "dare-mode"
-        );
-
-    }
-    else
-    {
-
-        gameTitle.textContent =
-            "OBBLIGO";
-
-
-        cardType.textContent =
-            "OBBLIGO";
-
-
-        cardIcon.textContent =
-            "⚰";
-
-
-        drawButton.classList.add(
-            "dare-mode"
-        );
-
-    }
-
-
-    cardText.textContent =
-        "Premi il pulsante per pescare.";
-
-
-    updateCardCounter();
-
-}
-
-
-/* =========================================================
-   PESCA CARTA
-========================================================= */
-
-function drawCard()
-{
-
-    let deck;
-
-    let used;
-
-
-    if (currentMode === "truth")
-    {
-
-        deck =
-            truthCards;
-
-        used =
-            usedTruthCards;
-
-    }
-    else
-    {
-
-        deck =
-            dareCards;
-
-        used =
-            usedDareCards;
-
-    }
-
-
-    /*
-        MAZZO FINITO
-    */
-
-    if (
-        used.length >=
-        deck.length
-    )
-    {
-
-        const restart =
-            confirm(
-                "Il mazzo è terminato. Vuoi ricominciarlo?"
-            );
-
-
-        if (restart)
-        {
-
-            resetCurrentDeck();
-
-        }
-
-
-        return;
-
-    }
-
-
-    /*
-        CARTE DISPONIBILI
-    */
-
-    const available = [];
-
-
-    for (
-        let i = 0;
-        i < deck.length;
-        i++
-    )
-    {
+        const parsed =
+            JSON.parse(stored);
 
         if (
-            !used.includes(i)
+            Array.isArray(parsed) &&
+            parsed.length > 0
         )
         {
-
-            available.push(i);
-
+            return parsed;
         }
-
+    }
+    catch
+    {
+        /* niente */
     }
 
-
-    /*
-        PESCA RANDOM
-    */
-
-    const randomPosition =
-        Math.floor(
-            Math.random() *
-            available.length
-        );
-
-
-    const cardIndex =
-        available[
-            randomPosition
-        ];
-
-
-    used.push(
-        cardIndex
-    );
-
-
-    /*
-        MOSTRA CARTA
-    */
-
-    cardText.textContent =
-        deck[
-            cardIndex
-        ];
-
-
-    card.classList.remove(
-        "animate"
-    );
-
-
-    void card.offsetWidth;
-
-
-    card.classList.add(
-        "animate"
-    );
-
-
-    vibrate();
-
-
-    /*
-        Se questa carta deriva
-        da un evento automatico,
-        il turno è concluso.
-    */
-
-    completeEventTurn(
-        currentMode
-    );
-
-
-    saveGame();
-
-    updateCardCounter();
-
-    updateHomeCounters();
-
+    return shuffle(fallback);
 }
 
 
-/* =========================================================
-   CONTATORE CARTE
-========================================================= */
-
-function updateCardCounter()
+function loadTarget(key)
 {
+    const value =
+        Number(
+            localStorage.getItem(key)
+        );
 
-    let used;
-
-    let total;
-
-
-    if (
-        currentMode ===
-        "truth"
-    )
-    {
-
-        used =
-            usedTruthCards.length;
-
-        total =
-            truthCards.length;
-
-    }
-    else
-    {
-
-        used =
-            usedDareCards.length;
-
-        total =
-            dareCards.length;
-
-    }
-
-
-    cardNumber.textContent =
-        "CARTA " +
-        used +
-        " / " +
-        total;
-
-
-    if (
-        used === total
-    )
-    {
-
-        drawButton.textContent =
-            "MAZZO TERMINATO";
-
-    }
-    else if (
-        used === 0
-    )
-    {
-
-        drawButton.textContent =
-            "PESCA UNA CARTA";
-
-    }
-    else
-    {
-
-        drawButton.textContent =
-            "PESCA ANCORA";
-
-    }
-
+    return value || null;
 }
 
 
-/* =========================================================
-   RESET VERITÀ / OBBLIGO
-========================================================= */
-
-function resetCurrentDeck()
-{
-
-    if (!currentMode)
-    {
-
-        return;
-
-    }
-
-
-    let name;
-
-
-    if (
-        currentMode ===
-        "truth"
-    )
-    {
-
-        name =
-            "delle Verità";
-
-    }
-    else
-    {
-
-        name =
-            "degli Obblighi";
-
-    }
-
-
-    const reset =
-        confirm(
-            "Vuoi davvero resettare il mazzo " +
-            name +
-            "?"
-        );
-
-
-    if (!reset)
-    {
-
-        return;
-
-    }
-
-
-    if (
-        currentMode ===
-        "truth"
-    )
-    {
-
-        usedTruthCards = [];
-
-    }
-    else
-    {
-
-        usedDareCards = [];
-
-    }
-
-
-    cardText.textContent =
-        "Mazzo resettato. Il disastro può ricominciare.";
-
-
-    saveGame();
-
-    updateCardCounter();
-
-    updateHomeCounters();
-
-}
-
-
-/* =========================================================
-   QUIZ
-========================================================= */
-
-function handleQuizButton()
-{
-
-    if (
-        currentQuizIndex === null ||
-        quizRevealed
-    )
-    {
-
-        drawQuizQuestion();
-
-    }
-    else
-    {
-
-        revealQuizAnswer();
-
-    }
-
-}
-
-
-/* =========================================================
-   PESCA QUIZ
-========================================================= */
-
-function drawQuizQuestion()
-{
-
-    /*
-        QUIZ TERMINATI
-    */
-
-    if (
-        usedQuizQuestions.length >=
-        quizQuestions.length
-    )
-    {
-
-        const restart =
-            confirm(
-                "Hai terminato tutte le domande. Vuoi ricominciare?"
-            );
-
-
-        if (restart)
-        {
-
-            resetQuizDeck();
-
-        }
-
-
-        return;
-
-    }
-
-
-    /*
-        DOMANDE DISPONIBILI
-    */
-
-    const available = [];
-
-
-    for (
-        let i = 0;
-        i < quizQuestions.length;
-        i++
-    )
-    {
-
-        if (
-            !usedQuizQuestions.includes(
-                i
-            )
-        )
-        {
-
-            available.push(
-                i
-            );
-
-        }
-
-    }
-
-
-    /*
-        RANDOM
-    */
-
-    const randomPosition =
-        Math.floor(
-            Math.random() *
-            available.length
-        );
-
-
-    currentQuizIndex =
-        available[
-            randomPosition
-        ];
-
-
-    usedQuizQuestions.push(
-        currentQuizIndex
-    );
-
-
-    selectedQuizAnswer =
-        null;
-
-
-    quizRevealed =
-        false;
-
-
-    const quiz =
-        quizQuestions[
-            currentQuizIndex
-        ];
-
-
-    quizQuestion.textContent =
-        quiz.question;
-
-
-    quizOptions.innerHTML =
-        "";
-
-
-    quizResult.innerHTML =
-        "";
-
-
-    quizResult.classList.remove(
-        "visible"
-    );
-
-
-    /*
-        DOMANDA CON RISPOSTE
-    */
-
-    if (
-        quiz.correct !==
-        "open"
-    )
-    {
-
-        quiz.options.forEach(
-            function (
-                option,
-                index
-            )
-            {
-
-                const button =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                button.type =
-                    "button";
-
-
-                button.className =
-                    "quiz-option";
-
-
-                const letter =
-                    String.fromCharCode(
-                        65 + index
-                    );
-
-
-                button.textContent =
-                    letter +
-                    ") " +
-                    option;
-
-
-                button.addEventListener(
-                    "click",
-                    function ()
-                    {
-
-                        selectQuizAnswer(
-                            index,
-                            button
-                        );
-
-                    }
-                );
-
-
-                quizOptions.appendChild(
-                    button
-                );
-
-            }
-        );
-
-    }
-
-
-    quizMainButton.textContent =
-        "SCOPRI LA VERITÀ";
-
-
-    updateQuizCounter();
-
-
-    quizCard.classList.remove(
-        "animate"
-    );
-
-
-    void quizCard.offsetWidth;
-
-
-    quizCard.classList.add(
-        "animate"
-    );
-
-
-    vibrate();
-
-
-    saveGame();
-
-    updateHomeCounters();
-
-}
-
-
-/* =========================================================
-   SELEZIONE RISPOSTA
-========================================================= */
-
-function selectQuizAnswer(
-    index,
-    button
-)
-{
-
-    if (quizRevealed)
-    {
-
-        return;
-
-    }
-
-
-    selectedQuizAnswer =
-        index;
-
-
-    const buttons =
-        document.querySelectorAll(
-            ".quiz-option"
-        );
-
-
-    buttons.forEach(
-        function (option)
-        {
-
-            option.classList.remove(
-                "selected"
-            );
-
-        }
-    );
-
-
-    button.classList.add(
-        "selected"
-    );
-
-}
-
-
-/* =========================================================
-   MOSTRA RISPOSTA QUIZ
-========================================================= */
-
-function revealQuizAnswer()
-{
-
-    if (
-        currentQuizIndex ===
-        null
-    )
-    {
-
-        return;
-
-    }
-
-
-    const quiz =
-        quizQuestions[
-            currentQuizIndex
-        ];
-
-
-    /*
-        DOMANDA APERTA
-    */
-
-    if (
-        quiz.correct ===
-        "open"
-    )
-    {
-
-        quizResult.innerHTML =
-            "<strong>VERDETTO</strong><br>" +
-            quiz.explanation;
-
-
-        quizResult.classList.add(
-            "visible"
-        );
-
-
-        quizRevealed =
-            true;
-
-
-        quizMainButton.textContent =
-            "PROSSIMA DOMANDA";
-
-
-        completeEventTurn(
-            "quiz"
-        );
-
-
-        saveGame();
-
-        vibrate();
-
-
-        return;
-
-    }
-
-
-    const buttons =
-        document.querySelectorAll(
-            ".quiz-option"
-        );
-
-
-    /*
-        DOMANDA SENZA RISPOSTA
-        CORRETTA DEFINITA
-    */
-
-    if (
-        quiz.correct ===
-        null
-    )
-    {
-
-        buttons.forEach(
-            function (button)
-            {
-
-                button.classList.add(
-                    "disabled"
-                );
-
-            }
-        );
-
-
-        quizResult.innerHTML =
-            "<strong>VERDETTO</strong><br>" +
-            quiz.explanation;
-
-    }
-    else
-    {
-
-        buttons.forEach(
-            function (
-                button,
-                index
-            )
-            {
-
-                button.classList.add(
-                    "disabled"
-                );
-
-
-                if (
-                    index ===
-                    quiz.correct
-                )
-                {
-
-                    button.classList.add(
-                        "correct"
-                    );
-
-                }
-
-
-                if (
-                    selectedQuizAnswer !== null &&
-                    index ===
-                    selectedQuizAnswer &&
-                    index !==
-                    quiz.correct
-                )
-                {
-
-                    button.classList.add(
-                        "wrong"
-                    );
-
-                }
-
-            }
-        );
-
-
-        /*
-            RISPOSTA CORRETTA
-        */
-
-        if (
-            selectedQuizAnswer ===
-            quiz.correct &&
-            activeEventPlayerId
-        )
-        {
-
-            const player =
-                players.find(
-                    function (item)
-                    {
-
-                        return (
-                            item.id ===
-                            activeEventPlayerId
-                        );
-
-                    }
-                );
-
-
-            if (player)
-            {
-
-                player.quizCorrect =
-                    (
-                        player.quizCorrect ||
-                        0
-                    ) + 1;
-
-            }
-
-        }
-
-
-        const letter =
-            String.fromCharCode(
-                65 +
-                quiz.correct
-            );
-
-
-        const answer =
-            quiz.options[
-                quiz.correct
-            ];
-
-
-        quizResult.innerHTML =
-            "<strong>" +
-            letter +
-            ") " +
-            answer +
-            "</strong><br>" +
-            quiz.explanation;
-
-    }
-
-
-    quizResult.classList.add(
-        "visible"
-    );
-
-
-    quizRevealed =
-        true;
-
-
-    quizMainButton.textContent =
-        "PROSSIMA DOMANDA";
-
-
-    /*
-        Ora il turno evento
-        può essere considerato
-        completato.
-    */
-
-    completeEventTurn(
-        "quiz"
-    );
-
-
-    saveGame();
-
-    vibrate();
-
-}
-
-
-/* =========================================================
-   QUIZ COUNTER
-========================================================= */
-
-function updateQuizCounter()
-{
-
-    quizNumber.textContent =
-        "QUIZ " +
-        usedQuizQuestions.length +
-        " / " +
-        quizQuestions.length;
-
-}
-
-
-/* =========================================================
-   RESET QUIZ
-========================================================= */
-
-function resetQuizDeck()
-{
-
-    const reset =
-        confirm(
-            "Vuoi davvero resettare tutte le domande del Quiz?"
-        );
-
-
-    if (!reset)
-    {
-
-        return;
-
-    }
-
-
-    usedQuizQuestions = [];
-
-
-    currentQuizIndex =
-        null;
-
-
-    selectedQuizAnswer =
-        null;
-
-
-    quizRevealed =
-        false;
-
-
-    resetQuizDisplay();
-
-
-    saveGame();
-
-    updateHomeCounters();
-
-}
-
-
-/* =========================================================
-   RESET DISPLAY QUIZ
-========================================================= */
-
-function resetQuizDisplay()
-{
-
-    currentQuizIndex =
-        null;
-
-
-    selectedQuizAnswer =
-        null;
-
-
-    quizRevealed =
-        false;
-
-
-    quizQuestion.textContent =
-        "Premi il pulsante per iniziare.";
-
-
-    quizOptions.innerHTML =
-        "";
-
-
-    quizResult.innerHTML =
-        "";
-
-
-    quizResult.classList.remove(
-        "visible"
-    );
-
-
-    quizMainButton.textContent =
-        "PESCA UNA DOMANDA";
-
-
-    updateQuizCounter();
-
-}
-
-
-/* =========================================================
-   HOME COUNTERS
-========================================================= */
-
-function updateHomeCounters()
-{
-
-    document.getElementById(
-        "truth-home-counter"
-    ).textContent =
-        truthCards.length -
-        usedTruthCards.length;
-
-
-    document.getElementById(
-        "dare-home-counter"
-    ).textContent =
-        dareCards.length -
-        usedDareCards.length;
-
-
-    document.getElementById(
-        "quiz-home-counter"
-    ).textContent =
-        quizQuestions.length -
-        usedQuizQuestions.length;
-
-}
-
-
-/* =========================================================
+/* =========================================
    GIOCATORI
-========================================================= */
+========================================= */
 
 function openPlayersScreen()
 {
+    hideAllScreens();
 
-    hideScreens();
+    playersScreen.classList.add("active");
+
+    renderPlayerInputs();
+}
 
 
-    playersScreen.classList.add(
-        "active"
+function renderPlayerInputs()
+{
+    playersList.innerHTML = "";
+
+    if (players.length === 0)
+    {
+        addPlayerInput();
+        addPlayerInput();
+
+        updateCelebrantSelect();
+        return;
+    }
+
+
+    players.forEach(
+        player =>
+        {
+            createPlayerInput(
+                player.name,
+                player.id
+            );
+        }
     );
 
-
-    renderPlayersEditor();
-
+    updateCelebrantSelect();
 }
 
 
-/* =========================================================
-   RENDER GIOCATORI
-========================================================= */
-
-function renderPlayersEditor()
+function addPlayerInput()
 {
-
-    playersList.innerHTML =
-        "";
-
-
-    playersError.textContent =
-        "";
-
-
-    /*
-        PRIMO AVVIO:
-        due campi.
-    */
-
-    if (
-        players.length ===
-        0
-    )
-    {
-
-        createPlayerRow(
-            ""
-        );
-
-
-        createPlayerRow(
-            ""
-        );
-
-    }
-    else
-    {
-
-        players.forEach(
-            function (player)
-            {
-
-                createPlayerRow(
-                    player.name,
-                    player.id
-                );
-
-            }
-        );
-
-    }
-
+    createPlayerInput("", generateId());
 
     updateCelebrantSelect();
-
 }
 
 
-/* =========================================================
-   CREA RIGA GIOCATORE
-========================================================= */
-
-function createPlayerRow(
-    name = "",
-    existingId = null
+function createPlayerInput(
+    value,
+    id
 )
 {
-
     const row =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     row.className =
-        "player-row";
+        "player-input-row";
 
+    row.dataset.playerId = id;
 
-    if (existingId)
-    {
-
-        row.dataset.playerId =
-            existingId;
-
-    }
-
-
-    /*
-        INPUT
-    */
 
     const input =
-        document.createElement(
-            "input"
-        );
+        document.createElement("input");
 
-
-    input.type =
-        "text";
-
-
-    input.className =
-        "player-input";
-
-
+    input.type = "text";
     input.placeholder =
         "Nome giocatore";
 
-
-    input.value =
-        name;
-
-
-    input.maxLength =
-        20;
-
-
-    input.autocomplete =
-        "off";
-
+    input.value = value;
 
     input.addEventListener(
         "input",
@@ -2438,838 +930,247 @@ function createPlayerRow(
     );
 
 
-    /*
-        REMOVE
-    */
-
     const removeButton =
-        document.createElement(
-            "button"
-        );
+        document.createElement("button");
 
-
-    removeButton.type =
-        "button";
-
+    removeButton.type = "button";
 
     removeButton.className =
         "remove-player-button";
 
+    removeButton.textContent = "✕";
 
-    removeButton.textContent =
-        "×";
-
-
-    removeButton.addEventListener(
-        "click",
+    removeButton.onclick =
         function ()
         {
-
             row.remove();
 
             updateCelebrantSelect();
-
-        }
-    );
+        };
 
 
-    row.appendChild(
-        input
-    );
+    row.appendChild(input);
+    row.appendChild(removeButton);
 
-
-    row.appendChild(
-        removeButton
-    );
-
-
-    playersList.appendChild(
-        row
-    );
-
-
-    return row;
-
+    playersList.appendChild(row);
 }
 
-
-/* =========================================================
-   AGGIUNGI GIOCATORE
-========================================================= */
-
-function addPlayerInput()
-{
-
-    const row =
-        createPlayerRow(
-            ""
-        );
-
-
-    const input =
-        row.querySelector(
-            ".player-input"
-        );
-
-
-    if (input)
-    {
-
-        input.focus();
-
-
-        setTimeout(
-            function ()
-            {
-
-                input.scrollIntoView(
-                    {
-                        behavior:
-                            "smooth",
-
-                        block:
-                            "center"
-                    }
-                );
-
-            },
-            100
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   FESTEGGIATO
-========================================================= */
 
 function updateCelebrantSelect()
 {
-
-    if (!celebrantSelect)
-    {
-
-        return;
-
-    }
+    const oldValue =
+        celebrantSelect.value ||
+        celebrantId;
 
 
-    /*
-        Ricorda il nome
-        attualmente selezionato.
-    */
-
-    let previousName =
-        null;
-
-
-    if (
-        celebrantSelect.selectedIndex >=
-        0
-    )
-    {
-
-        const option =
-            celebrantSelect.options[
-                celebrantSelect.selectedIndex
-            ];
-
-
-        if (option)
-        {
-
-            previousName =
-                option.textContent;
-
-        }
-
-    }
-
-
-    celebrantSelect.innerHTML =
-        "";
+    celebrantSelect.innerHTML = "";
 
 
     const rows =
-        Array.from(
-            playersList.querySelectorAll(
-                ".player-row"
+        [
+            ...playersList.querySelectorAll(
+                ".player-input-row"
             )
-        );
+        ];
 
 
     rows.forEach(
-        function (
-            row,
-            index
-        )
+        row =>
         {
-
             const input =
-                row.querySelector(
-                    ".player-input"
-                );
-
+                row.querySelector("input");
 
             const name =
                 input.value.trim();
 
-
             if (!name)
             {
-
                 return;
-
             }
-
 
             const option =
                 document.createElement(
                     "option"
                 );
 
-
             option.value =
-                String(
-                    index
-                );
-
+                row.dataset.playerId;
 
             option.textContent =
                 name;
 
-
             celebrantSelect.appendChild(
                 option
             );
-
         }
     );
 
 
-    /*
-        Ripristina selezione
-        corrente.
-    */
-
-    if (previousName)
+    if (
+        oldValue &&
+        [
+            ...celebrantSelect.options
+        ].some(
+            option =>
+                option.value === oldValue
+        )
+    )
     {
-
-        const options =
-            Array.from(
-                celebrantSelect.options
-            );
-
-
-        const match =
-            options.find(
-                function (option)
-                {
-
-                    return (
-                        option.textContent ===
-                        previousName
-                    );
-
-                }
-            );
-
-
-        if (match)
-        {
-
-            celebrantSelect.value =
-                match.value;
-
-
-            return;
-
-        }
-
+        celebrantSelect.value =
+            oldValue;
     }
-
-
-    /*
-        Oppure recupera
-        il festeggiato salvato.
-    */
-
-    const oldCelebrant =
-        players.find(
-            function (player)
-            {
-
-                return (
-                    player.id ===
-                    celebrantId
-                );
-
-            }
-        );
-
-
-    if (oldCelebrant)
-    {
-
-        const options =
-            Array.from(
-                celebrantSelect.options
-            );
-
-
-        const match =
-            options.find(
-                function (option)
-                {
-
-                    return (
-                        option.textContent ===
-                        oldCelebrant.name
-                    );
-
-                }
-            );
-
-
-        if (match)
-        {
-
-            celebrantSelect.value =
-                match.value;
-
-        }
-
-    }
-
 }
 
-
-/* =========================================================
-   ID GIOCATORE
-========================================================= */
-
-function generatePlayerId()
-{
-
-    return (
-        Date.now().toString(36) +
-        Math.random()
-            .toString(36)
-            .substring(
-                2,
-                8
-            )
-    );
-
-}
-
-
-/* =========================================================
-   SALVA GIOCATORI
-========================================================= */
 
 function savePlayers()
 {
-
     const rows =
-        Array.from(
-            playersList.querySelectorAll(
-                ".player-row"
+        [
+            ...playersList.querySelectorAll(
+                ".player-input-row"
             )
-        );
+        ];
 
 
-    const validRows =
-        rows.filter(
-            function (row)
-            {
-
-                const input =
-                    row.querySelector(
-                        ".player-input"
-                    );
+    const newPlayers = [];
 
 
-                return (
-                    input.value.trim() !==
-                    ""
-                );
-
-            }
-        );
-
-
-    /*
-        ALMENO DUE
-    */
-
-    if (
-        validRows.length <
-        2
-    )
-    {
-
-        playersError.textContent =
-            "Servono almeno 2 giocatori.";
-
-
-        return;
-
-    }
-
-
-    /*
-        NOMI
-    */
-
-    const names =
-        validRows.map(
-            function (row)
-            {
-
-                return (
-                    row
-                        .querySelector(
-                            ".player-input"
-                        )
-                        .value
-                        .trim()
-                );
-
-            }
-        );
-
-
-    const normalizedNames =
-        names.map(
-            function (name)
-            {
-
-                return (
-                    name.toLowerCase()
-                );
-
-            }
-        );
-
-
-    /*
-        NO DUPLICATI
-    */
-
-    if (
-        new Set(
-            normalizedNames
-        ).size !==
-        normalizedNames.length
-    )
-    {
-
-        playersError.textContent =
-            "Due giocatori hanno lo stesso nome.";
-
-
-        return;
-
-    }
-
-
-    /*
-        NOME FESTEGGIATO
-    */
-
-    let selectedName =
-        null;
-
-
-    if (
-        celebrantSelect.selectedIndex >=
-        0
-    )
-    {
-
-        const selectedOption =
-            celebrantSelect.options[
-                celebrantSelect.selectedIndex
-            ];
-
-
-        if (selectedOption)
+    rows.forEach(
+        row =>
         {
-
-            selectedName =
-                selectedOption.textContent;
-
-        }
-
-    }
-
-
-    /*
-        PRESERVA STATISTICHE
-    */
-
-    const oldPlayers =
-        [...players];
-
-
-    const freshPlayers =
-        [];
-
-
-    validRows.forEach(
-        function (row)
-        {
+            const input =
+                row.querySelector("input");
 
             const name =
-                row
-                    .querySelector(
-                        ".player-input"
-                    )
-                    .value
-                    .trim();
+                input.value.trim();
 
-
-            const existingId =
-                row.dataset.playerId;
+            if (!name)
+            {
+                return;
+            }
 
 
             const oldPlayer =
-                oldPlayers.find(
-                    function (player)
-                    {
-
-                        return (
-                            player.id ===
-                            existingId
-                        );
-
-                    }
+                getPlayerById(
+                    row.dataset.playerId
                 );
 
 
-            if (oldPlayer)
-            {
+            newPlayers.push({
+                id:
+                    row.dataset.playerId,
 
-                freshPlayers.push(
-                    {
-                        ...oldPlayer,
-                        name:
-                            name
-                    }
-                );
+                name: name,
 
-            }
-            else
-            {
+                turns:
+                    oldPlayer
+                        ? oldPlayer.turns
+                        : 0,
 
-                freshPlayers.push(
-                    {
+                quizCorrect:
+                    oldPlayer
+                        ? oldPlayer.quizCorrect
+                        : 0,
 
-                        id:
-                            generatePlayerId(),
+                saveShot:
+                    oldPlayer
+                        ? oldPlayer.saveShot
+                        : 0,
 
-                        name:
-                            name,
-
-                        turns:
-                            0,
-
-                        truths:
-                            0,
-
-                        dares:
-                            0,
-
-                        quizzes:
-                            0,
-
-                        quizCorrect:
-                            0
-
-                    }
-                );
-
-            }
-
+                powers:
+                    oldPlayer
+                        ? oldPlayer.powers
+                        : []
+            });
         }
     );
 
 
-    players =
-        freshPlayers;
-
-
-    /*
-        FESTEGGIATO
-    */
-
-    const selectedCelebrant =
-        players.find(
-            function (player)
-            {
-
-                return (
-                    player.name ===
-                    selectedName
-                );
-
-            }
-        );
-
-
-    if (selectedCelebrant)
+    if (newPlayers.length < 2)
     {
+        playersError.textContent =
+            "Servono almeno 2 giocatori.";
 
-        celebrantId =
-            selectedCelebrant.id;
-
-    }
-    else
-    {
-
-        celebrantId =
-            players[0].id;
-
+        return;
     }
 
 
-    playersError.textContent =
-        "";
+    players = newPlayers;
 
+    celebrantId =
+        celebrantSelect.value ||
+        players[0].id;
+
+
+    playersError.textContent = "";
 
     saveGame();
 
     updatePlayersHome();
 
-
-    /*
-        TORNA HOME
-    */
-
-    playersScreen.classList.remove(
-        "active"
-    );
-
-
-    homeScreen.classList.add(
-        "active"
-    );
-
+    goHome();
 }
 
-
-/* =========================================================
-   PLAYER HOME COUNT
-========================================================= */
 
 function updatePlayersHome()
 {
-
-    if (!playersHomeCount)
-    {
-
-        return;
-
-    }
-
-
-    if (
-        players.length ===
-        1
-    )
-    {
-
-        playersHomeCount.textContent =
-            "1 GIOCATORE";
-
-    }
-    else
-    {
-
-        playersHomeCount.textContent =
-            players.length +
-            " GIOCATORI";
-
-    }
-
+    playersHomeCount.textContent =
+        players.length;
 }
 
 
-/* =========================================================
-   SELEZIONE VITTIMA
-========================================================= */
+/* =========================================
+   HOME
+========================================= */
 
-function selectNextPlayer()
+function goHome()
 {
+    hideAllScreens();
 
-    if (
-        players.length ===
-        0
-    )
-    {
+    homeScreen.classList.add("active");
 
-        return null;
+    currentMode = null;
 
-    }
+    hidePlayerBanners();
 
+    updateHomeCounters();
+    updatePlayersHome();
 
-    if (
-        players.length ===
-        1
-    )
-    {
-
-        return players[0];
-
-    }
-
-
-    /*
-        Trova il numero minimo
-        di turni giocati.
-    */
-
-    const minimumTurns =
-        Math.min(
-            ...players.map(
-                function (player)
-                {
-
-                    return (
-                        player.turns ||
-                        0
-                    );
-
-                }
-            )
-        );
-
-
-    /*
-        Diamo priorità a chi
-        ha giocato meno.
-    */
-
-    let candidates =
-        players.filter(
-            function (player)
-            {
-
-                return (
-                    (
-                        player.turns ||
-                        0
-                    ) <=
-                    minimumTurns + 1
-                );
-
-            }
-        );
-
-
-    /*
-        Evita la stessa persona
-        due volte di seguito.
-    */
-
-    const withoutPrevious =
-        candidates.filter(
-            function (player)
-            {
-
-                return (
-                    player.id !==
-                    lastSelectedPlayerId
-                );
-
-            }
-        );
-
-
-    if (
-        withoutPrevious.length >
-        0
-    )
-    {
-
-        candidates =
-            withoutPrevious;
-
-    }
-
-
-    /*
-        RANDOM
-    */
-
-    const selected =
-        candidates[
-            Math.floor(
-                Math.random() *
-                candidates.length
-            )
-        ];
-
-
-    lastSelectedPlayerId =
-        selected.id;
-
-
-    saveGame();
-
-
-    return selected;
-
+    processEventQueue();
 }
 
 
-/* =========================================================
-   TIMER
-========================================================= */
-
-
-/* =========================
-   RANDOM 8-18 MIN
-========================= */
-
-function randomEventDelay()
+function updateHomeCounters()
 {
+    truthHomeCounter.textContent =
+        truths.length;
 
-    return Math.floor(
+    dareHomeCounter.textContent =
+        dares.length;
 
-        EVENT_MIN +
-
-        Math.random() *
-        (
-            EVENT_MAX -
-            EVENT_MIN +
-            1
-        )
-
-    );
-
+    quizHomeCounter.textContent =
+        quizzes.length;
 }
 
 
-/* =========================================================
-   INIZIA / RESETTA SERATA
-========================================================= */
+/* =========================================
+   AVVIO / STOP SERATA
+========================================= */
+
 function toggleNight()
 {
     if (players.length < 2)
     {
-        alert("Prima salva almeno 2 giocatori.");
+        alert(
+            "Prima salva almeno 2 giocatori."
+        );
+
         openPlayersScreen();
+
         return;
     }
 
-    /*
-        SE LA SERATA NON È ATTIVA:
-        AVVIALA
-    */
+
     if (!nightRunning)
     {
         nightRunning = true;
@@ -3279,13 +1180,20 @@ function toggleNight()
         tequilaTarget =
             now + TEQUILA_INTERVAL;
 
+        quizTarget =
+            now + QUIZ_INTERVAL;
+
         eventTarget =
             now + randomEventDelay();
+
+
+        eventQueue = [];
+        currentAutomaticEvent = null;
+
 
         saveGame();
 
         updateNightUI();
-
         updateTimers();
 
         vibrate();
@@ -3294,376 +1202,518 @@ function toggleNight()
     }
 
 
-    /*
-        SE È GIÀ ATTIVA:
-        CHIEDI SE RESETTARE
-    */
-    const stop = confirm(
-        "Vuoi fermare la serata e azzerare i timer?"
-    );
+    const stop =
+        confirm(
+            "Vuoi fermare la serata e azzerare tutti i timer?"
+        );
+
 
     if (!stop)
     {
         return;
     }
 
+
     nightRunning = false;
 
     tequilaTarget = null;
+    quizTarget = null;
     eventTarget = null;
 
-    tequilaAlertOpen = false;
-    eventAlertOpen = false;
+    eventQueue = [];
+    currentAutomaticEvent = null;
 
     activeEventPlayerId = null;
-    eventAwaitingCompletion = false;
 
-    if (eventOverlay)
-    {
-        eventOverlay.classList.remove("active");
-    }
-
-    if (tequilaOverlay)
-    {
-        tequilaOverlay.classList.remove("active");
-    }
-
-    hidePlayerBanners();
+    closeAllAutomaticOverlays();
 
     saveGame();
-   
+
     updateNightUI();
-
     updateTimers();
-
 }
 
 
-   
-
-    
-
-
-/* =========================================================
-   UI SERATA
-========================================================= */
-
 function updateNightUI()
 {
-
-    const timerPanel =
-        document.querySelector(
-            ".timer-panel"
-        );
-
-
     if (nightRunning)
     {
-
         nightButton.textContent =
-            "■ FERMA / RESETTA SERATA";
-
+            "■ FERMA LA SERATA";
 
         nightButton.classList.add(
             "running"
         );
-
-
-        timerPanel.classList.add(
-            "running"
-        );
-
     }
     else
     {
-
         nightButton.textContent =
             "☠ INIZIA LA SERATA";
-
 
         nightButton.classList.remove(
             "running"
         );
-
-
-        timerPanel.classList.remove(
-            "running"
-        );
-
     }
-
 }
 
 
-/* =========================================================
-   FORMATTA TEMPO
-========================================================= */
-
-function formatRemaining(
-    milliseconds
-)
-{
-
-    const totalSeconds =
-        Math.max(
-            0,
-            Math.ceil(
-                milliseconds /
-                1000
-            )
-        );
-
-
-    const minutes =
-        Math.floor(
-            totalSeconds /
-            60
-        );
-
-
-    const seconds =
-        totalSeconds %
-        60;
-
-
-    return (
-        String(
-            minutes
-        ).padStart(
-            2,
-            "0"
-        )
-        +
-        ":"
-        +
-        String(
-            seconds
-        ).padStart(
-            2,
-            "0"
-        )
-    );
-
-}
-
-
-/* =========================================================
-   AGGIORNA TIMER
-========================================================= */
+/* =========================================
+   TIMER
+========================================= */
 
 function updateTimers()
 {
-
-    /*
-        SERATA NON AVVIATA
-    */
-
     if (!nightRunning)
     {
-
         tequilaTimer.textContent =
             "30:00";
 
+        quizTimer.textContent =
+            "10:00";
 
         eventTimer.textContent =
             "???";
 
-
         return;
-
     }
 
 
-    const now =
-        Date.now();
+    const now = Date.now();
 
 
-    /*
-        TEQUILA
-    */
+    checkExpiredTimers(now);
+
 
     if (tequilaTarget)
     {
-
         tequilaTimer.textContent =
-            formatRemaining(
-                tequilaTarget -
-                now
+            formatTime(
+                tequilaTarget - now
             );
-
     }
     else
     {
-
         tequilaTimer.textContent =
-            "30:00";
-
+            "00:00";
     }
 
 
-    /*
-        Il timer evento
-        rimane volontariamente
-        nascosto.
-    */
+    if (quizTarget)
+    {
+        quizTimer.textContent =
+            formatTime(
+                quizTarget - now
+            );
+    }
+    else
+    {
+        quizTimer.textContent =
+            "00:00";
+    }
 
-    eventTimer.textContent =
-        "???";
+
+    eventTimer.textContent = "???";
 
 
-    /*
-        TEQUILA SCADUTO
-    */
+    processEventQueue();
+}
 
+
+function checkExpiredTimers(now)
+{
     if (
         tequilaTarget &&
-        now >= tequilaTarget &&
-        !tequilaAlertOpen
+        now >= tequilaTarget
     )
     {
+        tequilaTarget = null;
 
-        tequilaAlertOpen =
-            true;
-
-
-        showTequilaAlert();
-
+        enqueueAutomaticEvent({
+            type: "tequila"
+        });
     }
 
 
-    /*
-        EVENTO SCADUTO
-    */
+    if (
+        quizTarget &&
+        now >= quizTarget
+    )
+    {
+        quizTarget = null;
+
+        enqueueAutomaticEvent({
+            type: "quiz-time"
+        });
+    }
+
 
     if (
         eventTarget &&
-        now >= eventTarget &&
-        !eventAlertOpen &&
-        !eventAwaitingCompletion
+        now >= eventTarget
     )
     {
+        eventTarget = null;
 
-        eventAlertOpen =
-            true;
-
-
-        showRandomEvent();
-
+        enqueueAutomaticEvent({
+            type: "random"
+        });
     }
 
+
+    saveGame();
 }
 
 
-/* =========================================================
-   TEQUILA TIME
-========================================================= */
+/* =========================================
+   CODA EVENTI
+========================================= */
 
-function showTequilaAlert()
+function enqueueAutomaticEvent(event)
 {
+    const alreadyQueued =
+        eventQueue.some(
+            item =>
+                item.type === event.type
+        );
 
-    tequilaOverlay.classList.add(
-        "active"
+
+    if (alreadyQueued)
+    {
+        return;
+    }
+
+
+    if (
+        currentAutomaticEvent &&
+        currentAutomaticEvent.type ===
+            event.type
+    )
+    {
+        return;
+    }
+
+
+    eventQueue.push(event);
+}
+
+
+function processEventQueue()
+{
+    if (!nightRunning)
+    {
+        return;
+    }
+
+
+    if (currentAutomaticEvent)
+    {
+        restoreCurrentAutomaticEvent();
+
+        return;
+    }
+
+
+    if (eventQueue.length === 0)
+    {
+        return;
+    }
+
+
+    /*
+       PRIORITÀ:
+       1 Tequila
+       2 Quiz
+       3 Random
+    */
+
+    const priorities = {
+        tequila: 1,
+        "quiz-time": 2,
+        random: 3
+    };
+
+
+    eventQueue.sort(
+        (a, b) =>
+            priorities[a.type] -
+            priorities[b.type]
     );
 
 
-    vibratePattern();
+    currentAutomaticEvent =
+        eventQueue.shift();
 
+
+    saveGame();
+
+
+    restoreCurrentAutomaticEvent();
 }
 
 
-/* =========================================================
-   TEQUILA FATTO
-========================================================= */
-
-function acknowledgeTequila()
+function restoreCurrentAutomaticEvent()
 {
+    if (!currentAutomaticEvent)
+    {
+        return;
+    }
+
+
+    closeAllAutomaticOverlays();
+
+
+    if (
+        currentAutomaticEvent.type ===
+        "tequila"
+    )
+    {
+        showTequilaTime();
+
+        return;
+    }
+
+
+    if (
+        currentAutomaticEvent.type ===
+        "quiz-time"
+    )
+    {
+        showQuizTime();
+
+        return;
+    }
+
+
+    if (
+        currentAutomaticEvent.type ===
+        "random"
+    )
+    {
+        showRandomEvent();
+    }
+}
+
+
+function finishAutomaticEvent()
+{
+    currentAutomaticEvent = null;
+
+    saveGame();
+
+    setTimeout(
+        processEventQueue,
+        150
+    );
+}
+
+
+function closeAllAutomaticOverlays()
+{
+    eventOverlay.classList.remove(
+        "active"
+    );
 
     tequilaOverlay.classList.remove(
         "active"
     );
 
+    quizTimeOverlay.classList.remove(
+        "active"
+    );
 
-    tequilaAlertOpen =
-        false;
+    powerOverlay.classList.remove(
+        "active"
+    );
+}
 
 
-    /*
-        Riparte da 30 minuti
-        dal momento della conferma.
-    */
+/* =========================================
+   SELEZIONE GIOCATORE BILANCIATA
+========================================= */
 
-    tequilaTarget =
-        Date.now() +
-        TEQUILA_INTERVAL;
+function selectNextPlayer()
+{
+    if (players.length === 0)
+    {
+        return null;
+    }
+
+
+    const minimumTurns =
+        Math.min(
+            ...players.map(
+                player =>
+                    player.turns
+            )
+        );
+
+
+    let candidates =
+        players.filter(
+            player =>
+                player.turns <=
+                minimumTurns + 1
+        );
+
+
+    if (
+        candidates.length > 1 &&
+        lastSelectedPlayerId
+    )
+    {
+        const withoutLast =
+            candidates.filter(
+                player =>
+                    player.id !==
+                    lastSelectedPlayerId
+            );
+
+        if (withoutLast.length > 0)
+        {
+            candidates =
+                withoutLast;
+        }
+    }
+
+
+    const player =
+        candidates[
+            Math.floor(
+                Math.random() *
+                candidates.length
+            )
+        ];
+
+
+    lastSelectedPlayerId =
+        player.id;
 
 
     saveGame();
 
-    updateTimers();
 
+    return player;
 }
 
 
-/* =========================================================
-   EVENTO RANDOM
-========================================================= */
+/* =========================================
+   RANDOM EVENT
+========================================= */
+
+function pickRandomEventType()
+{
+    const roll =
+        Math.random() * 100;
+
+
+    if (roll < 60)
+    {
+        return "victim";
+    }
+
+
+    if (roll < 75)
+    {
+        return "choose-victim";
+    }
+
+
+    if (roll < 85)
+    {
+        return "drink-with";
+    }
+
+
+    if (roll < 95)
+    {
+        return "special-power";
+    }
+
+
+    return "save-shot";
+}
+
 
 function showRandomEvent()
 {
+    /*
+       Se l'evento è stato già generato
+       prima di un refresh, lo recuperiamo.
+    */
+
+    if (
+        currentAutomaticEvent.randomData
+    )
+    {
+        renderRandomEvent(
+            currentAutomaticEvent.randomData
+        );
+
+        return;
+    }
+
 
     const player =
         selectNextPlayer();
 
 
-    /*
-        Nessun giocatore.
-    */
-
     if (!player)
     {
+        scheduleNextRandomEvent();
 
-        eventAlertOpen =
-            false;
-
-
-        eventTarget =
-            Date.now() +
-            randomEventDelay();
-
-
-        saveGame();
-
+        finishAutomaticEvent();
 
         return;
-
     }
 
 
-    /*
-        Memorizza la vittima.
-    */
+    const eventType =
+        pickRandomEventType();
+
+
+    const data = {
+        eventType: eventType,
+        playerId: player.id
+    };
+
+
+    currentAutomaticEvent.randomData =
+        data;
+
 
     activeEventPlayerId =
         player.id;
 
 
-    eventAwaitingCompletion =
-        true;
+    saveGame();
 
 
-    /*
-        Finché il turno
-        non viene completato,
-        nessun altro evento
-        viene programmato.
-    */
+    renderRandomEvent(data);
 
-    eventTarget =
-        null;
+    vibratePattern();
+}
 
 
-    eventPlayerName.textContent =
-        player.name.toUpperCase();
+function renderRandomEvent(data)
+{
+    const player =
+        getPlayerById(
+            data.playerId
+        );
+
+
+    if (!player)
+    {
+        scheduleNextRandomEvent();
+
+        finishAutomaticEvent();
+
+        return;
+    }
+
+
+    activeEventPlayerId =
+        player.id;
 
 
     eventOverlay.classList.add(
@@ -3671,369 +1721,1115 @@ function showRandomEvent()
     );
 
 
-    saveGame();
+    eventStandardActions.classList.add(
+        "hidden"
+    );
 
-    vibratePattern();
+    eventSpecialActions.classList.add(
+        "hidden"
+    );
 
+
+    if (data.eventType === "victim")
+    {
+        eventOverlayIcon.textContent =
+            "☠";
+
+        eventOverlayLabel.textContent =
+            "PROSSIMA VITTIMA";
+
+        eventPlayerName.textContent =
+            player.name.toUpperCase();
+
+        eventDescription.textContent =
+            "Scegli come affrontare il tuo destino.";
+
+        eventStandardActions.classList.remove(
+            "hidden"
+        );
+
+        return;
+    }
+
+
+    if (
+        data.eventType ===
+        "choose-victim"
+    )
+    {
+        eventOverlayIcon.textContent =
+            "🎯";
+
+        eventOverlayLabel.textContent =
+            "SCEGLI UNA VITTIMA";
+
+        eventPlayerName.textContent =
+            player.name.toUpperCase();
+
+        eventDescription.textContent =
+            "Scegli un'altra persona. Sarà lei a decidere tra Verità e Obbligo.";
+
+        eventSpecialButton.textContent =
+            "HO SCELTO LA VITTIMA";
+
+        eventSpecialActions.classList.remove(
+            "hidden"
+        );
+
+        return;
+    }
+
+
+    if (
+        data.eventType ===
+        "drink-with"
+    )
+    {
+        eventOverlayIcon.textContent =
+            "🍻";
+
+        eventOverlayLabel.textContent =
+            "BEVI CON X";
+
+        eventPlayerName.textContent =
+            player.name.toUpperCase();
+
+        eventDescription.textContent =
+            "Scegli una persona con cui bere.";
+
+        eventSpecialButton.textContent =
+            "🍻 FATTO";
+
+        eventSpecialActions.classList.remove(
+            "hidden"
+        );
+
+        return;
+    }
+
+
+    if (
+        data.eventType ===
+        "special-power"
+    )
+    {
+        giveSpecialPower(player);
+
+        return;
+    }
+
+
+    if (
+        data.eventType ===
+        "save-shot"
+    )
+    {
+        giveSaveShot(player);
+    }
 }
 
 
-/* =========================================================
-   SCELTA EVENTO
-========================================================= */
+/* =========================================
+   RANDOM: VERITÀ / OBBLIGO
+========================================= */
 
-function chooseEventMode(
-    mode
-)
+function chooseEventMode(mode)
 {
+    const player =
+        getPlayerById(
+            activeEventPlayerId
+        );
+
 
     eventOverlay.classList.remove(
         "active"
     );
 
 
-    eventAlertOpen =
-        false;
-
-
-    /*
-        Apri la modalità scelta.
-    */
-
-    startGame(
-        mode
-    );
-
-}
-
-
-/* =========================================================
-   COMPLETA TURNO EVENTO
-========================================================= */
-
-function completeEventTurn(
-    mode
-)
-{
-
-    /*
-        Se il giocatore sta usando
-        manualmente Verità/Obbligo/Quiz,
-        non dobbiamo modificare
-        le statistiche evento.
-    */
-
-    if (
-        !activeEventPlayerId ||
-        !eventAwaitingCompletion
-    )
+    if (player)
     {
-
-        return;
-
+        player.turns += 1;
     }
 
 
+    scheduleNextRandomEvent();
+
+    saveGame();
+
+
+    currentAutomaticEvent = null;
+
+
+    startGame(
+        mode,
+        player
+            ? player.id
+            : null,
+        true
+    );
+}
+
+
+/* =========================================
+   EVENTI SPECIALI
+========================================= */
+
+function completeSpecialEvent()
+{
+    if (
+        !currentAutomaticEvent ||
+        !currentAutomaticEvent.randomData
+    )
+    {
+        return;
+    }
+
+
+    const data =
+        currentAutomaticEvent.randomData;
+
+
     const player =
-        players.find(
-            function (item)
-            {
-
-                return (
-                    item.id ===
-                    activeEventPlayerId
-                );
-
-            }
+        getPlayerById(
+            data.playerId
         );
 
 
     if (player)
     {
-
-        player.turns =
-            (
-                player.turns ||
-                0
-            ) + 1;
-
-
-        if (
-            mode ===
-            "truth"
-        )
-        {
-
-            player.truths =
-                (
-                    player.truths ||
-                    0
-                ) + 1;
-
-        }
-
-
-        if (
-            mode ===
-            "dare"
-        )
-        {
-
-            player.dares =
-                (
-                    player.dares ||
-                    0
-                ) + 1;
-
-        }
-
-
-        if (
-            mode ===
-            "quiz"
-        )
-        {
-
-            player.quizzes =
-                (
-                    player.quizzes ||
-                    0
-                ) + 1;
-
-        }
-
+        player.turns += 1;
     }
 
 
     /*
-        Turno terminato.
+       SCEGLI VITTIMA:
+       dopo averla scelta fisicamente,
+       apriamo scelta Verità / Obbligo.
     */
 
-    eventAwaitingCompletion =
-        false;
-
-
-    activeEventPlayerId =
-        null;
-
-
-    /*
-        Programma il prossimo
-        evento 8-18 minuti
-        da ADESSO.
-    */
-
-    if (nightRunning)
+    if (
+        data.eventType ===
+        "choose-victim"
+    )
     {
+        eventOverlayLabel.textContent =
+            "LA VITTIMA È STATA SCELTA";
 
-        eventTarget =
-            Date.now() +
-            randomEventDelay();
+        eventPlayerName.textContent =
+            "VERITÀ O OBBLIGO?";
 
+        eventDescription.textContent =
+            "La persona scelta decide il proprio destino.";
+
+        eventSpecialActions.classList.add(
+            "hidden"
+        );
+
+        eventStandardActions.classList.remove(
+            "hidden"
+        );
+
+        /*
+           Nessun giocatore specifico:
+           la vittima è scelta dal gruppo.
+        */
+
+        activeEventPlayerId = null;
+
+        saveGame();
+
+        return;
     }
 
 
-    hidePlayerBanners();
+    eventOverlay.classList.remove(
+        "active"
+    );
+
+
+    scheduleNextRandomEvent();
+
+    saveGame();
+
+    finishAutomaticEvent();
+}
+
+
+/* =========================================
+   SALVA-SHOT
+========================================= */
+
+function giveSaveShot(player)
+{
+    /*
+       Max 1 per giocatore.
+       Se lo possiede già, non accumula.
+    */
+
+    player.saveShot = 1;
+
+    player.turns += 1;
+
+
+    eventOverlayIcon.textContent =
+        "🛡️";
+
+    eventOverlayLabel.textContent =
+        "SALVA-SHOT";
+
+    eventPlayerName.textContent =
+        player.name.toUpperCase();
+
+    eventDescription.textContent =
+        "Hai ottenuto un Salva-Shot. Potrai saltare un futuro Tequila Time.";
+
+    eventSpecialButton.textContent =
+        "PRENDI IL SALVA-SHOT";
+
+    eventSpecialActions.classList.remove(
+        "hidden"
+    );
+
+
+    scheduleNextRandomEvent();
+
+    saveGame();
+}
+
+
+/* =========================================
+   POTERI SPECIALI
+========================================= */
+
+function giveSpecialPower(player)
+{
+    const power =
+        SPECIAL_POWERS[
+            Math.floor(
+                Math.random() *
+                SPECIAL_POWERS.length
+            )
+        ];
+
+
+    player.powers.push(
+        power.id
+    );
+
+
+    player.turns += 1;
+
+
+    eventOverlay.classList.remove(
+        "active"
+    );
+
+
+    powerPlayerName.textContent =
+        player.name.toUpperCase();
+
+    powerName.textContent =
+        power.name;
+
+    powerDescription.textContent =
+        power.description;
+
+
+    powerOverlay.classList.add(
+        "active"
+    );
+
+
+    scheduleNextRandomEvent();
+
+    saveGame();
+}
+
+
+function closePowerOverlay()
+{
+    powerOverlay.classList.remove(
+        "active"
+    );
+
+    finishAutomaticEvent();
+}
+
+
+/* =========================================
+   PROGRAMMA PROSSIMO RANDOM
+========================================= */
+
+function scheduleNextRandomEvent()
+{
+    if (!nightRunning)
+    {
+        eventTarget = null;
+
+        return;
+    }
+
+
+    eventTarget =
+        Date.now() +
+        randomEventDelay();
+}
+
+
+/* =========================================
+   TEQUILA TIME
+========================================= */
+
+function showTequilaTime()
+{
+    renderShotSavers();
+
+    tequilaOverlay.classList.add(
+        "active"
+    );
+
+    vibratePattern();
+}
+
+
+function renderShotSavers()
+{
+    shotSaversContainer.innerHTML = "";
+
+
+    const eligiblePlayers =
+        players.filter(
+            player =>
+                player.saveShot > 0
+        );
+
+
+    if (eligiblePlayers.length === 0)
+    {
+        return;
+    }
+
+
+    const title =
+        document.createElement("div");
+
+    title.className =
+        "shot-savers-title";
+
+    title.textContent =
+        "🛡 SALVA-SHOT DISPONIBILI";
+
+    shotSaversContainer.appendChild(
+        title
+    );
+
+
+    eligiblePlayers.forEach(
+        player =>
+        {
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "shot-saver-button";
+
+            button.textContent =
+                "🛡 " +
+                player.name +
+                " USA SALVA-SHOT";
+
+
+            button.onclick =
+                function ()
+                {
+                    useSaveShot(
+                        player.id
+                    );
+                };
+
+
+            shotSaversContainer.appendChild(
+                button
+            );
+        }
+    );
+}
+
+
+function useSaveShot(playerId)
+{
+    const player =
+        getPlayerById(playerId);
+
+
+    if (
+        !player ||
+        player.saveShot <= 0
+    )
+    {
+        return;
+    }
+
+
+    const use =
+        confirm(
+            player.name +
+            " vuole usare il Salva-Shot?"
+        );
+
+
+    if (!use)
+    {
+        return;
+    }
+
+
+    player.saveShot = 0;
 
 
     saveGame();
 
+    renderShotSavers();
+
+
+    alert(
+        "🛡 " +
+        player.name +
+        " salta questo Tequila Time."
+    );
 }
 
 
-/* =========================================================
-   PLAYER BANNER
-========================================================= */
-
-function showActivePlayer(
-    element
-)
+function acknowledgeTequila()
 {
+    tequilaOverlay.classList.remove(
+        "active"
+    );
 
-    if (!element)
+
+    if (nightRunning)
     {
-
-        return;
-
+        tequilaTarget =
+            Date.now() +
+            TEQUILA_INTERVAL;
     }
 
 
-    const player =
-        players.find(
-            function (item)
-            {
+    saveGame();
 
-                return (
-                    item.id ===
-                    activeEventPlayerId
+    finishAutomaticEvent();
+}
+
+
+/* =========================================
+   TEQUILA -> VERITÀ / OBBLIGO
+========================================= */
+
+function replaceTequilaWith(mode)
+{
+    tequilaOverlay.classList.remove(
+        "active"
+    );
+
+
+    if (nightRunning)
+    {
+        tequilaTarget =
+            Date.now() +
+            TEQUILA_INTERVAL;
+    }
+
+
+    currentAutomaticEvent = null;
+
+
+    saveGame();
+
+
+    startGame(
+        mode,
+        null,
+        false
+    );
+}
+
+
+/* =========================================
+   QUIZ TIME COLLETTIVO
+========================================= */
+
+function showQuizTime()
+{
+    if (!quizTimeQuestion)
+    {
+        quizTimeQuestion =
+            quizzes[
+                Math.floor(
+                    Math.random() *
+                    quizzes.length
+                )
+            ];
+    }
+
+
+    quizTimeRevealed = false;
+
+
+    quizTimeQuestionElement.textContent =
+        quizTimeQuestion.question;
+
+
+    quizTimeOptions.innerHTML = "";
+
+
+    quizTimeQuestion.options.forEach(
+        (option, index) =>
+        {
+            const element =
+                document.createElement(
+                    "div"
                 );
 
+            element.className =
+                "quiz-option";
+
+            element.textContent =
+                String.fromCharCode(
+                    65 + index
+                ) +
+                ". " +
+                option;
+
+            element.dataset.index =
+                index;
+
+            quizTimeOptions.appendChild(
+                element
+            );
+        }
+    );
+
+
+    quizTimeResult.textContent = "";
+
+    quizTimeButton.textContent =
+        "👁 MOSTRA RISPOSTA";
+
+
+    quizTimeOverlay.classList.add(
+        "active"
+    );
+
+
+    vibratePattern();
+}
+
+
+function quizTimeAction()
+{
+    if (!quizTimeQuestion)
+    {
+        return;
+    }
+
+
+    if (!quizTimeRevealed)
+    {
+        quizTimeRevealed = true;
+
+
+        const options =
+            [
+                ...quizTimeOptions.querySelectorAll(
+                    ".quiz-option"
+                )
+            ];
+
+
+        options.forEach(
+            option =>
+            {
+                const index =
+                    Number(
+                        option.dataset.index
+                    );
+
+
+                if (
+                    index ===
+                    quizTimeQuestion.correct
+                )
+                {
+                    option.classList.add(
+                        "correct"
+                    );
+                }
             }
         );
 
 
-    if (player)
+        quizTimeResult.textContent =
+            "Chi ha sbagliato beve.";
+
+
+        quizTimeButton.textContent =
+            "CONTINUA";
+
+
+        return;
+    }
+
+
+    quizTimeOverlay.classList.remove(
+        "active"
+    );
+
+
+    quizTimeQuestion = null;
+    quizTimeRevealed = false;
+
+
+    if (nightRunning)
     {
+        quizTarget =
+            Date.now() +
+            QUIZ_INTERVAL;
+    }
 
-        element.textContent =
-            "☠ TOCCA A " +
-            player.name.toUpperCase();
+
+    saveGame();
+
+    finishAutomaticEvent();
+}
 
 
-        element.classList.remove(
-            "hidden"
+/* =========================================
+   GIOCHI MANUALI
+========================================= */
+
+function startGame(
+    mode,
+    forcedPlayerId = null,
+    fromAutomaticEvent = false
+)
+{
+    currentMode = mode;
+
+
+    if (mode === "quiz")
+    {
+        startManualQuiz(
+            forcedPlayerId
         );
 
+        return;
+    }
+
+
+    hideAllScreens();
+
+    gameScreen.classList.add(
+        "active"
+    );
+
+
+    if (mode === "truth")
+    {
+        gameTitle.textContent =
+            "VERITÀ";
+
+        cardIcon.textContent =
+            "👁";
+
+        cardType.textContent =
+            "VERITÀ";
     }
     else
     {
+        gameTitle.textContent =
+            "OBBLIGO";
 
-        element.classList.add(
-            "hidden"
-        );
+        cardIcon.textContent =
+            "⚰";
 
+        cardType.textContent =
+            "OBBLIGO";
     }
 
+
+    cardText.textContent =
+        "Premi il pulsante per pescare.";
+
+    cardNumber.textContent = "";
+
+    drawButton.textContent =
+        "PESCA";
+
+
+    if (forcedPlayerId)
+    {
+        const player =
+            getPlayerById(
+                forcedPlayerId
+            );
+
+        if (player)
+        {
+            activePlayerBanner.textContent =
+                "☠ " +
+                player.name.toUpperCase();
+
+            activePlayerBanner.classList.add(
+                "active"
+            );
+        }
+    }
+    else
+    {
+        activePlayerBanner.classList.remove(
+            "active"
+        );
+    }
 }
 
 
-/* =========================================================
-   NASCONDI PLAYER BANNERS
-========================================================= */
-
-function hidePlayerBanners()
+function drawCard()
 {
-
-    if (activePlayerBanner)
+    if (currentMode === "truth")
     {
+        if (truths.length === 0)
+        {
+            truths =
+                shuffle(DEFAULT_TRUTHS);
+        }
 
-        activePlayerBanner.classList.add(
-            "hidden"
-        );
 
+        const card =
+            truths[
+                truthIndex %
+                truths.length
+            ];
+
+
+        cardText.textContent =
+            card;
+
+
+        cardNumber.textContent =
+            "VERITÀ " +
+            (
+                (
+                    truthIndex %
+                    truths.length
+                ) + 1
+            ) +
+            " / " +
+            truths.length;
+
+
+        truthIndex =
+            (
+                truthIndex + 1
+            ) %
+            truths.length;
+
+
+        updateHomeCounters();
+
+        return;
     }
 
 
-    if (quizPlayerBanner)
+    if (currentMode === "dare")
     {
+        if (dares.length === 0)
+        {
+            dares =
+                shuffle(DEFAULT_DARES);
+        }
 
-        quizPlayerBanner.classList.add(
-            "hidden"
-        );
 
+        const card =
+            dares[
+                dareIndex %
+                dares.length
+            ];
+
+
+        cardText.textContent =
+            card;
+
+
+        cardNumber.textContent =
+            "OBBLIGO " +
+            (
+                (
+                    dareIndex %
+                    dares.length
+                ) + 1
+            ) +
+            " / " +
+            dares.length;
+
+
+        dareIndex =
+            (
+                dareIndex + 1
+            ) %
+            dares.length;
+
+
+        updateHomeCounters();
     }
-
 }
 
 
-/* =========================================================
-   VIBRAZIONE
-========================================================= */
+/* =========================================
+   QUIZ MANUALE
+========================================= */
 
-function vibrate()
+function startManualQuiz(
+    forcedPlayerId = null
+)
 {
+    currentMode = "quiz";
 
-    if (
-        navigator.vibrate
-    )
+    hideAllScreens();
+
+    quizScreen.classList.add(
+        "active"
+    );
+
+
+    if (forcedPlayerId)
     {
+        const player =
+            getPlayerById(
+                forcedPlayerId
+            );
 
-        navigator.vibrate(
-            40
+        if (player)
+        {
+            quizPlayerBanner.textContent =
+                "🧠 " +
+                player.name.toUpperCase();
+
+            quizPlayerBanner.classList.add(
+                "active"
+            );
+        }
+    }
+    else
+    {
+        quizPlayerBanner.classList.remove(
+            "active"
         );
-
     }
 
+
+    loadManualQuiz();
 }
 
 
-function vibratePattern()
+function loadManualQuiz()
 {
-
-    if (
-        navigator.vibrate
-    )
+    if (quizzes.length === 0)
     {
+        quizzes =
+            shuffle(DEFAULT_QUIZZES);
+    }
 
-        navigator.vibrate(
+
+    currentQuiz =
+        quizzes[
+            quizIndex %
+            quizzes.length
+        ];
+
+
+    currentQuizRevealed = false;
+
+
+    quizQuestion.textContent =
+        currentQuiz.question;
+
+
+    quizOptions.innerHTML = "";
+
+
+    currentQuiz.options.forEach(
+        (option, index) =>
+        {
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "quiz-option";
+
+            element.textContent =
+                String.fromCharCode(
+                    65 + index
+                ) +
+                ". " +
+                option;
+
+            element.dataset.index =
+                index;
+
+            quizOptions.appendChild(
+                element
+            );
+        }
+    );
+
+
+    quizResult.textContent = "";
+
+
+    quizNumber.textContent =
+        "QUIZ " +
+        (
+            (
+                quizIndex %
+                quizzes.length
+            ) + 1
+        ) +
+        " / " +
+        quizzes.length;
+
+
+    quizMainButton.textContent =
+        "👁 MOSTRA RISPOSTA";
+}
+
+
+function quizMainAction()
+{
+    if (!currentQuiz)
+    {
+        return;
+    }
+
+
+    if (!currentQuizRevealed)
+    {
+        currentQuizRevealed = true;
+
+
+        const options =
             [
-                120,
-                80,
-                120,
-                80,
-                220
-            ]
+                ...quizOptions.querySelectorAll(
+                    ".quiz-option"
+                )
+            ];
+
+
+        options.forEach(
+            option =>
+            {
+                const index =
+                    Number(
+                        option.dataset.index
+                    );
+
+
+                if (
+                    index ===
+                    currentQuiz.correct
+                )
+                {
+                    option.classList.add(
+                        "correct"
+                    );
+                }
+            }
         );
 
+
+        quizResult.textContent =
+            "Risposta corretta: " +
+            currentQuiz.options[
+                currentQuiz.correct
+            ];
+
+
+        quizMainButton.textContent =
+            "PROSSIMO QUIZ";
+
+
+        return;
     }
 
+
+    quizIndex =
+        (
+            quizIndex + 1
+        ) %
+        quizzes.length;
+
+
+    loadManualQuiz();
 }
 
 
-/* =========================================================
-   RIPRESA APP
-========================================================= */
+/* =========================================
+   RIPRISTINO DOPO SAFARI / LOCK
+========================================= */
 
-/*
-    Non ci affidiamo a setInterval
-    per sapere quanto tempo è passato.
+function resumeApplication()
+{
+    updateTimers();
 
-    Il timer usa sempre Date.now()
-    confrontato con i timestamp salvati.
 
-    Quindi:
-    - schermo bloccato
-    - Safari sospeso
-    - cambio app
-    - refresh pagina
-
-    non fanno "fermare" il tempo.
-*/
+    if (
+        currentAutomaticEvent
+    )
+    {
+        setTimeout(
+            restoreCurrentAutomaticEvent,
+            100
+        );
+    }
+    else
+    {
+        setTimeout(
+            processEventQueue,
+            100
+        );
+    }
+}
 
 
 document.addEventListener(
     "visibilitychange",
     function ()
     {
-
-        if (
-            !document.hidden
-        )
+        if (!document.hidden)
         {
-
-            updateTimers();
-
+            resumeApplication();
         }
-
     }
 );
 
 
 window.addEventListener(
     "focus",
-    function ()
-    {
-
-        updateTimers();
-
-    }
+    resumeApplication
 );
 
 
-/* =========================================================
-   AVVIO APP
-========================================================= */
+/* =========================================
+   AVVIO
+========================================= */
 
 loadGame();
 
-
 updateTimers();
 
-
-/*
-    Aggiornamento grafico
-    ogni secondo.
-*/
 
 setInterval(
     updateTimers,
@@ -4041,27 +2837,30 @@ setInterval(
 );
 
 
-/*
-    Se non ci sono ancora
-    giocatori, apri direttamente
-    la configurazione.
-*/
+if (players.length === 0)
+{
+    openPlayersScreen();
+}
+else
+{
+    goHome();
+}
+
+
+/* =========================================
+   RIPRISTINO EVENTO PENDENTE
+========================================= */
 
 if (
-    players.length === 0
+    nightRunning &&
+    (
+        currentAutomaticEvent ||
+        eventQueue.length > 0
+    )
 )
 {
-
-    homeScreen.classList.remove(
-        "active"
+    setTimeout(
+        processEventQueue,
+        250
     );
-
-
-    playersScreen.classList.add(
-        "active"
-    );
-
-
-    renderPlayersEditor();
-
 }
