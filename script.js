@@ -49,7 +49,6 @@ const DEFAULT_TRUTHS = [
     "Chi del gruppo chiameresti per tirarti fuori da un guaio alle 4 del mattino?",
     "Qual è la cosa più strana che ti hanno chiesto a letto?",
     "Se dovessi scambiare la tua vita con quella di una persona del gruppo per un mese, chi sceglieresti?",
-
     "Chi tra i presenti pensavi ti sarebbe stato antipatico quando l'hai conosciuto?",
     "Qual è il messaggio che speri che nessuno qui possa mai leggere?",
     "Se dovessi baciare una persona presente nella stanza, chi sceglieresti?",
@@ -88,7 +87,6 @@ const DEFAULT_DARES = [
     "Chiedi a uno sconosciuto di registrare un video di 10 secondi in cui racconta come vi siete conosciuti, lasciando che inventi completamente la storia.",
     "Vai da uno sconosciuto e chiedigli quale membro del gruppo sembra più probabilmente ricercato dalla polizia. Deve anche spiegare il motivo.",
     "Trova uno sconosciuto disposto a celebrare il funerale ufficiale della vita italiana di Matteo. Deve improvvisare un elogio funebre di almeno 20 secondi.",
-
     "Scegli una persona del gruppo e improvvisa una proposta di matrimonio seria e appassionata davanti a tutti.",
     "Fatti fare una foto da uno sconosciuto assumendo tutti insieme la posa più assurda possibile.",
     "Vai da uno sconosciuto e chiedigli una foto dei piedi.",
