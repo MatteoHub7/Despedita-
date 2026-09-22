@@ -129,7 +129,7 @@ const dareCards = [
 
     "Vai da uno sconosciuto e digli qualcosa di volutamente poco chiaro. Quando risponde «Ah?», rispondi semplicemente: «Suca.» Poi vattene.",
 
-    "Il gruppo sceglie uno sconosciuto. Avvicinati e chiedigli molto seriamente: «Scusa, secondo te noi due abbiamo già litigato in passato?»",
+    "Fino al prossimo tequila time dovrai parlare come francesca imbruttita",
 
     "Vai da uno sconosciuto chiamandolo con il primo nome che ti viene in mente e fai finta di conoscerlo. Porta avanti la conversazione per almeno un minuto.",
 
@@ -140,7 +140,6 @@ const dareCards = [
     "Trova uno sconosciuto disposto a celebrare il funerale ufficiale della vita italiana di Matteo. Deve improvvisare un elogio funebre di almeno 20 secondi."
 
 ];
-
 
 /* =========================================================
    QUIZ
@@ -3257,62 +3256,30 @@ function randomEventDelay()
 /* =========================================================
    INIZIA / RESETTA SERATA
 ========================================================= */
-
 function toggleNight()
 {
+    if (players.length < 2)
+    {
+        alert("Prima salva almeno 2 giocatori.");
+        openPlayersScreen();
+        return;
+    }
 
     /*
-        AVVIO
+        SE LA SERATA NON È ATTIVA:
+        AVVIALA
     */
-
     if (!nightRunning)
     {
+        nightRunning = true;
 
-        if (
-            players.length <
-            2
-        )
-        {
-
-            openPlayersScreen();
-
-
-            playersError.textContent =
-                "Prima salva almeno 2 giocatori.";
-
-
-            return;
-
-        }
-
-
-        nightRunning =
-            true;
-
-
-        const now =
-            Date.now();
-
-
-        /*
-            Primo Tequila Time:
-            30 minuti.
-        */
+        const now = Date.now();
 
         tequilaTarget =
-            now +
-            TEQUILA_INTERVAL;
-
-
-        /*
-            Primo evento:
-            casuale 8-18 minuti.
-        */
+            now + TEQUILA_INTERVAL;
 
         eventTarget =
-            now +
-            randomEventDelay();
-
+            now + randomEventDelay();
 
         saveGame();
 
@@ -3322,10 +3289,53 @@ function toggleNight()
 
         vibrate();
 
-
         return;
-
     }
+
+
+    /*
+        SE È GIÀ ATTIVA:
+        CHIEDI SE RESETTARE
+    */
+    const stop = confirm(
+        "Vuoi fermare la serata e azzerare i timer?"
+    );
+
+    if (!stop)
+    {
+        return;
+    }
+
+    nightRunning = false;
+
+    tequilaTarget = null;
+    eventTarget = null;
+
+    tequilaAlertOpen = false;
+    eventAlertOpen = false;
+
+    activeEventPlayerId = null;
+    eventAwaitingCompletion = false;
+
+    if (eventOverlay)
+    {
+        eventOverlay.classList.remove("active");
+    }
+
+    if (tequilaOverlay)
+    {
+        tequilaOverlay.classList.remove("active");
+    }
+
+    hidePlayerBanners();
+
+    saveGame();
+
+    updateNightUI();
+
+    updateTimers();
+}
+
 
 
     /*
