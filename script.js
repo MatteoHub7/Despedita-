@@ -2379,6 +2379,10 @@ function closePowerOverlay()
         "active"
     );
 
+    scheduleNextRandomEvent();
+
+    saveGame();
+
     finishAutomaticEvent();
 }
 
