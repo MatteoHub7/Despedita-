@@ -956,23 +956,23 @@ function saveTarget(key, value)
 
 function loadGame()
 {
-    truths =
-        loadArray(
-            "despedida_truth",
-            DEFAULT_TRUTHS
-        );
+   truths = [...DEFAULT_TRUTHS];
+   dares = [...DEFAULT_DARES];
+   quizzes = [...DEFAULT_QUIZZES];
+   
+   localStorage.setItem(
+      "despedida_truth",
+      JSON.stringify(truths)
+   );
 
-    dares =
-        loadArray(
-            "despedida_dare",
-            DEFAULT_DARES
-        );
-
-    quizzes =
-        loadArray(
-            "despedida_quiz",
-            DEFAULT_QUIZZES
-        );
+   localStorage.setItem(
+      "despedida_dare",
+      JSON.stringify(dares)
+   );
+   localStorage.setItem(
+      "despedida_quiz",
+      JSON.stringify(quizzes)
+   );
 
 
     const storedPlayers =
