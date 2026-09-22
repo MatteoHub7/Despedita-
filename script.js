@@ -3330,80 +3330,17 @@ function toggleNight()
     hidePlayerBanners();
 
     saveGame();
-
-    updateNightUI();
-
-    updateTimers();
-}
-
-
-
-    /*
-        STOP / RESET
-    */
-
-    const stop =
-        confirm(
-            "Vuoi fermare la serata e azzerare i timer?"
-        );
-
-
-    if (!stop)
-    {
-
-        return;
-
-    }
-
-
-    nightRunning =
-        false;
-
-
-    tequilaTarget =
-        null;
-
-
-    eventTarget =
-        null;
-
-
-    tequilaAlertOpen =
-        false;
-
-
-    eventAlertOpen =
-        false;
-
-
-    activeEventPlayerId =
-        null;
-
-
-    eventAwaitingCompletion =
-        false;
-
-
-    eventOverlay.classList.remove(
-        "active"
-    );
-
-
-    tequilaOverlay.classList.remove(
-        "active"
-    );
-
-
-    hidePlayerBanners();
-
-
-    saveGame();
-
+   
     updateNightUI();
 
     updateTimers();
 
 }
+
+
+   
+
+    
 
 
 /* =========================================================
