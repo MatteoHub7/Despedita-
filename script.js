@@ -1,3 +1,4 @@
+alert("SCRIPT CARICATO");
 /* =========================================================
    DESPEDIDA
    SCRIPT.JS
