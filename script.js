@@ -96,61 +96,391 @@ const DEFAULT_DARES = [
     "Trova uno sconosciuto, e fagli dare un voto a delle foto dei piedi a tua scelta (almeno 5)."
 ];
 
-{
-    question: "Quale di queste è stata per anni una delle categorie più cercate su Pornhub a livello globale?",
-    options: [
-        "Mature",
-        "Japanese",
-        "Lesbian",
-        "Cosplay"
-    ],
-    correct: 2,
-    explanation: "Lesbian è comparsa ripetutamente ai vertici delle classifiche globali di ricerca e categorie di Pornhub."
-},
-{
-    question: "Per Matteo, i piedi stanno a una donna come X sta a una macchina. Cos'è X?",
-    options: [
-        "I cerchi",
-        "Gli specchietti",
-        "I fari",
-        "Il posteriore"
-    ],
-    correct: 1,
-    explanation: "Gli specchietti. Non cercate una logica universale: è Matteo."
-},
-{
-    question: "Quale di queste parti del corpo umano può aumentare maggiormente di dimensioni rispetto alla sua condizione normale?",
-    options: [
-        "Pupilla",
-        "Pene",
-        "Stomaco",
-        "Vescica"
-    ],
-    correct: 2,
-    explanation: "Lo stomaco può aumentare enormemente il proprio volume rispetto alla condizione di riposo."
-},
-{
-    question: "Quale di questi animali può respirare in parte attraverso il sedere?",
-    options: [
-        "Tartaruga",
-        "Pinguino",
-        "Polpo",
-        "Castoro"
-    ],
-    correct: 0,
-    explanation: "Alcune tartarughe possono effettuare respirazione cloacale, assorbendo ossigeno attraverso tessuti della cloaca."
-},
-{
-    question: "Quale di questi oggetti è stato realmente portato sulla Luna dagli astronauti dell'Apollo 14?",
-    options: [
-        "Una mazza da golf",
-        "Una bottiglia di whisky",
-        "Una pizza",
-        "Un giradischi"
-    ],
-    correct: 0,
-    explanation: "Alan Shepard portò una testa di mazza da golf e colpì due palline sulla Luna."
-}
+const DEFAULT_QUIZZES = [
+    {
+        question: "Qual è il nome scientifico del genere di ragni sudamericani il cui veleno può provocare priapismo?",
+        options: [
+            "Latrodectus",
+            "Phoneutria",
+            "Loxosceles",
+            "Atrax"
+        ],
+        correct: 1,
+        explanation: "Phoneutria. Il veleno di alcune specie può provocare priapismo."
+    },
+    {
+        question: "Ne Il Signore degli Anelli, qual è il nome della spada riforgiata dai frammenti di Narsil?",
+        options: [
+            "Glamdring",
+            "Orcrist",
+            "Andúril",
+            "Anglachel"
+        ],
+        correct: 2,
+        explanation: "Andúril, la spada di Aragorn riforgiata dai frammenti di Narsil."
+    },
+    {
+        question: "Quale elemento chimico è indicato dal simbolo W?",
+        options: [
+            "Tungsteno",
+            "Titanio",
+            "Tantalio",
+            "Vanadio"
+        ],
+        correct: 0,
+        explanation: "Il simbolo W deriva dal nome Wolfram. L'elemento è il tungsteno."
+    },
+    {
+        question: "Quale imperatore promulgò con Graziano e Valentiniano II l'Editto di Tessalonica del 380?",
+        options: [
+            "Costantino I",
+            "Teodosio I",
+            "Giustiniano I",
+            "Diocleziano"
+        ],
+        correct: 1,
+        explanation: "Teodosio I."
+    },
+    {
+        question: "In 2001: Odissea nello spazio, cosa significa HAL?",
+        options: [
+            "Human Algorithmic Logic",
+            "Heuristic Artificial Language",
+            "Heuristically Programmed ALgorithmic Computer",
+            "High-level Artificial Logic"
+        ],
+        correct: 2,
+        explanation: "HAL significa Heuristically Programmed ALgorithmic Computer."
+    },
+    {
+        question: "Quale di questi animali possiede tre canali vaginali?",
+        options: [
+            "Canguro",
+            "Delfino",
+            "Iena",
+            "Ornitorinco"
+        ],
+        correct: 0,
+        explanation: "Il canguro, come altri marsupiali, possiede una particolare anatomia riproduttiva."
+    },
+    {
+        question: "Quale di questi NON è uno dei sette nani Disney?",
+        options: [
+            "Gongolo",
+            "Mammolo",
+            "Pisolo",
+            "Timido"
+        ],
+        correct: 3,
+        explanation: "Timido non è uno dei sette nani."
+    },
+    {
+        question: "Quanto tempo servirebbe per percorrere la distanza media Terra-Luna viaggiando continuamente a 10 km/h?",
+        options: [
+            "Circa 44 giorni",
+            "Circa 160 giorni",
+            "Circa 4,4 anni",
+            "Circa 44 anni"
+        ],
+        correct: 2,
+        explanation: "Circa 4,4 anni."
+    },
+    {
+        question: "Qual è la capitale della Birmania, oggi Myanmar?",
+        options: [
+            "Yangon",
+            "Mandalay",
+            "Naypyidaw",
+            "Bago"
+        ],
+        correct: 2,
+        explanation: "Naypyidaw."
+    },
+    {
+        question: "Secondo la misura pubblicamente attribuita a Rocco Siffredi, quanto sarebbe lungo il suo pene in erezione?",
+        options: [
+            "19 cm",
+            "21 cm",
+            "24 cm",
+            "28 cm"
+        ],
+        correct: 2,
+        explanation: "La cifra comunemente riportata è circa 24 cm."
+    },
+    {
+        question: "Un uomo guarda una fotografia e dice: «Non ho fratelli né sorelle, ma il padre di quest'uomo è figlio di mio padre». Chi c'è nella fotografia?",
+        options: [
+            "Suo padre",
+            "Suo figlio",
+            "Lui stesso",
+            "Suo cugino"
+        ],
+        correct: 1,
+        explanation: "Suo figlio."
+    },
+    {
+        question: "Quale di questi è l'unico numero primo pari?",
+        options: [
+            "0",
+            "1",
+            "2",
+            "4"
+        ],
+        correct: 2,
+        explanation: "2 è l'unico numero primo pari."
+    },
+    {
+        question: "In Dark Souls, chi è il boss finale della storia principale?",
+        options: [
+            "Artorias",
+            "Gwyn",
+            "Ornstein",
+            "Manus"
+        ],
+        correct: 1,
+        explanation: "Gwyn, Lord of Cinder."
+    },
+    {
+        question: "Quale pianeta del Sistema Solare ha il periodo di rotazione siderale più lungo?",
+        options: [
+            "Mercurio",
+            "Venere",
+            "Marte",
+            "Nettuno"
+        ],
+        correct: 1,
+        explanation: "Venere."
+    },
+    {
+        question: "Quale di queste è la parola più lunga?",
+        options: [
+            "Kraftfahrzeughaftpflichtversicherung",
+            "Aufmerksamkeitsdefizit-Hyperaktivitätsstörung",
+            "Donaudampfschifffahrtsgesellschaft",
+            "Finanzdienstleistungsunternehmen"
+        ],
+        correct: 1,
+        explanation: "Aufmerksamkeitsdefizit-Hyperaktivitätsstörung."
+    },
+    {
+        question: "Come si chiama la nave comandata da Shepard all'inizio del primo Mass Effect?",
+        options: [
+            "Normandy SR-1",
+            "Normandy SR-2",
+            "Tempest",
+            "Destiny Ascension"
+        ],
+        correct: 0,
+        explanation: "SSV Normandy SR-1."
+    },
+    {
+        question: "Quale paese possiede più piramidi antiche conosciute?",
+        options: [
+            "Egitto",
+            "Messico",
+            "Sudan",
+            "Perù"
+        ],
+        correct: 2,
+        explanation: "Il Sudan."
+    },
+    {
+        question: "Quale numero romano rappresenta 500?",
+        options: [
+            "L",
+            "C",
+            "D",
+            "M"
+        ],
+        correct: 2,
+        explanation: "D rappresenta 500."
+    },
+    {
+        question: "In ordine di grandezza, quanti normali rotoli di carta igienica servirebbero per occupare il volume del Sole?",
+        options: [
+            "10²⁵",
+            "10³⁰",
+            "10³⁵",
+            "10⁴⁰"
+        ],
+        correct: 1,
+        explanation: "L'ordine di grandezza è circa 10³⁰ rotoli."
+    },
+    {
+        question: "Nel primo The Legend of Zelda, come si chiama la principessa che Link deve salvare?",
+        options: [
+            "Hylia",
+            "Zelda",
+            "Midna",
+            "Ruto"
+        ],
+        correct: 1,
+        explanation: "Zelda. Il titolo, per una volta, collaborava."
+    },
+    {
+        question: "Sul foglio Excel di Cri, a quanto ammonta il mio ritardo?",
+        options: [
+            "17 minuti",
+            "43 minuti",
+            "1 ora e 12 minuti",
+            "2 ore e 6 minuti"
+        ],
+        correct: null,
+        explanation: "Il foglio Excel di Cri custodisce una verità più oscura."
+    },
+    {
+        question: "Qual è il mio soprannome?",
+        options: [
+            "Duca di Rifredi",
+            "Principe di Rifredi",
+            "Conte di Rifredi",
+            "Marchese di Rifredi"
+        ],
+        correct: 1,
+        explanation: "Principe di Rifredi."
+    },
+    {
+        question: "Qual è la mia colazione preferita?",
+        options: [
+            "Cornetto e cappuccino",
+            "Uova e bacon",
+            "Pancarrè e Nutella",
+            "Caffè e sigaretta"
+        ],
+        correct: 2,
+        explanation: "Pancarrè e Nutella."
+    },
+    {
+        question: "Cosa è successo realmente al Pavo la sera in cui Cristiano si è ubriacato?",
+        options: [],
+        correct: "open",
+        explanation: "La verità è ancora oggetto di indagine."
+    },
+    {
+        question: "Qual è il mio drink preferito?",
+        options: [
+            "Negroni",
+            "Moscow Mule",
+            "Old Fashioned",
+            "Gin Tonic"
+        ],
+        correct: 2,
+        explanation: "Old Fashioned."
+    },
+    {
+        question: "Di quale locale è la barista che mi ha rubato il cuore?",
+        options: [
+            "Red Garter",
+            "Post Office",
+            "YAB",
+            "Space"
+        ],
+        correct: 1,
+        explanation: "Post Office."
+    },
+    {
+        question: "Come si chiama la futura signora Furnari?",
+        options: [
+            "Beatrice",
+            "Giulia",
+            "Eleonora",
+            "Federica"
+        ],
+        correct: 2,
+        explanation: "Eleonora."
+    },
+    {
+        question: "Che lavoro faccio?",
+        options: [
+            "Instrumentation Engineer",
+            "Automation Engineer",
+            "Lead Engineer",
+            "Un cazzo"
+        ],
+        correct: 3,
+        explanation: "Un cazzo. Instrumentation Engineer era soltanto la risposta professionalmente sensata."
+    },
+    {
+        question: "Come si chiama il mio kebabbaro di fiducia?",
+        options: [
+            "Ahmed",
+            "Karim",
+            "Mohamed",
+            "Mustafa"
+        ],
+        correct: 2,
+        explanation: "Mohamed."
+    },
+    {
+        question: "Qual è la prima cosa che guardo in una ragazza?",
+        options: [
+            "Gli occhi",
+            "Il sorriso",
+            "Il carattere",
+            "Dipende se è di spalle"
+        ],
+        correct: 3,
+        explanation: "Dipende se è di spalle."
+    },
+
+    /* ===== 5 NUOVE ===== */
+
+    {
+        question: "Quale di queste è stata per anni una delle categorie più cercate su Pornhub a livello globale?",
+        options: [
+            "Mature",
+            "Japanese",
+            "Lesbian",
+            "Cosplay"
+        ],
+        correct: 2,
+        explanation: "Lesbian è comparsa ripetutamente ai vertici delle classifiche globali di ricerca e categorie di Pornhub."
+    },
+    {
+        question: "Per Matteo, i piedi stanno a una donna come X sta a una macchina. Cos'è X?",
+        options: [
+            "I cerchi",
+            "Gli specchietti",
+            "I fari",
+            "Il posteriore"
+        ],
+        correct: 1,
+        explanation: "Gli specchietti. Non cercate una logica universale: è Matteo."
+    },
+    {
+        question: "Quale di queste parti del corpo umano può aumentare maggiormente di dimensioni rispetto alla sua condizione normale?",
+        options: [
+            "Pupilla",
+            "Pene",
+            "Stomaco",
+            "Vescica"
+        ],
+        correct: 2,
+        explanation: "Lo stomaco può aumentare enormemente il proprio volume rispetto alla condizione di riposo."
+    },
+    {
+        question: "Quale di questi animali può respirare in parte attraverso il sedere?",
+        options: [
+            "Tartaruga",
+            "Pinguino",
+            "Polpo",
+            "Castoro"
+        ],
+        correct: 0,
+        explanation: "Alcune tartarughe possono effettuare respirazione cloacale, assorbendo ossigeno attraverso tessuti della cloaca."
+    },
+    {
+        question: "Quale di questi oggetti è stato realmente portato sulla Luna dagli astronauti dell'Apollo 14?",
+        options: [
+            "Una mazza da golf",
+            "Una bottiglia di whisky",
+            "Una pizza",
+            "Un giradischi"
+        ],
+        correct: 0,
+        explanation: "Alan Shepard portò una testa di mazza da golf e colpì due palline sulla Luna."
+    }
+]; 
 
 /* =========================================
    POTERI
