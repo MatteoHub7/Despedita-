@@ -531,6 +531,8 @@ let currentMode = null;
 let currentQuiz = null;
 let currentQuizRevealed = false;
 
+let cardDrawn = false;
+
 let nightRunning = false;
 
 let tequilaTarget = null;
@@ -726,24 +728,15 @@ function shuffle(array)
 {
     const copy = [...array];
 
-    for (
-        let i = copy.length - 1;
-        i > 0;
-        i--
-    )
+    for (let i = copy.length - 1; i > 0; i--)
     {
         const j =
             Math.floor(
                 Math.random() * (i + 1)
             );
 
-        [
-            copy[i],
-            copy[j]
-        ] = [
-            copy[j],
-            copy[i]
-        ];
+        [copy[i], copy[j]] =
+            [copy[j], copy[i]];
     }
 
     return copy;
@@ -843,23 +836,24 @@ function getPlayerById(id)
    LOCAL STORAGE
 ========================================= */
 
+function saveTarget(key, value)
+{
+    if (value)
+    {
+        localStorage.setItem(
+            key,
+            String(value)
+        );
+    }
+    else
+    {
+        localStorage.removeItem(key);
+    }
+}
+
+
 function saveGame()
 {
-    localStorage.setItem(
-        "despedida_truth",
-        JSON.stringify(truths)
-    );
-
-    localStorage.setItem(
-        "despedida_dare",
-        JSON.stringify(dares)
-    );
-
-    localStorage.setItem(
-        "despedida_quiz",
-        JSON.stringify(quizzes)
-    );
-
     localStorage.setItem(
         "despedida_players",
         JSON.stringify(players)
@@ -879,6 +873,7 @@ function saveGame()
         );
     }
 
+
     if (lastSelectedPlayerId)
     {
         localStorage.setItem(
@@ -892,6 +887,7 @@ function saveGame()
             "despedida_last_player"
         );
     }
+
 
     localStorage.setItem(
         "despedida_night_running",
@@ -920,6 +916,7 @@ function saveGame()
         JSON.stringify(eventQueue)
     );
 
+
     if (currentAutomaticEvent)
     {
         localStorage.setItem(
@@ -938,47 +935,34 @@ function saveGame()
 }
 
 
-function saveTarget(key, value)
+function loadTarget(key)
 {
-    if (value)
-    {
-        localStorage.setItem(
-            key,
-            String(value)
+    const value =
+        Number(
+            localStorage.getItem(key)
         );
-    }
-    else
-    {
-        localStorage.removeItem(key);
-    }
+
+    return value || null;
 }
 
 
 function loadGame()
 {
-   truths = [...DEFAULT_TRUTHS];
-   dares = [...DEFAULT_DARES];
-   quizzes = [...DEFAULT_QUIZZES];
-   
-   localStorage.setItem(
-      "despedida_truth",
-      JSON.stringify(truths)
-   );
+    /*
+       I mazzi vengono sempre caricati
+       dalla versione attuale del codice.
+    */
 
-   localStorage.setItem(
-      "despedida_dare",
-      JSON.stringify(dares)
-   );
-   localStorage.setItem(
-      "despedida_quiz",
-      JSON.stringify(quizzes)
-   );
+    truths = [...DEFAULT_TRUTHS];
+    dares = [...DEFAULT_DARES];
+    quizzes = [...DEFAULT_QUIZZES];
 
 
     const storedPlayers =
         localStorage.getItem(
             "despedida_players"
         );
+
 
     if (storedPlayers)
     {
@@ -1069,6 +1053,7 @@ function loadGame()
             "despedida_event_queue"
         );
 
+
     if (storedQueue)
     {
         try
@@ -1092,6 +1077,7 @@ function loadGame()
         localStorage.getItem(
             "despedida_current_event"
         );
+
 
     if (storedCurrent)
     {
@@ -1123,13 +1109,26 @@ function loadGame()
                 now + QUIZ_INTERVAL;
         }
 
+        /*
+           Se non c'è né un Random programmato
+           né un Random attualmente in corso/coda,
+           ne programmiamo uno nuovo.
+        */
+
+        const randomPending =
+            currentAutomaticEvent?.type ===
+                "random" ||
+            eventQueue.some(
+                item =>
+                    item.type === "random"
+            );
+
         if (
             !eventTarget &&
-            !currentAutomaticEvent
+            !randomPending
         )
         {
-            eventTarget =
-                now + randomEventDelay();
+            scheduleNextRandomEvent();
         }
     }
 
@@ -1137,49 +1136,6 @@ function loadGame()
     updateHomeCounters();
     updatePlayersHome();
     updateNightUI();
-}
-
-
-function loadArray(key, fallback)
-{
-    const stored =
-        localStorage.getItem(key);
-
-    if (!stored)
-    {
-        return shuffle(fallback);
-    }
-
-    try
-    {
-        const parsed =
-            JSON.parse(stored);
-
-        if (
-            Array.isArray(parsed) &&
-            parsed.length > 0
-        )
-        {
-            return parsed;
-        }
-    }
-    catch
-    {
-        /* niente */
-    }
-
-    return shuffle(fallback);
-}
-
-
-function loadTarget(key)
-{
-    const value =
-        Number(
-            localStorage.getItem(key)
-        );
-
-    return value || null;
 }
 
 
@@ -1191,7 +1147,9 @@ function openPlayersScreen()
 {
     hideAllScreens();
 
-    playersScreen.classList.add("active");
+    playersScreen.classList.add(
+        "active"
+    );
 
     renderPlayerInputs();
 }
@@ -1201,12 +1159,14 @@ function renderPlayerInputs()
 {
     playersList.innerHTML = "";
 
+
     if (players.length === 0)
     {
         addPlayerInput();
         addPlayerInput();
 
         updateCelebrantSelect();
+
         return;
     }
 
@@ -1221,22 +1181,23 @@ function renderPlayerInputs()
         }
     );
 
+
     updateCelebrantSelect();
 }
 
 
 function addPlayerInput()
 {
-    createPlayerInput("", generateId());
+    createPlayerInput(
+        "",
+        generateId()
+    );
 
     updateCelebrantSelect();
 }
 
 
-function createPlayerInput(
-    value,
-    id
-)
+function createPlayerInput(value, id)
 {
     const row =
         document.createElement("div");
@@ -1251,6 +1212,7 @@ function createPlayerInput(
         document.createElement("input");
 
     input.type = "text";
+
     input.placeholder =
         "Nome giocatore";
 
@@ -1271,6 +1233,7 @@ function createPlayerInput(
         "remove-player-button";
 
     removeButton.textContent = "✕";
+
 
     removeButton.onclick =
         function ()
@@ -1310,15 +1273,19 @@ function updateCelebrantSelect()
         row =>
         {
             const input =
-                row.querySelector("input");
+                row.querySelector(
+                    "input"
+                );
 
             const name =
                 input.value.trim();
+
 
             if (!name)
             {
                 return;
             }
+
 
             const option =
                 document.createElement(
@@ -1371,10 +1338,13 @@ function savePlayers()
         row =>
         {
             const input =
-                row.querySelector("input");
+                row.querySelector(
+                    "input"
+                );
 
             const name =
                 input.value.trim();
+
 
             if (!name)
             {
@@ -1436,6 +1406,7 @@ function savePlayers()
 
     playersError.textContent = "";
 
+
     saveGame();
 
     updatePlayersHome();
@@ -1459,9 +1430,15 @@ function goHome()
 {
     hideAllScreens();
 
-    homeScreen.classList.add("active");
+    homeScreen.classList.add(
+        "active"
+    );
 
     currentMode = null;
+    cardDrawn = false;
+
+    currentQuiz = null;
+    currentQuizRevealed = false;
 
     hidePlayerBanners();
 
@@ -1518,9 +1495,11 @@ function toggleNight()
         eventTarget =
             now + randomEventDelay();
 
-
         eventQueue = [];
         currentAutomaticEvent = null;
+
+        quizTimeQuestion = null;
+        quizTimeRevealed = false;
 
 
         saveGame();
@@ -1557,7 +1536,11 @@ function toggleNight()
 
     activeEventPlayerId = null;
 
+    quizTimeQuestion = null;
+    quizTimeRevealed = false;
+
     closeAllAutomaticOverlays();
+
 
     saveGame();
 
@@ -1616,32 +1599,20 @@ function updateTimers()
     checkExpiredTimers(now);
 
 
-    if (tequilaTarget)
-    {
-        tequilaTimer.textContent =
-            formatTime(
+    tequilaTimer.textContent =
+        tequilaTarget
+            ? formatTime(
                 tequilaTarget - now
-            );
-    }
-    else
-    {
-        tequilaTimer.textContent =
-            "00:00";
-    }
+            )
+            : "00:00";
 
 
-    if (quizTarget)
-    {
-        quizTimer.textContent =
-            formatTime(
+    quizTimer.textContent =
+        quizTarget
+            ? formatTime(
                 quizTarget - now
-            );
-    }
-    else
-    {
-        quizTimer.textContent =
-            "00:00";
-    }
+            )
+            : "00:00";
 
 
     eventTimer.textContent = "???";
@@ -1653,6 +1624,9 @@ function updateTimers()
 
 function checkExpiredTimers(now)
 {
+    let changed = false;
+
+
     if (
         tequilaTarget &&
         now >= tequilaTarget
@@ -1663,6 +1637,8 @@ function checkExpiredTimers(now)
         enqueueAutomaticEvent({
             type: "tequila"
         });
+
+        changed = true;
     }
 
 
@@ -1676,6 +1652,8 @@ function checkExpiredTimers(now)
         enqueueAutomaticEvent({
             type: "quiz-time"
         });
+
+        changed = true;
     }
 
 
@@ -1689,10 +1667,15 @@ function checkExpiredTimers(now)
         enqueueAutomaticEvent({
             type: "random"
         });
+
+        changed = true;
     }
 
 
-    saveGame();
+    if (changed)
+    {
+        saveGame();
+    }
 }
 
 
@@ -1737,10 +1720,14 @@ function processEventQueue()
     }
 
 
+    /*
+       IMPORTANTISSIMO:
+       se un evento è già aperto,
+       NON lo ridisegniamo ogni secondo.
+    */
+
     if (currentAutomaticEvent)
     {
-        restoreCurrentAutomaticEvent();
-
         return;
     }
 
@@ -1750,13 +1737,6 @@ function processEventQueue()
         return;
     }
 
-
-    /*
-       PRIORITÀ:
-       1 Tequila
-       2 Quiz
-       3 Random
-    */
 
     const priorities = {
         tequila: 1,
@@ -1778,7 +1758,6 @@ function processEventQueue()
 
     saveGame();
 
-
     restoreCurrentAutomaticEvent();
 }
 
@@ -1790,6 +1769,12 @@ function restoreCurrentAutomaticEvent()
         return;
     }
 
+
+    /*
+       Non richiamiamo continuamente questa
+       funzione dal timer. Serve solo per
+       aprire/ripristinare l'evento.
+    */
 
     closeAllAutomaticOverlays();
 
@@ -1830,7 +1815,10 @@ function finishAutomaticEvent()
 {
     currentAutomaticEvent = null;
 
+    activeEventPlayerId = null;
+
     saveGame();
+
 
     setTimeout(
         processEventQueue,
@@ -1900,6 +1888,7 @@ function selectNextPlayer()
                     lastSelectedPlayerId
             );
 
+
         if (withoutLast.length > 0)
         {
             candidates =
@@ -1943,24 +1932,20 @@ function pickRandomEventType()
         return "victim";
     }
 
-
     if (roll < 75)
     {
         return "choose-victim";
     }
-
 
     if (roll < 85)
     {
         return "drink-with";
     }
 
-
     if (roll < 95)
     {
         return "special-power";
     }
-
 
     return "save-shot";
 }
@@ -1968,11 +1953,6 @@ function pickRandomEventType()
 
 function showRandomEvent()
 {
-    /*
-       Se l'evento è stato già generato
-       prima di un refresh, lo recuperiamo.
-    */
-
     if (
         currentAutomaticEvent.randomData
     )
@@ -1999,26 +1979,23 @@ function showRandomEvent()
     }
 
 
-    const eventType =
-        pickRandomEventType();
-
-
     const data = {
-        eventType: eventType,
-        playerId: player.id
+        eventType:
+            pickRandomEventType(),
+
+        playerId:
+            player.id
     };
 
 
     currentAutomaticEvent.randomData =
         data;
 
-
     activeEventPlayerId =
         player.id;
 
 
     saveGame();
-
 
     renderRandomEvent(data);
 
@@ -2172,27 +2149,33 @@ function chooseEventMode(mode)
             activeEventPlayerId
         );
 
-    eventOverlay.classList.remove(
-        "active"
-    );
 
     if (player)
     {
         player.turns += 1;
     }
 
+
+    eventOverlay.classList.remove(
+        "active"
+    );
+
+
     /*
-       Il Random Event è concluso.
-       Programmiamo ORA il prossimo,
-       una sola volta.
+       Il Random è concluso nel momento
+       in cui assegna Verità/Obbligo.
+       Da qui parte il prossimo 8-18 min.
     */
 
     scheduleNextRandomEvent();
 
+
     currentAutomaticEvent = null;
     activeEventPlayerId = null;
 
+
     saveGame();
+
 
     startGame(
         mode,
@@ -2229,16 +2212,10 @@ function completeSpecialEvent()
         );
 
 
-    if (player)
-    {
-        player.turns += 1;
-    }
-
-
     /*
        SCEGLI VITTIMA:
-       dopo averla scelta fisicamente,
-       apriamo scelta Verità / Obbligo.
+       il giocatore selezionato ha svolto
+       il suo ruolo scegliendo la vittima.
     */
 
     if (
@@ -2246,6 +2223,12 @@ function completeSpecialEvent()
         "choose-victim"
     )
     {
+        if (player)
+        {
+            player.turns += 1;
+        }
+
+
         eventOverlayLabel.textContent =
             "LA VITTIMA È STATA SCELTA";
 
@@ -2263,9 +2246,10 @@ function completeSpecialEvent()
             "hidden"
         );
 
+
         /*
-           Nessun giocatore specifico:
-           la vittima è scelta dal gruppo.
+           La vittima è stata scelta
+           fisicamente dal gruppo.
         */
 
         activeEventPlayerId = null;
@@ -2273,6 +2257,17 @@ function completeSpecialEvent()
         saveGame();
 
         return;
+    }
+
+
+    /*
+       Drink-with e Salva-Shot vengono
+       conclusi qui.
+    */
+
+    if (player)
+    {
+        player.turns += 1;
     }
 
 
@@ -2295,13 +2290,8 @@ function completeSpecialEvent()
 
 function giveSaveShot(player)
 {
-    /*
-       Max 1 Salva-Shot per giocatore.
-       Il Random successivo NON viene
-       programmato qui.
-    */
-
     player.saveShot = 1;
+
 
     eventOverlayIcon.textContent =
         "🛡️";
@@ -2322,6 +2312,7 @@ function giveSaveShot(player)
         "hidden"
     );
 
+
     saveGame();
 }
 
@@ -2332,23 +2323,61 @@ function giveSaveShot(player)
 
 function giveSpecialPower(player)
 {
-    const power =
-        SPECIAL_POWERS[
-            Math.floor(
-                Math.random() *
-                SPECIAL_POWERS.length
-            )
-        ];
+    /*
+       Se il potere è già stato generato
+       prima di un refresh, riutilizziamo
+       quello salvato.
+    */
 
-    player.powers.push(
-        power.id
-    );
+    let power;
 
-    player.turns += 1;
+
+    if (
+        currentAutomaticEvent.randomData
+            .powerId
+    )
+    {
+        power =
+            SPECIAL_POWERS.find(
+                item =>
+                    item.id ===
+                    currentAutomaticEvent
+                        .randomData
+                        .powerId
+            );
+    }
+
+
+    if (!power)
+    {
+        power =
+            SPECIAL_POWERS[
+                Math.floor(
+                    Math.random() *
+                    SPECIAL_POWERS.length
+                )
+            ];
+
+
+        currentAutomaticEvent
+            .randomData
+            .powerId =
+                power.id;
+
+
+        player.powers.push(
+            power.id
+        );
+
+
+        saveGame();
+    }
+
 
     eventOverlay.classList.remove(
         "active"
     );
+
 
     powerPlayerName.textContent =
         player.name.toUpperCase();
@@ -2362,22 +2391,35 @@ function giveSpecialPower(player)
     powerOverlay.classList.add(
         "active"
     );
-
-    saveGame();
-}
-
-
-    scheduleNextRandomEvent();
-
-    saveGame();
 }
 
 
 function closePowerOverlay()
 {
+    if (
+        currentAutomaticEvent &&
+        currentAutomaticEvent.randomData
+    )
+    {
+        const player =
+            getPlayerById(
+                currentAutomaticEvent
+                    .randomData
+                    .playerId
+            );
+
+
+        if (player)
+        {
+            player.turns += 1;
+        }
+    }
+
+
     powerOverlay.classList.remove(
         "active"
     );
+
 
     scheduleNextRandomEvent();
 
@@ -2593,6 +2635,12 @@ function replaceTequilaWith(mode)
 
 function showQuizTime()
 {
+    /*
+       La domanda viene scelta UNA VOLTA.
+       Se la funzione viene richiamata dopo
+       lock/refresh, non viene cambiata.
+    */
+
     if (!quizTimeQuestion)
     {
         quizTimeQuestion =
@@ -2602,10 +2650,9 @@ function showQuizTime()
                     quizzes.length
                 )
             ];
+
+        quizTimeRevealed = false;
     }
-
-
-    quizTimeRevealed = false;
 
 
     quizTimeQuestionElement.textContent =
@@ -2636,6 +2683,21 @@ function showQuizTime()
             element.dataset.index =
                 index;
 
+
+            if (
+                quizTimeRevealed &&
+                typeof quizTimeQuestion.correct
+                    === "number" &&
+                index ===
+                    quizTimeQuestion.correct
+            )
+            {
+                element.classList.add(
+                    "correct"
+                );
+            }
+
+
             quizTimeOptions.appendChild(
                 element
             );
@@ -2643,10 +2705,20 @@ function showQuizTime()
     );
 
 
-    quizTimeResult.textContent = "";
+    if (quizTimeRevealed)
+    {
+        showQuizTimeResult();
 
-    quizTimeButton.textContent =
-        "👁 MOSTRA RISPOSTA";
+        quizTimeButton.textContent =
+            "CONTINUA";
+    }
+    else
+    {
+        quizTimeResult.textContent = "";
+
+        quizTimeButton.textContent =
+            "👁 MOSTRA RISPOSTA";
+    }
 
 
     quizTimeOverlay.classList.add(
@@ -2655,6 +2727,68 @@ function showQuizTime()
 
 
     vibratePattern();
+}
+
+
+function showQuizTimeResult()
+{
+    if (!quizTimeQuestion)
+    {
+        return;
+    }
+
+
+    if (
+        typeof quizTimeQuestion.correct
+            === "number"
+    )
+    {
+        const answer =
+            quizTimeQuestion.options[
+                quizTimeQuestion.correct
+            ];
+
+
+        quizTimeResult.textContent =
+            "✓ " +
+            answer +
+            "\n\n" +
+            (
+                quizTimeQuestion.explanation ||
+                ""
+            ) +
+            "\n\nChi ha sbagliato beve.";
+
+        return;
+    }
+
+
+    if (
+        quizTimeQuestion.correct ===
+        "open"
+    )
+    {
+        quizTimeResult.textContent =
+            "DOMANDA APERTA\n\n" +
+            (
+                quizTimeQuestion.explanation ||
+                ""
+            );
+
+        return;
+    }
+
+
+    /*
+       correct === null
+    */
+
+    quizTimeResult.textContent =
+        (
+            quizTimeQuestion.explanation ||
+            "Nessuna risposta automatica impostata."
+        ) +
+        "\n\nDecidete voi chi beve.";
 }
 
 
@@ -2673,36 +2807,42 @@ function quizTimeAction()
 
         const options =
             [
-                ...quizTimeOptions.querySelectorAll(
-                    ".quiz-option"
-                )
+                ...quizTimeOptions
+                    .querySelectorAll(
+                        ".quiz-option"
+                    )
             ];
 
 
-        options.forEach(
-            option =>
-            {
-                const index =
-                    Number(
-                        option.dataset.index
-                    );
-
-
-                if (
-                    index ===
-                    quizTimeQuestion.correct
-                )
+        if (
+            typeof quizTimeQuestion.correct
+                === "number"
+        )
+        {
+            options.forEach(
+                option =>
                 {
-                    option.classList.add(
-                        "correct"
-                    );
+                    const index =
+                        Number(
+                            option.dataset.index
+                        );
+
+
+                    if (
+                        index ===
+                        quizTimeQuestion.correct
+                    )
+                    {
+                        option.classList.add(
+                            "correct"
+                        );
+                    }
                 }
-            }
-        );
+            );
+        }
 
 
-        quizTimeResult.textContent =
-            "Chi ha sbagliato beve.";
+        showQuizTimeResult();
 
 
         quizTimeButton.textContent =
@@ -2747,6 +2887,7 @@ function startGame(
 )
 {
     currentMode = mode;
+    cardDrawn = false;
 
 
     if (mode === "quiz")
@@ -2795,6 +2936,7 @@ function startGame(
 
     cardNumber.textContent = "";
 
+
     drawButton.textContent =
         "PESCA";
 
@@ -2805,6 +2947,7 @@ function startGame(
             getPlayerById(
                 forcedPlayerId
             );
+
 
         if (player)
         {
@@ -2828,15 +2971,21 @@ function startGame(
 
 function drawCard()
 {
+    /*
+       Secondo click:
+       la carta è stata completata.
+    */
+
+    if (cardDrawn)
+    {
+        completeCard();
+
+        return;
+    }
+
+
     if (currentMode === "truth")
     {
-        if (truths.length === 0)
-        {
-            truths =
-                shuffle(DEFAULT_TRUTHS);
-        }
-
-
         const card =
             truths[
                 truthIndex %
@@ -2867,7 +3016,11 @@ function drawCard()
             truths.length;
 
 
-        updateHomeCounters();
+        cardDrawn = true;
+
+        drawButton.textContent =
+            "✓ COMPLETATO";
+
 
         return;
     }
@@ -2875,13 +3028,6 @@ function drawCard()
 
     if (currentMode === "dare")
     {
-        if (dares.length === 0)
-        {
-            dares =
-                shuffle(DEFAULT_DARES);
-        }
-
-
         const card =
             dares[
                 dareIndex %
@@ -2912,8 +3058,23 @@ function drawCard()
             dares.length;
 
 
-        updateHomeCounters();
+        cardDrawn = true;
+
+        drawButton.textContent =
+            "✓ COMPLETATO";
     }
+}
+
+
+function completeCard()
+{
+    cardDrawn = false;
+
+    currentMode = null;
+
+    hidePlayerBanners();
+
+    goHome();
 }
 
 
@@ -2941,6 +3102,7 @@ function startManualQuiz(
                 forcedPlayerId
             );
 
+
         if (player)
         {
             quizPlayerBanner.textContent =
@@ -2966,13 +3128,6 @@ function startManualQuiz(
 
 function loadManualQuiz()
 {
-    if (quizzes.length === 0)
-    {
-        quizzes =
-            shuffle(DEFAULT_QUIZZES);
-    }
-
-
     currentQuiz =
         quizzes[
             quizIndex %
@@ -3038,6 +3193,63 @@ function loadManualQuiz()
 }
 
 
+function showManualQuizResult()
+{
+    if (!currentQuiz)
+    {
+        return;
+    }
+
+
+    if (
+        typeof currentQuiz.correct ===
+        "number"
+    )
+    {
+        const answer =
+            currentQuiz.options[
+                currentQuiz.correct
+            ];
+
+
+        quizResult.textContent =
+            "RISPOSTA CORRETTA: " +
+            answer +
+            "\n\n" +
+            (
+                currentQuiz.explanation ||
+                ""
+            );
+
+        return;
+    }
+
+
+    if (
+        currentQuiz.correct === "open"
+    )
+    {
+        quizResult.textContent =
+            "DOMANDA APERTA\n\n" +
+            (
+                currentQuiz.explanation ||
+                ""
+            );
+
+        return;
+    }
+
+
+    /*
+       correct === null
+    */
+
+    quizResult.textContent =
+        currentQuiz.explanation ||
+        "Nessuna risposta automatica impostata.";
+}
+
+
 function quizMainAction()
 {
     if (!currentQuiz)
@@ -3046,6 +3258,11 @@ function quizMainAction()
     }
 
 
+    /*
+       Primo click:
+       mostra la risposta.
+    */
+
     if (!currentQuizRevealed)
     {
         currentQuizRevealed = true;
@@ -3053,48 +3270,56 @@ function quizMainAction()
 
         const options =
             [
-                ...quizOptions.querySelectorAll(
-                    ".quiz-option"
-                )
+                ...quizOptions
+                    .querySelectorAll(
+                        ".quiz-option"
+                    )
             ];
 
 
-        options.forEach(
-            option =>
-            {
-                const index =
-                    Number(
-                        option.dataset.index
-                    );
-
-
-                if (
-                    index ===
-                    currentQuiz.correct
-                )
+        if (
+            typeof currentQuiz.correct ===
+            "number"
+        )
+        {
+            options.forEach(
+                option =>
                 {
-                    option.classList.add(
-                        "correct"
-                    );
+                    const index =
+                        Number(
+                            option.dataset.index
+                        );
+
+
+                    if (
+                        index ===
+                        currentQuiz.correct
+                    )
+                    {
+                        option.classList.add(
+                            "correct"
+                        );
+                    }
                 }
-            }
-        );
+            );
+        }
 
 
-        quizResult.textContent =
-            "Risposta corretta: " +
-            currentQuiz.options[
-                currentQuiz.correct
-            ];
+        showManualQuizResult();
 
 
         quizMainButton.textContent =
-            "PROSSIMO QUIZ";
+            "✓ COMPLETATO";
 
 
         return;
     }
 
+
+    /*
+       Secondo click:
+       completa il Quiz e torna Home.
+    */
 
     quizIndex =
         (
@@ -3103,7 +3328,11 @@ function quizMainAction()
         quizzes.length;
 
 
-    loadManualQuiz();
+    currentQuiz = null;
+    currentQuizRevealed = false;
+
+
+    goHome();
 }
 
 
@@ -3116,9 +3345,13 @@ function resumeApplication()
     updateTimers();
 
 
-    if (
-        currentAutomaticEvent
-    )
+    /*
+       Solo quando l'app torna realmente
+       in primo piano ripristiniamo
+       l'overlay eventualmente aperto.
+    */
+
+    if (currentAutomaticEvent)
     {
         setTimeout(
             restoreCurrentAutomaticEvent,
@@ -3191,7 +3424,17 @@ if (
 )
 {
     setTimeout(
-        processEventQueue,
+        function ()
+        {
+            if (currentAutomaticEvent)
+            {
+                restoreCurrentAutomaticEvent();
+            }
+            else
+            {
+                processEventQueue();
+            }
+        },
         250
     );
 }
